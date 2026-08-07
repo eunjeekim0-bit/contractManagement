@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>계약서 Hub · 계약서 관리</title>
+<script>
+try {
+  if (localStorage.getItem('sidebarCollapsed') === '1') {
+    document.documentElement.classList.add('sidebar-collapsed');
+  }
+} catch (e) {}
+</script>
+<link rel="stylesheet" href="vendor/bootstrap.min.css">
+<link rel="stylesheet" href="vendor/bootstrap-icons.css">
+<link rel="stylesheet" href="app.css">
+<style>
+.search-card { border-radius: 16px; border: none; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+.form-label { font-weight: 600; font-size: .85rem; color: #444; }
+.input-with-btn { position: relative; }
+
+.result-card { border-radius: 16px; border: none; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+table.contract-table { font-size: .85rem; }
+table.contract-table thead th { vertical-align: middle; text-align: center; white-space: nowrap; }
+.thead-basic { background: #e8eaff; color: #2b2d6e; }
+.thead-ai { background: #fff0f3; color: #7a1230; }
+.thead-link { background: #1e1e2e; color: #fff; }
+.amount-cell { text-align: right; font-variant-numeric: tabular-nums; }
+.center-cell { text-align: center; }
+.badge-risk-낮음 { background: #d8f8ee; color: #06a075; }
+.badge-risk-중간 { background: #fff3cd; color: #9c7a00; }
+.badge-risk-높음 { background: #fde0e8; color: #c0394a; }
+.status-badge { font-size: .72rem; }
+.status-계약중 { background:#d8f8ee; color:#06a075; }
+.status-만료 { background:#f0f0f0; color:#888; }
+.status-예정 { background:#e8eaff; color:#3b4bd0; }
+
+.org-tree .division-header { font-weight: 700; background: #f0f2ff; padding: 6px 10px; border-radius: 8px; cursor: pointer; }
+.org-tree .team-block { margin: 4px 0 8px 14px; }
+.org-tree .team-name { font-weight: 600; color: var(--primary); padding: 4px 6px; cursor: pointer; border-radius: 6px; }
+.org-tree .team-name:hover { background: #eef0ff; }
+.org-tree .emp-row { padding: 3px 10px 3px 20px; cursor: pointer; border-radius: 6px; font-size: .88rem; }
+.org-tree .emp-row:hover { background: #f5f6ff; }
+.emp-pos { color: #999; font-size: .78rem; }
+.empty-state { text-align:center; padding: 60px 0; color:#999; }
+</style>
+</head>
+<body>
+
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <button class="sidebar-toggle" id="sidebarToggleBtn" title="메뉴 접기/펼치기" type="button"><i class="bi bi-chevron-double-left"></i></button>
+      <span class="sidebar-brand-text"><i class="bi bi-file-earmark-text me-2"></i>계약서 관리</span>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-label">페이지</div>
+      <a href="index.html" class="sidebar-link active" title="계약서 Hub"><i class="bi bi-grid-3x3-gap"></i><span class="sidebar-link-label">계약서 Hub</span></a>
+      <a href="obligations.html" class="sidebar-link" title="의무조항 관리"><i class="bi bi-clipboard-check"></i><span class="sidebar-link-label">의무조항 관리</span></a>
+      <a href="dashboard.html" class="sidebar-link" title="Dashboard"><i class="bi bi-speedometer2"></i><span class="sidebar-link-label">Dashboard</span></a>
+      <a href="#" class="sidebar-link disabled" title="Q&A AI Agent (링크 미설정)"><i class="bi bi-robot"></i><span class="sidebar-link-label">Q&A AI Agent</span></a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <div class="content-header">
+      <h5><i class="bi bi-grid-3x3-gap me-2 text-primary"></i>계약서 Hub</h5>
+    </div>
+    <div class="content-body">
+
+  <!-- Search -->
+  <div class="card search-card p-3 mb-3">
+    <div class="row g-3">
+      <div class="col-md-3 col-sm-6">
+        <label class="form-label">기안부서</label>
+        <div class="input-group">
+          <input type="text" class="form-control" id="q-dept" placeholder="부서명 입력 또는 검색">
+          <button class="btn btn-outline-secondary" type="button" onclick="openOrgModal('dept')"><i class="bi bi-diagram-3"></i></button>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <label class="form-label">기안자</label>
+        <div class="input-group">
+          <input type="text" class="form-control" id="q-drafter" placeholder="이름 입력 또는 검색">
+          <button class="btn btn-outline-secondary" type="button" onclick="openOrgModal('drafter')"><i class="bi bi-person-badge"></i></button>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <label class="form-label">계약명</label>
+        <input type="text" class="form-control" id="q-name" placeholder="계약명 일부 입력">
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <label class="form-label">파트너사</label>
+        <input type="text" class="form-control" id="q-partner" placeholder="파트너사명 일부 입력">
+      </div>
+
+      <div class="col-md-4 col-sm-6">
+        <label class="form-label">계약기간</label>
+        <div class="d-flex align-items-center gap-2">
+          <input type="date" class="form-control" id="q-start">
+          <span class="text-muted">~</span>
+          <input type="date" class="form-control" id="q-end">
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <label class="form-label">상태</label>
+        <select class="form-select" id="q-status">
+          <option value="">전체</option>
+          <option value="예정">예정</option>
+          <option value="계약중">계약중</option>
+          <option value="만료">만료</option>
+        </select>
+      </div>
+
+      <div class="col-12 d-flex justify-content-end gap-2 mt-2">
+        <button class="btn btn-outline-secondary" onclick="resetSearch()"><i class="bi bi-arrow-counterclockwise me-1"></i>초기화</button>
+        <button class="btn btn-primary px-4" onclick="runSearch()"><i class="bi bi-search me-1"></i>검색</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Results -->
+  <div class="card result-card">
+    <div class="card-header bg-white fw-bold d-flex justify-content-between align-items-center">
+      <span><i class="bi bi-list-ul me-2 text-primary"></i>조회 결과 <span class="badge bg-secondary" id="resultCount">0</span></span>
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover contract-table mb-0">
+          <thead>
+            <tr>
+              <th class="thead-basic" colspan="6">기본 사항</th>
+              <th class="thead-ai" colspan="4">AI 분석 결과</th>
+              <th class="thead-link" rowspan="2" style="width:70px">상세</th>
+            </tr>
+            <tr>
+              <th class="thead-basic">계약유형</th>
+              <th class="thead-basic" style="min-width:220px">계약명</th>
+              <th class="thead-basic">기안부서</th>
+              <th class="thead-basic">기안자</th>
+              <th class="thead-basic">계약기간</th>
+              <th class="thead-basic">계약금액</th>
+              <th class="thead-ai">조항수</th>
+              <th class="thead-ai">중요조항수</th>
+              <th class="thead-ai">의무조항수</th>
+              <th class="thead-ai">리스크조항수</th>
+            </tr>
+          </thead>
+          <tbody id="resultBody"></tbody>
+        </table>
+      </div>
+      <div class="empty-state" id="emptyState">
+        <i class="bi bi-inbox" style="font-size:2.5rem"></i>
+        <div class="mt-2">검색 조건을 입력하고 검색 버튼을 눌러주세요</div>
+      </div>
+    </div>
+  </div>
+
+<!-- Org search modal -->
+<div class="modal fade" id="orgModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header py-2">
+        <h6 class="modal-title fw-bold" id="orgModalTitle"><i class="bi bi-diagram-3 me-2"></i>조직도 검색</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <input type="text" class="form-control mb-3" id="orgSearchInput" placeholder="부서명 또는 이름 검색...">
+        <div class="org-tree" id="orgTree"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    </div>
+  </main>
+</div>
+
+<script src="vendor/bootstrap.bundle.min.js"></script>
+<script src="shell.js"></script>
+<script src="data.js"></script>
+<script src="mock-api.js"></script>
+<script>
+let orgData = [];
+let orgModal = null;
+let orgMode = 'dept'; // 'dept' | 'drafter'
+
+document.addEventListener('DOMContentLoaded', () => {
+  orgModal = new bootstrap.Modal(document.getElementById('orgModal'));
+  document.getElementById('orgSearchInput').addEventListener('input', e => renderOrgTree(e.target.value.trim().toLowerCase()));
+  loadOrg();
+  runSearch();
+});
+
+function loadOrg() {
+  orgData = MockAPI.org();
+}
+
+function fmt(n) {
+  if (n == null || isNaN(n)) return '0';
+  return Math.round(n).toLocaleString('ko-KR');
+}
+
+function formatAmount(amount, currency) {
+  const n = fmt(amount);
+  if (currency === 'USD') return '$' + n;
+  if (currency === 'EUR') return '€' + n;
+  return n + '원';
+}
+
+function resetSearch() {
+  ['q-dept','q-drafter','q-name','q-partner','q-start','q-end','q-status'].forEach(id => document.getElementById(id).value = '');
+  runSearch();
+}
+
+function runSearch() {
+  const data = MockAPI.searchContracts({
+    dept: document.getElementById('q-dept').value.trim(),
+    drafter: document.getElementById('q-drafter').value.trim(),
+    name: document.getElementById('q-name').value.trim(),
+    partner: document.getElementById('q-partner').value.trim(),
+    start: document.getElementById('q-start').value,
+    end: document.getElementById('q-end').value,
+    status: document.getElementById('q-status').value,
+  });
+  renderResults(data.results);
+}
+
+function riskBadge(level) {
+  return `<span class="badge badge-risk-${level}">${level}</span>`;
+}
+
+function statusBadge(status) {
+  return `<span class="badge status-badge status-${status}">${status}</span>`;
+}
+
+function renderResults(results) {
+  const tbody = document.getElementById('resultBody');
+  tbody.innerHTML = '';
+  document.getElementById('resultCount').textContent = results.length;
+  document.getElementById('emptyState').style.display = results.length ? 'none' : '';
+
+  results.forEach(r => {
+    const ai = r.ai;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="center-cell">${r.contract_type}</td>
+      <td>
+        <div class="fw-semibold">${r.contract_name} ${r.language === 'en' ? '<span class="badge bg-info-subtle text-info-emphasis border" title="번역 가능">EN</span>' : ''}</div>
+        <div class="small text-muted">${r.partner} &nbsp; ${statusBadge(r.status)}</div>
+      </td>
+      <td class="center-cell">${r.dept_name}<div class="small text-muted">${r.division_name}</div></td>
+      <td class="center-cell">${r.drafter_name}</td>
+      <td class="center-cell small">${r.start_date}<br>~ ${r.end_date}</td>
+      <td class="amount-cell">${formatAmount(r.amount, r.currency)}</td>
+      <td class="center-cell">${ai.clause_count}</td>
+      <td class="center-cell">${ai.important_clause_count}</td>
+      <td class="center-cell">${ai.obligation_clause_count}</td>
+      <td class="center-cell">${ai.risk_clause_count} ${riskBadge(ai.overall_risk)}</td>
+      <td class="center-cell"><a href="detail.html?id=${r.id}" target="_blank" class="btn btn-sm btn-outline-primary"><i class="bi bi-box-arrow-up-right"></i></a></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// ==================== ORG MODAL ====================
+function openOrgModal(mode) {
+  orgMode = mode;
+  document.getElementById('orgModalTitle').innerHTML = mode === 'dept'
+    ? '<i class="bi bi-diagram-3 me-2"></i>기안부서 검색'
+    : '<i class="bi bi-person-badge me-2"></i>기안자 검색';
+  document.getElementById('orgSearchInput').value = '';
+  renderOrgTree('');
+  orgModal.show();
+}
+
+function renderOrgTree(filter) {
+  const container = document.getElementById('orgTree');
+  container.innerHTML = '';
+
+  orgData.forEach(division => {
+    const teams = division.children.map(team => {
+      const matchTeam = !filter || team.name.toLowerCase().includes(filter) || division.name.toLowerCase().includes(filter);
+      const employees = team.employees.filter(e => !filter || matchTeam || e.name.toLowerCase().includes(filter));
+      return { team, employees, show: matchTeam || employees.length > 0 };
+    }).filter(t => t.show);
+
+    if (filter && teams.length === 0) return;
+
+    const divDiv = document.createElement('div');
+    divDiv.className = 'mb-2';
+    divDiv.innerHTML = `<div class="division-header"><i class="bi bi-building me-1"></i>${division.name}</div>`;
+    container.appendChild(divDiv);
+
+    teams.forEach(({ team, employees }) => {
+      const teamBlock = document.createElement('div');
+      teamBlock.className = 'team-block';
+      const teamNameEl = document.createElement('div');
+      teamNameEl.className = 'team-name';
+      teamNameEl.innerHTML = `<i class="bi bi-people me-1"></i>${team.name}`;
+      teamNameEl.onclick = () => selectDept(division.name, team.name);
+      teamBlock.appendChild(teamNameEl);
+
+      (filter ? employees : team.employees).forEach(emp => {
+        const empEl = document.createElement('div');
+        empEl.className = 'emp-row';
+        empEl.innerHTML = `<i class="bi bi-person me-1"></i>${emp.name} <span class="emp-pos">${emp.position}</span>`;
+        empEl.onclick = () => selectDrafter(division.name, team.name, emp.name);
+        teamBlock.appendChild(empEl);
+      });
+
+      container.appendChild(teamBlock);
+    });
+  });
+}
+
+function selectDept(divisionName, teamName) {
+  document.getElementById('q-dept').value = teamName;
+  orgModal.hide();
+}
+
+function selectDrafter(divisionName, teamName, empName) {
+  document.getElementById('q-drafter').value = empName;
+  document.getElementById('q-dept').value = teamName;
+  orgModal.hide();
+}
+</script>
+</body>
+</html>
