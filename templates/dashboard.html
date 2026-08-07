@@ -1,0 +1,424 @@
+{% extends "base.html" %}
+{% block title %}Dashboard · 계약서 관리{% endblock %}
+{% block page_title %}<i class="bi bi-speedometer2 me-2 text-primary"></i>Dashboard{% endblock %}
+
+{% block extra_style %}
+<style>
+.dept-card { border-radius: 16px; border: none; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+.stat-card {
+  border-radius: 16px; border: none; box-shadow: 0 2px 8px rgba(0,0,0,.08);
+  cursor: pointer; transition: transform .12s ease, box-shadow .12s ease;
+}
+.stat-card:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,.12); }
+.stat-card .icon { width: 52px; height: 52px; border-radius: 14px; display:flex; align-items:center; justify-content:center; font-size:1.5rem; }
+.icon-valid { background: #d8f8ee; color: #06a075; }
+.icon-expiring { background: #fff3cd; color: #9c7a00; }
+.icon-overdue { background: #fde0e8; color: #c0394a; }
+.stat-value { font-size: 2rem; font-weight: 800; line-height: 1; }
+.stat-label { color: #666; font-weight: 600; font-size: .92rem; }
+.stat-hint { color: #999; font-size: .78rem; }
+
+.result-card { border-radius: 16px; border: none; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+table.ob-table, table.ct-table { font-size: .85rem; }
+table.ob-table thead th, table.ct-table thead th { vertical-align: middle; text-align: center; white-space: nowrap; background:#e8eaff; color:#2b2d6e; }
+.center-cell { text-align: center; }
+.ob-content { max-width: 320px; color:#555; }
+.category-badge { font-size: .72rem; background:#f0f0f0; color:#555; }
+.status-badge { font-size: .74rem; }
+.status-대기 { background:#f0f0f0; color:#666; }
+.status-진행중 { background:#d4eef8; color:#118ab2; }
+.status-완료 { background:#d8f8ee; color:#06a075; }
+.status-지연 { background:#fde0e8; color:#c0394a; }
+.due-overdue { color:#c0394a; font-weight:700; }
+.due-soon { color:#9c7a00; font-weight:700; }
+.amount-cell { text-align: right; font-variant-numeric: tabular-nums; }
+.empty-state { text-align:center; padding: 40px 0; color:#999; }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="card dept-card p-3 mb-3">
+  <div class="row g-3 align-items-end">
+    <div class="col-md-4 col-sm-6">
+      <label class="form-label fw-semibold small text-muted">부서 선택</label>
+      <select class="form-select" id="deptFilter" onchange="loadDashboard()">
+        <option value="">전체</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-4">
+    <div class="card stat-card p-3 h-100" onclick="openContractModal('valid')">
+      <div class="d-flex align-items-center gap-3">
+        <div class="icon icon-valid"><i class="bi bi-file-earmark-check"></i></div>
+        <div>
+          <div class="stat-label">현재 유효한 계약수</div>
+          <div class="stat-value" id="stat-valid">-</div>
+          <div class="stat-hint">클릭하여 목록 보기</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card stat-card p-3 h-100" onclick="openContractModal('expiring')">
+      <div class="d-flex align-items-center gap-3">
+        <div class="icon icon-expiring"><i class="bi bi-hourglass-split"></i></div>
+        <div>
+          <div class="stat-label">30일 이내 만료되는 계약수</div>
+          <div class="stat-value" id="stat-expiring">-</div>
+          <div class="stat-hint">클릭하여 목록 보기</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card stat-card p-3 h-100" onclick="openObligationModal()">
+      <div class="d-flex align-items-center gap-3">
+        <div class="icon icon-overdue"><i class="bi bi-exclamation-triangle"></i></div>
+        <div>
+          <div class="stat-label">의무사항 조치 기한 만료 건수</div>
+          <div class="stat-value" id="stat-overdue">-</div>
+          <div class="stat-hint">클릭하여 목록 보기</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 임박·만료 의무사항 -->
+<div class="card result-card">
+  <div class="card-header bg-white fw-bold d-flex justify-content-between align-items-center">
+    <span><i class="bi bi-alarm me-2 text-danger"></i>임박·만료 의무사항 <span class="badge bg-secondary" id="urgentCount">0</span></span>
+    <span class="small text-muted">기한 만료 또는 7일 이내 도래 항목</span>
+  </div>
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover ob-table mb-0">
+        <thead>
+          <tr>
+            <th>파트너사</th>
+            <th style="min-width:200px">계약명</th>
+            <th>조항 구분</th>
+            <th style="min-width:260px">내용</th>
+            <th>기한일</th>
+            <th>부서</th>
+            <th>담당자</th>
+            <th>상태</th>
+            <th style="width:70px">관리</th>
+          </tr>
+        </thead>
+        <tbody id="urgentBody"></tbody>
+      </table>
+    </div>
+    <div class="empty-state" id="urgentEmpty" style="display:none">
+      <i class="bi bi-emoji-smile" style="font-size:2rem"></i>
+      <div class="mt-2">임박하거나 만료된 의무사항이 없습니다</div>
+    </div>
+  </div>
+</div>
+
+<!-- 계약 목록 모달 (유효 / 만료임박 공용) -->
+<div class="modal fade" id="contractModal" tabindex="-1">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header py-2">
+        <h6 class="modal-title fw-bold" id="contractModalTitle"></h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-0">
+        <div class="table-responsive">
+          <table class="table table-bordered ct-table mb-0">
+            <thead>
+              <tr>
+                <th>계약유형</th>
+                <th style="min-width:200px">계약명</th>
+                <th>기안부서</th>
+                <th>기안자</th>
+                <th>계약기간</th>
+                <th>계약금액</th>
+                <th id="ctExtraHeader" style="display:none">D-day</th>
+                <th style="width:60px">상세</th>
+              </tr>
+            </thead>
+            <tbody id="contractModalBody"></tbody>
+          </table>
+        </div>
+        <div class="empty-state" id="contractModalEmpty" style="display:none">
+          <div class="mt-2">해당하는 계약이 없습니다</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 의무사항 기한만료 목록 모달 -->
+<div class="modal fade" id="obligationModal" tabindex="-1">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header py-2">
+        <h6 class="modal-title fw-bold"><i class="bi bi-exclamation-triangle me-2 text-danger"></i>기한 만료 의무사항</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-0">
+        <div class="table-responsive">
+          <table class="table table-bordered ob-table mb-0">
+            <thead>
+              <tr>
+                <th>파트너사</th>
+                <th style="min-width:200px">계약명</th>
+                <th>조항 구분</th>
+                <th style="min-width:260px">내용</th>
+                <th>기한일</th>
+                <th>부서</th>
+                <th>담당자</th>
+                <th>상태</th>
+                <th style="width:70px">관리</th>
+              </tr>
+            </thead>
+            <tbody id="obligationModalBody"></tbody>
+          </table>
+        </div>
+        <div class="empty-state" id="obligationModalEmpty" style="display:none">
+          <div class="mt-2">기한이 만료된 의무사항이 없습니다</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 후속조치 업데이트 모달 -->
+<div class="modal fade" id="updateModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header py-2">
+        <h6 class="modal-title fw-bold"><i class="bi bi-pencil-square me-2 text-primary"></i>후속 조치 업데이트</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-2"><span class="text-muted small">계약명</span><div class="fw-semibold" id="um-contract-name"></div></div>
+        <div class="row mb-2">
+          <div class="col-6"><span class="text-muted small">파트너사</span><div class="fw-semibold" id="um-partner"></div></div>
+          <div class="col-6"><span class="text-muted small">담당자</span><div class="fw-semibold" id="um-assignee"></div></div>
+        </div>
+        <div class="row mb-2">
+          <div class="col-6"><span class="text-muted small">조항 구분</span><div class="fw-semibold" id="um-category"></div></div>
+          <div class="col-6"><span class="text-muted small">기한일</span><div class="fw-semibold" id="um-due"></div></div>
+        </div>
+        <div class="mb-3">
+          <span class="text-muted small">조항 내용</span>
+          <div class="small border rounded p-2 bg-light" id="um-content" style="max-height:100px; overflow-y:auto"></div>
+        </div>
+        <hr>
+        <div class="mb-3">
+          <label class="form-label fw-semibold">진행 상태</label>
+          <select class="form-select" id="um-status">
+            {% for st in status_options %}
+            <option value="{{ st }}">{{ st }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="mb-2">
+          <label class="form-label fw-semibold">후속 조치 내용</label>
+          <textarea class="form-control" id="um-note" rows="4" placeholder="처리 내용을 입력하세요"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer border-0 pt-0">
+        <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">취소</button>
+        <button class="btn btn-primary btn-sm px-3" onclick="saveUpdate()"><i class="bi bi-check2 me-1"></i>저장</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_script %}
+<script>
+let contractModal = null, obligationModal = null, updateModal = null;
+let currentUpdateId = null;
+let currentUpdateSource = null; // 'urgent' | 'modal'
+
+document.addEventListener('DOMContentLoaded', () => {
+  contractModal = new bootstrap.Modal(document.getElementById('contractModal'));
+  obligationModal = new bootstrap.Modal(document.getElementById('obligationModal'));
+  updateModal = new bootstrap.Modal(document.getElementById('updateModal'));
+  loadDeptOptions().then(loadDashboard);
+});
+
+async function loadDeptOptions() {
+  const res = await fetch('/api/org');
+  const divisions = await res.json();
+  const select = document.getElementById('deptFilter');
+  divisions.forEach(division => {
+    const group = document.createElement('optgroup');
+    group.label = division.name;
+    division.children.forEach(team => {
+      const opt = document.createElement('option');
+      opt.value = team.name;
+      opt.textContent = team.name;
+      group.appendChild(opt);
+    });
+    select.appendChild(group);
+  });
+}
+
+function fmt(n) {
+  if (n == null || isNaN(n)) return '0';
+  return Math.round(n).toLocaleString('ko-KR');
+}
+
+function formatAmount(amount, currency) {
+  const n = fmt(amount);
+  if (currency === 'USD') return '$' + n;
+  if (currency === 'EUR') return '€' + n;
+  return n + '원';
+}
+
+function currentDept() {
+  return document.getElementById('deptFilter').value;
+}
+
+function statusBadge(status) {
+  return `<span class="badge status-badge status-${status}">${status}</span>`;
+}
+
+function categoryBadge(cat) {
+  return `<span class="badge category-badge">${cat}</span>`;
+}
+
+const TODAY = new Date().toISOString().slice(0, 10);
+
+function daysUntil(dateStr) {
+  const diff = (new Date(dateStr) - new Date(TODAY)) / 86400000;
+  return Math.round(diff);
+}
+
+// ==================== SUMMARY ====================
+async function loadDashboard() {
+  const dept = currentDept();
+  const res = await fetch('/api/dashboard/summary?dept=' + encodeURIComponent(dept));
+  const data = await res.json();
+  document.getElementById('stat-valid').textContent = data.valid_contracts;
+  document.getElementById('stat-expiring').textContent = data.expiring_contracts;
+  document.getElementById('stat-overdue').textContent = data.overdue_obligations;
+  loadUrgentObligations();
+}
+
+// ==================== 계약 모달 (유효 / 만료임박) ====================
+async function openContractModal(mode) {
+  const dept = currentDept();
+  const isExpiring = mode === 'expiring';
+  const url = isExpiring ? '/api/dashboard/expiring-contracts' : '/api/dashboard/valid-contracts';
+  const res = await fetch(`${url}?dept=${encodeURIComponent(dept)}&days=30`);
+  const data = await res.json();
+
+  document.getElementById('contractModalTitle').innerHTML = isExpiring
+    ? '<i class="bi bi-hourglass-split me-2 text-warning"></i>30일 이내 만료되는 계약'
+    : '<i class="bi bi-file-earmark-check me-2 text-success"></i>현재 유효한 계약';
+  document.getElementById('ctExtraHeader').style.display = isExpiring ? '' : 'none';
+
+  const tbody = document.getElementById('contractModalBody');
+  tbody.innerHTML = '';
+  document.getElementById('contractModalEmpty').style.display = data.results.length ? 'none' : '';
+
+  data.results.forEach(c => {
+    const dday = daysUntil(c.end_date);
+    const ddayCell = isExpiring ? `<td class="center-cell ${dday <= 7 ? 'due-overdue' : 'due-soon'}">D-${dday}</td>` : '';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="center-cell">${c.contract_type}</td>
+      <td>${c.contract_name}</td>
+      <td class="center-cell">${c.dept_name}</td>
+      <td class="center-cell">${c.drafter_name}</td>
+      <td class="center-cell small">${c.start_date}<br>~ ${c.end_date}</td>
+      <td class="amount-cell">${formatAmount(c.amount, c.currency)}</td>
+      ${ddayCell}
+      <td class="center-cell"><a href="/contract/${c.id}" target="_blank" class="btn btn-sm btn-outline-primary"><i class="bi bi-box-arrow-up-right"></i></a></td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  contractModal.show();
+}
+
+// ==================== 의무사항 기한만료 모달 ====================
+async function openObligationModal() {
+  const dept = currentDept();
+  const res = await fetch('/api/dashboard/overdue-obligations?dept=' + encodeURIComponent(dept));
+  const data = await res.json();
+  renderObligationRows(data.results, 'obligationModalBody', 'obligationModalEmpty', 'modal');
+  obligationModal.show();
+}
+
+// ==================== 임박·만료 의무사항 (대시보드 내 섹션) ====================
+async function loadUrgentObligations() {
+  const dept = currentDept();
+  const res = await fetch(`/api/dashboard/urgent-obligations?dept=${encodeURIComponent(dept)}&days=7`);
+  const data = await res.json();
+  document.getElementById('urgentCount').textContent = data.count;
+  renderObligationRows(data.results, 'urgentBody', 'urgentEmpty', 'urgent');
+}
+
+function renderObligationRows(results, bodyId, emptyId, source) {
+  const tbody = document.getElementById(bodyId);
+  tbody.innerHTML = '';
+  document.getElementById(emptyId).style.display = results.length ? 'none' : '';
+
+  results.forEach(o => {
+    const overdue = o.due_date < TODAY;
+    const dueClass = overdue ? 'due-overdue' : 'due-soon';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="center-cell">${o.partner}</td>
+      <td>${o.contract_name}</td>
+      <td class="center-cell">${categoryBadge(o.category)}</td>
+      <td class="ob-content small">${o.content}</td>
+      <td class="center-cell ${dueClass}">${o.due_date}${overdue ? ' (만료)' : ''}</td>
+      <td class="center-cell">${o.dept_name}</td>
+      <td class="center-cell">${o.assignee}</td>
+      <td class="center-cell">${statusBadge(o.status)}</td>
+      <td class="center-cell"><button class="btn btn-sm btn-outline-primary" onclick="openUpdateModal('${o.id}','${source}')"><i class="bi bi-pencil-square"></i></button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// ==================== 후속조치 업데이트 모달 ====================
+async function openUpdateModal(id, source) {
+  currentUpdateId = id;
+  currentUpdateSource = source;
+  if (source === 'modal') obligationModal.hide();
+  const full = await (await fetch(`/api/obligations/${id}`)).json();
+
+  document.getElementById('um-contract-name').textContent = full.contract_name;
+  document.getElementById('um-partner').textContent = full.partner;
+  document.getElementById('um-assignee').textContent = full.assignee;
+  document.getElementById('um-category').textContent = full.category;
+  document.getElementById('um-due').textContent = full.due_date || '-';
+  document.getElementById('um-content').textContent = full.content;
+  document.getElementById('um-status').value = full.status;
+  document.getElementById('um-note').value = full.note || '';
+
+  updateModal.show();
+}
+
+async function saveUpdate() {
+  const status = document.getElementById('um-status').value;
+  const note = document.getElementById('um-note').value.trim();
+  const res = await fetch(`/api/obligations/${currentUpdateId}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ status, note }),
+  });
+  if (!res.ok) { alert('저장에 실패했습니다.'); return; }
+
+  updateModal.hide();
+  // 상태 변경이 지표(D-day 건수 등)에도 영향을 줄 수 있으므로 전체 갱신
+  loadDashboard();
+  if (currentUpdateSource === 'modal') openObligationModal();
+}
+</script>
+{% endblock %}

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>계약서 상세</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<style>
+body { background: #f0f2f5; font-family: 'Segoe UI', sans-serif; }
+.navbar { background: #1e1e2e !important; }
+.navbar-brand { font-weight: 700; font-size: 1.3rem; }
+.info-card { border-radius: 16px; border: none; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+.stat-card { border-radius: 16px; border: none; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+.stat-card .icon { width: 48px; height: 48px; border-radius: 12px; display:flex; align-items:center; justify-content:center; font-size:1.4rem; }
+.icon-total { background: #e8eaff; color: #4361ee; }
+.icon-important { background: #fff3cd; color: #9c7a00; }
+.icon-obligation { background: #d4eef8; color: #118ab2; }
+.icon-risk { background: #fde0e8; color: #ef476f; }
+.info-row { display:flex; padding: 8px 0; border-bottom: 1px solid #f0f0f0; }
+.info-row:last-child { border-bottom: none; }
+.info-label { width: 130px; color: #888; font-weight: 600; font-size: .88rem; flex-shrink:0; }
+.info-value { font-weight: 600; }
+.badge-risk-낮음 { background: #d8f8ee; color: #06a075; }
+.badge-risk-중간 { background: #fff3cd; color: #9c7a00; }
+.badge-risk-높음 { background: #fde0e8; color: #c0394a; }
+.status-badge { font-size: .75rem; }
+.status-계약중 { background:#d8f8ee; color:#06a075; }
+.status-만료 { background:#f0f0f0; color:#888; }
+.status-예정 { background:#e8eaff; color:#3b4bd0; }
+.clause-type-badge { font-size: .72rem; }
+.type-일반 { background:#f0f0f0; color:#666; }
+.type-중요 { background:#fff3cd; color:#9c7a00; }
+.type-의무 { background:#d4eef8; color:#118ab2; }
+.type-리스크 { background:#fde0e8; color:#c0394a; }
+.clause-row td { vertical-align: top; }
+.clause-content { color:#555; font-size:.85rem; }
+.filter-chip { cursor:pointer; }
+.filter-chip.active { background: var(--bs-primary); color:#fff; }
+.category-badge { font-size: .72rem; background:#f0f0f0; color:#555; }
+.duty-badge { font-size: .72rem; }
+.duty-갑 { background:#e8eaff; color:#3b4bd0; }
+.duty-을 { background:#fff3cd; color:#9c7a00; }
+.duty-양당사자 { background:#f0f0f0; color:#666; }
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark px-3 py-2">
+  <a class="navbar-brand text-white" href="/"><i class="bi bi-file-earmark-text me-2"></i>계약서 관리</a>
+  <a href="/" class="btn btn-sm btn-outline-light"><i class="bi bi-arrow-left me-1"></i>목록으로</a>
+</nav>
+
+<div class="container-fluid px-3 py-3" id="app" style="display:none">
+
+  <div class="row g-3 mb-3">
+    <!-- Basic info -->
+    <div class="col-lg-6">
+      <div class="card info-card p-3 h-100">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <div>
+            <div class="text-muted small mb-1" id="d-type"></div>
+            <h5 class="fw-bold mb-0" id="d-name"></h5>
+          </div>
+          <div class="d-flex flex-column align-items-end gap-1">
+            <span class="badge status-badge" id="d-status"></span>
+            <button class="btn btn-sm btn-outline-primary" id="translateBtn" style="display:none" onclick="toggleTranslation()">
+              <i class="bi bi-translate me-1"></i><span id="translateBtnLabel">번역보기</span>
+            </button>
+          </div>
+        </div>
+        <hr>
+        <div class="info-row"><div class="info-label">기안부서</div><div class="info-value" id="d-dept"></div></div>
+        <div class="info-row"><div class="info-label">기안자</div><div class="info-value" id="d-drafter"></div></div>
+        <div class="info-row"><div class="info-label">파트너사</div><div class="info-value" id="d-partner"></div></div>
+        <div class="info-row"><div class="info-label">계약기간</div><div class="info-value" id="d-period"></div></div>
+        <div class="info-row"><div class="info-label">계약금액</div><div class="info-value" id="d-amount"></div></div>
+        <div class="info-row"><div class="info-label">첨부파일</div><div class="info-value text-muted" id="d-file"></div></div>
+      </div>
+    </div>
+
+    <!-- AI stats -->
+    <div class="col-lg-6">
+      <div class="row g-3 h-100">
+        <div class="col-6">
+          <div class="card stat-card p-3 h-100">
+            <div class="d-flex align-items-center gap-3">
+              <div class="icon icon-total"><i class="bi bi-list-ol"></i></div>
+              <div><div class="text-muted small">조항수</div><div class="fw-bold fs-4" id="s-total">-</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="card stat-card p-3 h-100">
+            <div class="d-flex align-items-center gap-3">
+              <div class="icon icon-important"><i class="bi bi-star-fill"></i></div>
+              <div><div class="text-muted small">중요조항수</div><div class="fw-bold fs-4" id="s-important">-</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="card stat-card p-3 h-100">
+            <div class="d-flex align-items-center gap-3">
+              <div class="icon icon-obligation"><i class="bi bi-clipboard-check"></i></div>
+              <div><div class="text-muted small">의무조항수</div><div class="fw-bold fs-4" id="s-obligation">-</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="card stat-card p-3 h-100">
+            <div class="d-flex align-items-center gap-3">
+              <div class="icon icon-risk"><i class="bi bi-exclamation-triangle-fill"></i></div>
+              <div><div class="text-muted small">리스크조항수</div><div class="fw-bold fs-4" id="s-risk">-</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="card stat-card p-3">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <span class="fw-bold small"><i class="bi bi-robot me-1 text-primary"></i>AI 종합 소견</span>
+              <span class="badge" id="s-overall-risk"></span>
+            </div>
+            <div class="small text-muted" id="s-summary"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Clause list -->
+  <div class="card info-card">
+    <div class="card-header bg-white fw-bold d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <span><i class="bi bi-journal-text me-2 text-primary"></i>조항 상세 <span class="badge bg-secondary" id="clauseCount">0</span></span>
+      <div class="d-flex gap-1" id="typeFilters">
+        <span class="badge border filter-chip active" data-type="all">전체</span>
+        <span class="badge border filter-chip" data-type="중요">중요</span>
+        <span class="badge border filter-chip" data-type="의무">의무</span>
+        <span class="badge border filter-chip" data-type="리스크">리스크</span>
+        <span class="badge border filter-chip" data-type="일반">일반</span>
+      </div>
+    </div>
+    <div class="card-body p-0">
+      <table class="table table-hover mb-0">
+        <thead class="table-light">
+          <tr>
+            <th style="width:50px">#</th>
+            <th style="width:90px">유형</th>
+            <th style="width:110px">구분</th>
+            <th style="width:90px">의무 주체</th>
+            <th style="width:200px">조항명</th>
+            <th>내용</th>
+          </tr>
+        </thead>
+        <tbody id="clauseBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<div class="text-center py-5" id="loadingState"><div class="spinner-border text-primary"></div></div>
+
+<script>
+const CONTRACT_ID = {{ contract_id|tojson }};
+let contractData = null;
+let activeFilter = 'all';
+let showTranslation = false;
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const res = await fetch(`/api/contracts/${CONTRACT_ID}`);
+  if (!res.ok) {
+    document.getElementById('loadingState').innerHTML = '<div class="text-muted">계약서를 찾을 수 없습니다.</div>';
+    return;
+  }
+  contractData = await res.json();
+  render();
+  document.getElementById('loadingState').style.display = 'none';
+  document.getElementById('app').style.display = '';
+
+  document.querySelectorAll('.filter-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      activeFilter = chip.dataset.type;
+      renderClauses();
+    });
+  });
+});
+
+function fmt(n) {
+  if (n == null || isNaN(n)) return '0';
+  return Math.round(n).toLocaleString('ko-KR');
+}
+
+function formatAmount(amount, currency) {
+  const n = fmt(amount);
+  if (currency === 'USD') return '$' + n;
+  if (currency === 'EUR') return '€' + n;
+  return n + '원';
+}
+
+function toggleTranslation() {
+  showTranslation = !showTranslation;
+  document.getElementById('translateBtnLabel').textContent = showTranslation ? '원문보기' : '번역보기';
+  document.getElementById('translateBtn').classList.toggle('btn-outline-primary', !showTranslation);
+  document.getElementById('translateBtn').classList.toggle('btn-primary', showTranslation);
+  render();
+}
+
+function render() {
+  const c = contractData;
+  const ai = c.ai;
+  const translated = showTranslation && c.language === 'en';
+
+  document.getElementById('translateBtn').style.display = c.language === 'en' ? '' : 'none';
+
+  document.getElementById('d-type').textContent = c.contract_type;
+  document.getElementById('d-name').textContent = translated ? (c.contract_name_ko || c.contract_name) : c.contract_name;
+  document.getElementById('d-status').textContent = c.status;
+  document.getElementById('d-status').className = 'badge status-badge status-' + c.status;
+  document.getElementById('d-dept').textContent = `${c.dept_name} (${c.division_name})`;
+  document.getElementById('d-drafter').textContent = c.drafter_name;
+  document.getElementById('d-partner').textContent = c.partner;
+  document.getElementById('d-period').textContent = `${c.start_date} ~ ${c.end_date}`;
+  document.getElementById('d-amount').textContent = formatAmount(c.amount, c.currency);
+  document.getElementById('d-file').innerHTML = `<i class="bi bi-paperclip me-1"></i>${c.file_name}`;
+
+  document.getElementById('s-total').textContent = ai.clause_count;
+  document.getElementById('s-important').textContent = ai.important_clause_count;
+  document.getElementById('s-obligation').textContent = ai.obligation_clause_count;
+  document.getElementById('s-risk').textContent = ai.risk_clause_count;
+  document.getElementById('s-overall-risk').textContent = '종합 리스크: ' + ai.overall_risk;
+  document.getElementById('s-overall-risk').className = 'badge badge-risk-' + ai.overall_risk;
+  document.getElementById('s-summary').textContent = translated ? (ai.summary_ko || ai.summary) : ai.summary;
+
+  renderClauses();
+}
+
+function renderClauses() {
+  const ai = contractData.ai;
+  const translated = showTranslation && contractData.language === 'en';
+  const clauses = activeFilter === 'all' ? ai.clauses : ai.clauses.filter(cl => cl.type === activeFilter);
+  document.getElementById('clauseCount').textContent = clauses.length;
+
+  const tbody = document.getElementById('clauseBody');
+  tbody.innerHTML = '';
+  clauses.forEach(cl => {
+    const tr = document.createElement('tr');
+    tr.className = 'clause-row';
+    const riskTag = cl.risk_level ? `<span class="badge bg-light text-dark border ms-1">${cl.risk_level}</span>` : '';
+    const title = translated ? (cl.title_ko || cl.title) : cl.title;
+    const content = translated ? (cl.content_ko || cl.content) : cl.content;
+    tr.innerHTML = `
+      <td class="text-muted">${cl.no}</td>
+      <td><span class="badge clause-type-badge type-${cl.type}">${cl.type}</span>${riskTag}</td>
+      <td><span class="badge category-badge">${cl.category}</span></td>
+      <td><span class="badge duty-badge duty-${cl.duty_party}">${cl.duty_party}</span></td>
+      <td class="fw-semibold">${title}</td>
+      <td class="clause-content">${content}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+</script>
+</body>
+</html>

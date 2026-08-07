@@ -1,0 +1,212 @@
+{
+  "departments": [
+    {
+      "code": "HQ100",
+      "name": "경영지원본부",
+      "children": [
+        {
+          "code": "HQ110",
+          "name": "총무팀",
+          "employees": [
+            {
+              "id": "E1001",
+              "name": "김민준",
+              "position": "팀장"
+            },
+            {
+              "id": "E1002",
+              "name": "이서연",
+              "position": "대리"
+            },
+            {
+              "id": "E1003",
+              "name": "박도윤",
+              "position": "사원"
+            }
+          ]
+        },
+        {
+          "code": "HQ120",
+          "name": "인사팀",
+          "employees": [
+            {
+              "id": "E1011",
+              "name": "최지우",
+              "position": "팀장"
+            },
+            {
+              "id": "E1012",
+              "name": "정하은",
+              "position": "과장"
+            },
+            {
+              "id": "E1013",
+              "name": "윤서준",
+              "position": "사원"
+            }
+          ]
+        },
+        {
+          "code": "HQ130",
+          "name": "재무팀",
+          "employees": [
+            {
+              "id": "E1021",
+              "name": "장현우",
+              "position": "팀장"
+            },
+            {
+              "id": "E1022",
+              "name": "한지민",
+              "position": "차장"
+            },
+            {
+              "id": "E1023",
+              "name": "오승준",
+              "position": "대리"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "SL200",
+      "name": "영업본부",
+      "children": [
+        {
+          "code": "SL210",
+          "name": "국내영업팀",
+          "employees": [
+            {
+              "id": "E2001",
+              "name": "임재현",
+              "position": "팀장"
+            },
+            {
+              "id": "E2002",
+              "name": "송예은",
+              "position": "과장"
+            },
+            {
+              "id": "E2003",
+              "name": "권도현",
+              "position": "대리"
+            },
+            {
+              "id": "E2004",
+              "name": "문채원",
+              "position": "사원"
+            }
+          ]
+        },
+        {
+          "code": "SL220",
+          "name": "해외영업팀",
+          "employees": [
+            {
+              "id": "E2011",
+              "name": "홍성민",
+              "position": "팀장"
+            },
+            {
+              "id": "E2012",
+              "name": "배수아",
+              "position": "과장"
+            },
+            {
+              "id": "E2013",
+              "name": "노준호",
+              "position": "사원"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "IT300",
+      "name": "IT본부",
+      "children": [
+        {
+          "code": "IT310",
+          "name": "개발팀",
+          "employees": [
+            {
+              "id": "E3001",
+              "name": "강태민",
+              "position": "팀장"
+            },
+            {
+              "id": "E3002",
+              "name": "신유진",
+              "position": "과장"
+            },
+            {
+              "id": "E3003",
+              "name": "조은우",
+              "position": "대리"
+            },
+            {
+              "id": "E3004",
+              "name": "백하람",
+              "position": "사원"
+            }
+          ]
+        },
+        {
+          "code": "IT320",
+          "name": "인프라팀",
+          "employees": [
+            {
+              "id": "E3011",
+              "name": "안정훈",
+              "position": "팀장"
+            },
+            {
+              "id": "E3012",
+              "name": "류지호",
+              "position": "대리"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "LG400",
+      "name": "법무본부",
+      "children": [
+        {
+          "code": "LG410",
+          "name": "법무팀",
+          "employees": [
+            {
+              "id": "E4001",
+              "name": "문소영",
+              "position": "팀장"
+            },
+            {
+              "id": "E4002",
+              "name": "구태양",
+              "position": "과장"
+            }
+          ]
+        },
+        {
+          "code": "LG420",
+          "name": "컴플라이언스팀",
+          "employees": [
+            {
+              "id": "E4011",
+              "name": "서지안",
+              "position": "팀장"
+            },
+            {
+              "id": "E4012",
+              "name": "탁민서",
+              "position": "대리"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
