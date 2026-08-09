@@ -109,10 +109,10 @@ table.contract-table thead th { vertical-align: middle; text-align: center; whit
               <th class="thead-basic">기안자</th>
               <th class="thead-basic">계약기간</th>
               <th class="thead-basic">계약금액</th>
-              <th class="thead-ai">조항수</th>
-              <th class="thead-ai">중요조항수</th>
-              <th class="thead-ai">의무조항수</th>
-              <th class="thead-ai">리스크조항수</th>
+              <th class="thead-ai">조항</th>
+              <th class="thead-ai">중요</th>
+              <th class="thead-ai">의무</th>
+              <th class="thead-ai">리스크</th>
             </tr>
           </thead>
           <tbody id="resultBody"></tbody>
@@ -212,7 +212,7 @@ function renderResults(results) {
     tr.innerHTML = `
       <td class="center-cell">${r.contract_type}</td>
       <td>
-        <div class="fw-semibold">${r.contract_name} ${r.language === 'en' ? '<span class="badge bg-info-subtle text-info-emphasis border" title="번역 가능">EN</span>' : ''}</div>
+        <div class="fw-semibold">${r.contract_name} ${r.language === 'en' ? '<span class="badge bg-info-subtle text-info-emphasis border" title="해외 계약 (영문)">EN</span>' : ''}</div>
         <div class="small text-muted">${r.partner} &nbsp; ${statusBadge(r.status)}</div>
       </td>
       <td class="center-cell">${r.dept_name}<div class="small text-muted">${r.division_name}</div></td>

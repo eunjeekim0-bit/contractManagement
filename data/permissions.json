@@ -1,0 +1,9 @@
+{
+  "roles": [
+    { "id": "admin", "label": "관리자", "pages": ["hub", "obligations", "dashboard", "access"] },
+    { "id": "viewer", "label": "조회권한", "pages": ["hub"] }
+  ],
+  "user_roles": [
+    { "user_id": "E4001", "roles": ["admin"] }
+  ]
+}

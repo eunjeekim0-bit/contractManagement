@@ -64,9 +64,6 @@ body { background: #f0f2f5; font-family: 'Segoe UI', sans-serif; }
           </div>
           <div class="d-flex flex-column align-items-end gap-1">
             <span class="badge status-badge" id="d-status"></span>
-            <button class="btn btn-sm btn-outline-primary" id="translateBtn" style="display:none" onclick="toggleTranslation()">
-              <i class="bi bi-translate me-1"></i><span id="translateBtnLabel">번역보기</span>
-            </button>
           </div>
         </div>
         <hr>
@@ -164,7 +161,6 @@ body { background: #f0f2f5; font-family: 'Segoe UI', sans-serif; }
 const CONTRACT_ID = {{ contract_id|tojson }};
 let contractData = null;
 let activeFilter = 'all';
-let showTranslation = false;
 
 document.addEventListener('DOMContentLoaded', async () => {
   const res = await fetch(`/api/contracts/${CONTRACT_ID}`);
@@ -199,23 +195,12 @@ function formatAmount(amount, currency) {
   return n + '원';
 }
 
-function toggleTranslation() {
-  showTranslation = !showTranslation;
-  document.getElementById('translateBtnLabel').textContent = showTranslation ? '원문보기' : '번역보기';
-  document.getElementById('translateBtn').classList.toggle('btn-outline-primary', !showTranslation);
-  document.getElementById('translateBtn').classList.toggle('btn-primary', showTranslation);
-  render();
-}
-
 function render() {
   const c = contractData;
   const ai = c.ai;
-  const translated = showTranslation && c.language === 'en';
-
-  document.getElementById('translateBtn').style.display = c.language === 'en' ? '' : 'none';
 
   document.getElementById('d-type').textContent = c.contract_type;
-  document.getElementById('d-name').textContent = translated ? (c.contract_name_ko || c.contract_name) : c.contract_name;
+  document.getElementById('d-name').textContent = c.contract_name;
   document.getElementById('d-status').textContent = c.status;
   document.getElementById('d-status').className = 'badge status-badge status-' + c.status;
   document.getElementById('d-dept').textContent = `${c.dept_name} (${c.division_name})`;
@@ -231,14 +216,13 @@ function render() {
   document.getElementById('s-risk').textContent = ai.risk_clause_count;
   document.getElementById('s-overall-risk').textContent = '종합 리스크: ' + ai.overall_risk;
   document.getElementById('s-overall-risk').className = 'badge badge-risk-' + ai.overall_risk;
-  document.getElementById('s-summary').textContent = translated ? (ai.summary_ko || ai.summary) : ai.summary;
+  document.getElementById('s-summary').textContent = ai.summary;
 
   renderClauses();
 }
 
 function renderClauses() {
   const ai = contractData.ai;
-  const translated = showTranslation && contractData.language === 'en';
   const clauses = activeFilter === 'all' ? ai.clauses : ai.clauses.filter(cl => cl.type === activeFilter);
   document.getElementById('clauseCount').textContent = clauses.length;
 
@@ -248,8 +232,8 @@ function renderClauses() {
     const tr = document.createElement('tr');
     tr.className = 'clause-row';
     const riskTag = cl.risk_level ? `<span class="badge bg-light text-dark border ms-1">${cl.risk_level}</span>` : '';
-    const title = translated ? (cl.title_ko || cl.title) : cl.title;
-    const content = translated ? (cl.content_ko || cl.content) : cl.content;
+    const title = cl.title;
+    const content = cl.content;
     tr.innerHTML = `
       <td class="text-muted">${cl.no}</td>
       <td><span class="badge clause-type-badge type-${cl.type}">${cl.type}</span>${riskTag}</td>

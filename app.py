@@ -16,6 +16,7 @@ NAV_PAGES = [
     {'key': 'obligations', 'label': '의무조항 관리', 'icon': 'bi-clipboard-check', 'url': '/obligations'},
     {'key': 'dashboard', 'label': 'Dashboard', 'icon': 'bi-speedometer2', 'url': '/dashboard'},
     {'key': 'agent', 'label': 'Q&A AI Agent', 'icon': 'bi-robot', 'url': AGENT_URL, 'external': True},
+    {'key': 'access', 'label': '권한 관리', 'icon': 'bi-shield-lock', 'url': '/access'},
 ]
 
 QUANT_CATEGORIES = ["지급", "추가 비용", "검수", "정보 제공", "안전관리", "비용 부담", "인력관리"]
@@ -45,6 +46,20 @@ def load_org():
 
 def load_obligations():
     return load_json('obligations.json')['obligations']
+
+
+def load_permissions():
+    path = os.path.join(DATA_DIR, 'permissions.json')
+    if not os.path.exists(path):
+        return {'roles': [], 'user_roles': []}
+    with open(path, 'r', encoding='utf-8') as f:
+        return json.load(f)
+
+
+def save_permissions(perms):
+    path = os.path.join(DATA_DIR, 'permissions.json')
+    with open(path, 'w', encoding='utf-8') as f:
+        json.dump(perms, f, ensure_ascii=False, indent=2)
 
 
 def save_obligations(obligations):
@@ -120,9 +135,116 @@ def dashboard_page():
     return render_template('dashboard.html', active_page='dashboard', status_options=STATUS_OPTIONS)
 
 
+@app.route('/access')
+def access_page():
+    # 권한 관리 페이지
+    return render_template('access.html', active_page='access')
+
+
 @app.route('/api/org', methods=['GET'])
 def api_org():
     return jsonify(load_org())
+
+
+@app.route('/api/permissions', methods=['GET'])
+def api_permissions():
+    perms = load_permissions()
+    # enrich user_roles with user name if available
+    users = {e['id']: e for d in load_org() for t in d.get('children', []) for e in t.get('employees', [])}
+    enriched = []
+    for ur in perms.get('user_roles', []):
+        u = users.get(ur.get('user_id')) or {}
+        enriched.append({'user_id': ur.get('user_id'), 'roles': ur.get('roles', []), 'name': u.get('name')})
+    return jsonify({'roles': perms.get('roles', []), 'user_roles': enriched})
+
+
+@app.route('/api/permissions/roles', methods=['POST'])
+def api_permissions_add_role():
+    body = request.json or {}
+    rid = body.get('id')
+    label = body.get('label') or rid
+    pages = body.get('pages', [])
+    if not rid:
+        return jsonify({'error': 'id required'}), 400
+    perms = load_permissions()
+    if any(r['id'] == rid for r in perms.get('roles', [])):
+        return jsonify({'error': 'exists'}), 400
+    perms.setdefault('roles', []).append({'id': rid, 'label': label, 'pages': pages})
+    save_permissions(perms)
+    return jsonify({'ok': True})
+
+
+@app.route('/api/permissions/roles/<role_id>', methods=['PUT', 'DELETE'])
+def api_permissions_update_role(role_id):
+    perms = load_permissions()
+    if request.method == 'DELETE':
+        perms['roles'] = [r for r in perms.get('roles', []) if r['id'] != role_id]
+        # remove role from users
+        for ur in perms.get('user_roles', []):
+            ur['roles'] = [x for x in ur.get('roles', []) if x != role_id]
+        save_permissions(perms)
+        return jsonify({'ok': True})
+    body = request.json or {}
+    pages = body.get('pages')
+    updated = False
+    for r in perms.get('roles', []):
+        if r['id'] == role_id:
+            if pages is not None:
+                r['pages'] = pages
+            updated = True
+    if not updated:
+        return jsonify({'error': 'not found'}), 404
+    save_permissions(perms)
+    return jsonify({'ok': True})
+
+
+def _all_employees():
+    deps = load_org()
+    for d in deps:
+        for t in d.get('children', []):
+            for e in t.get('employees', []):
+                yield {'id': e.get('id'), 'name': e.get('name'), 'position': e.get('position'), 'dept': t.get('name'), 'division': d.get('name')}
+
+
+@app.route('/api/users/search', methods=['GET'])
+def api_users_search():
+    q = (request.args.get('q') or '').strip().lower()
+    results = []
+    if q:
+        for e in _all_employees():
+            if q in e['id'].lower() or q in e['name'].lower():
+                results.append(e)
+    return jsonify({'count': len(results), 'results': results})
+
+
+@app.route('/api/users/<user_id>/roles', methods=['POST'])
+def api_assign_role(user_id):
+    body = request.json or {}
+    role = body.get('role')
+    if not role:
+        return jsonify({'error': 'role required'}), 400
+    perms = load_permissions()
+    # ensure role exists
+    if not any(r['id'] == role for r in perms.get('roles', [])):
+        return jsonify({'error': 'role not found'}), 404
+    ur = next((u for u in perms.get('user_roles', []) if u['user_id'] == user_id), None)
+    if ur is None:
+        perms.setdefault('user_roles', []).append({'user_id': user_id, 'roles': [role]})
+    else:
+        if role not in ur.get('roles', []):
+            ur['roles'].append(role)
+    save_permissions(perms)
+    return jsonify({'ok': True})
+
+
+@app.route('/api/users/<user_id>/roles/<role_id>', methods=['DELETE'])
+def api_remove_user_role(user_id, role_id):
+    perms = load_permissions()
+    for ur in perms.get('user_roles', []):
+        if ur.get('user_id') == user_id:
+            ur['roles'] = [r for r in ur.get('roles', []) if r != role_id]
+    save_permissions(perms)
+    return jsonify({'ok': True})
 
 
 @app.route('/api/contracts/search', methods=['GET'])
