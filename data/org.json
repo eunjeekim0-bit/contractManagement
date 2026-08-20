@@ -207,6 +207,23 @@
           ]
         }
       ]
+    },
+    {
+      "code": "BD100",
+      "name": "BD1실",
+      "children": [
+        {
+          "code": "BD1",
+          "name": "BD1팀",
+          "employees": [
+            {
+              "id": "E5001",
+              "name": "김채린",
+              "position": "매니저"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
