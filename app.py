@@ -10,9 +10,14 @@ DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')
 # Q&A AI Agent 링크 — 별도 서비스 주소가 정해지면 여기만 채우면 된다.
 AGENT_URL = ''
 
+# 계약서 원문 첨부파일 링크 — 파일을 직접 내려받지 않고 별도 문서관리 시스템으로 연결한다.
+# 계약 ID를 뒤에 붙여 접근하는 형태로 가정. 시스템 주소가 정해지면 여기만 채우면 된다.
+DOCUMENT_SYSTEM_URL = ''
+
 # 좌측 사이드바에 노출되는 페이지 목록 — 새 페이지 추가 시 여기에 항목을 더한다
 NAV_PAGES = [
     {'key': 'hub', 'label': '계약서 Hub', 'icon': 'bi-grid-3x3-gap', 'url': '/'},
+    {'key': 'hub_v2', 'label': '계약서 Hub v2', 'icon': 'bi-layout-split', 'url': '/hub-v2'},
     {'key': 'obligations', 'label': '의무조항 관리', 'icon': 'bi-clipboard-check', 'url': '/obligations'},
     {'key': 'dashboard', 'label': 'Dashboard', 'icon': 'bi-speedometer2', 'url': '/dashboard'},
     {'key': 'agent', 'label': 'Q&A AI Agent', 'icon': 'bi-robot', 'url': AGENT_URL, 'external': True},
@@ -28,7 +33,7 @@ OBLIGATIONS_PATH = os.path.join(os.path.dirname(__file__), 'data', 'obligations.
 
 @app.context_processor
 def inject_nav():
-    return {'nav_pages': NAV_PAGES}
+    return {'nav_pages': NAV_PAGES, 'document_system_url': DOCUMENT_SYSTEM_URL}
 
 
 def load_json(name):
@@ -115,6 +120,11 @@ def contract_summary(c):
 @app.route('/')
 def index():
     return render_template('index.html', active_page='hub')
+
+
+@app.route('/hub-v2')
+def hub_v2():
+    return render_template('hub_v2.html', active_page='hub_v2')
 
 
 @app.route('/contract/<contract_id>')

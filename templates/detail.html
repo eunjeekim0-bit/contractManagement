@@ -160,7 +160,9 @@ body { background: #f0f2f5; font-family: 'Segoe UI', sans-serif; }
 <script>
 const CONTRACT_ID = {{ contract_id|tojson }};
 let contractData = null;
-let activeFilter = 'all';
+const validTypes = ['all', '중요', '의무', '리스크', '일반'];
+const requestedType = new URLSearchParams(location.search).get('type');
+let activeFilter = validTypes.includes(requestedType) ? requestedType : 'all';
 
 document.addEventListener('DOMContentLoaded', async () => {
   const res = await fetch(`/api/contracts/${CONTRACT_ID}`);
@@ -172,6 +174,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   render();
   document.getElementById('loadingState').style.display = 'none';
   document.getElementById('app').style.display = '';
+
+  document.querySelectorAll('.filter-chip').forEach(chip => {
+    chip.classList.toggle('active', chip.dataset.type === activeFilter);
+  });
 
   document.querySelectorAll('.filter-chip').forEach(chip => {
     chip.addEventListener('click', () => {
