@@ -1,225 +1,1651 @@
 {
   "departments": [
     {
-      "code": "HQ100",
-      "name": "경영지원본부",
+      "code": "0",
+      "name": "SK바이오사이언스",
       "children": [
         {
-          "code": "HQ110",
-          "name": "총무팀",
+          "code": "5370",
+          "name": "대표이사 사장",
           "employees": [
             {
-              "id": "E1001",
-              "name": "김민준",
-              "position": "팀장"
-            },
-            {
-              "id": "E1002",
-              "name": "이서연",
-              "position": "대리"
-            },
-            {
-              "id": "E1003",
-              "name": "박도윤",
-              "position": "사원"
-            }
-          ]
-        },
-        {
-          "code": "HQ120",
-          "name": "인사팀",
-          "employees": [
-            {
-              "id": "E1011",
-              "name": "최지우",
-              "position": "팀장"
-            },
-            {
-              "id": "E1012",
-              "name": "정하은",
-              "position": "과장"
-            },
-            {
-              "id": "E1013",
-              "name": "윤서준",
-              "position": "사원"
-            }
-          ]
-        },
-        {
-          "code": "HQ130",
-          "name": "재무팀",
-          "employees": [
-            {
-              "id": "E1021",
-              "name": "장현우",
-              "position": "팀장"
-            },
-            {
-              "id": "E1022",
-              "name": "한지민",
-              "position": "차장"
-            },
-            {
-              "id": "E1023",
-              "name": "오승준",
-              "position": "대리"
+              "id": "E5370",
+              "name": "안재용",
+              "position": "CEO"
             }
           ]
         }
       ]
     },
     {
-      "code": "SL200",
-      "name": "영업본부",
+      "code": "4170",
+      "name": "이사회 사무국",
       "children": [
         {
-          "code": "SL210",
-          "name": "국내영업팀",
+          "code": "4170",
+          "name": "이사회 사무국",
           "employees": [
             {
-              "id": "E2001",
-              "name": "임재현",
-              "position": "팀장"
-            },
-            {
-              "id": "E2002",
-              "name": "송예은",
-              "position": "과장"
-            },
-            {
-              "id": "E2003",
-              "name": "권도현",
-              "position": "대리"
-            },
-            {
-              "id": "E2004",
-              "name": "문채원",
-              "position": "사원"
-            }
-          ]
-        },
-        {
-          "code": "SL220",
-          "name": "해외영업팀",
-          "employees": [
-            {
-              "id": "E2011",
-              "name": "홍성민",
-              "position": "팀장"
-            },
-            {
-              "id": "E2012",
-              "name": "배수아",
-              "position": "과장"
-            },
-            {
-              "id": "E2013",
-              "name": "노준호",
-              "position": "사원"
+              "id": "E4170",
+              "name": "김바른",
+              "position": "실장"
             }
           ]
         }
       ]
     },
     {
-      "code": "IT300",
-      "name": "IT본부",
+      "code": "0",
+      "name": "대표이사 사장",
       "children": [
         {
-          "code": "IT310",
-          "name": "개발팀",
+          "code": "1522",
+          "name": "IDT Biologika",
           "employees": [
             {
-              "id": "E3001",
-              "name": "강태민",
-              "position": "팀장"
-            },
-            {
-              "id": "E3002",
-              "name": "신유진",
-              "position": "과장"
-            },
-            {
-              "id": "E3003",
-              "name": "조은우",
-              "position": "대리"
-            },
-            {
-              "id": "E3004",
-              "name": "백하람",
-              "position": "사원"
+              "id": "E1522",
+              "name": "Sally Choe",
+              "position": "대표"
             }
           ]
         },
         {
-          "code": "IT320",
-          "name": "인프라팀",
+          "code": "9325",
+          "name": "FDA PLI TF",
           "employees": [
             {
-              "id": "E3011",
-              "name": "안정훈",
-              "position": "팀장"
-            },
+              "id": "E9325",
+              "name": "김현철",
+              "position": "TF장"
+            }
+          ]
+        },
+        {
+          "code": "9329",
+          "name": "PCV21 상업화 TF",
+          "employees": [
             {
-              "id": "E3012",
-              "name": "류지호",
-              "position": "대리"
+              "id": "E9329",
+              "name": "이상윤",
+              "position": "TF장"
+            }
+          ]
+        },
+        {
+          "code": "9319",
+          "name": "COO",
+          "employees": [
+            {
+              "id": "E9319",
+              "name": "박진선",
+              "position": "대표"
+            }
+          ]
+        },
+        {
+          "code": "5289",
+          "name": "경영지원본부",
+          "employees": [
+            {
+              "id": "E5289",
+              "name": "최재영",
+              "position": "본부장"
             }
           ]
         }
       ]
     },
     {
-      "code": "LG400",
-      "name": "법무본부",
+      "code": "9334",
+      "name": "공장 OT보안 TF",
       "children": [
         {
-          "code": "LG410",
-          "name": "법무팀",
+          "code": "9334",
+          "name": "공장 OT보안 TF",
           "employees": [
             {
-              "id": "E4001",
-              "name": "문소영",
-              "position": "팀장"
-            },
-            {
-              "id": "E4002",
-              "name": "구태양",
-              "position": "과장"
-            }
-          ]
-        },
-        {
-          "code": "LG420",
-          "name": "컴플라이언스팀",
-          "employees": [
-            {
-              "id": "E4011",
-              "name": "서지안",
-              "position": "팀장"
-            },
-            {
-              "id": "E4012",
-              "name": "탁민서",
-              "position": "대리"
+              "id": "E9334",
+              "name": "황재선",
+              "position": "실장"
             }
           ]
         }
       ]
     },
     {
-      "code": "BD100",
+      "code": "9307",
+      "name": "Global Program Management실",
+      "children": [
+        {
+          "code": "9307",
+          "name": "Global Program Management실",
+          "employees": [
+            {
+              "id": "E9307",
+              "name": "신지영",
+              "position": "실장"
+            }
+          ]
+        },
+        {
+          "code": "9316",
+          "name": "Global Program Management 1PL",
+          "employees": [
+            {
+              "id": "E9316",
+              "name": "박설희",
+              "position": "PL"
+            }
+          ]
+        },
+        {
+          "code": "9333",
+          "name": "Global Program Management 2PL",
+          "employees": [
+            {
+              "id": "E9333",
+              "name": "전예지",
+              "position": "PL"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "0",
+      "name": "COO",
+      "children": [
+        {
+          "code": "5625",
+          "name": "마케팅&사업개발본부",
+          "employees": [
+            {
+              "id": "E5625",
+              "name": "박진선",
+              "position": "본부장"
+            }
+          ]
+        },
+        {
+          "code": "5657",
+          "name": "Bio연구본부",
+          "employees": [
+            {
+              "id": "E5657",
+              "name": "이상윤",
+              "position": "본부장"
+            }
+          ]
+        },
+        {
+          "code": "5394",
+          "name": "개발본부",
+          "employees": [
+            {
+              "id": "E5394",
+              "name": "박진선",
+              "position": "본부장"
+            }
+          ]
+        },
+        {
+          "code": "4300",
+          "name": "L HOUSE 공장",
+          "employees": [
+            {
+              "id": "E4300",
+              "name": "이상윤",
+              "position": "본부장"
+            }
+          ]
+        },
+        {
+          "code": "4350",
+          "name": "Quality본부",
+          "employees": [
+            {
+              "id": "E4350",
+              "name": "김현철",
+              "position": "본부장"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5630",
       "name": "BD1실",
       "children": [
         {
-          "code": "BD1",
+          "code": "5630",
+          "name": "BD1실",
+          "employees": [
+            {
+              "id": "E5630",
+              "name": "윤현준",
+              "position": "실장"
+            }
+          ]
+        },
+        {
+          "code": "5635",
           "name": "BD1팀",
           "employees": [
             {
-              "id": "E5001",
-              "name": "김채린",
-              "position": "매니저"
+              "id": "E5635",
+              "name": "박윤주",
+              "position": "팀장"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5640",
+      "name": "BD2실",
+      "children": [
+        {
+          "code": "5640",
+          "name": "BD2실",
+          "employees": [
+            {
+              "id": "E5640",
+              "name": "김익중",
+              "position": "실장"
+            }
+          ]
+        },
+        {
+          "code": "5645",
+          "name": "BD2 1PL",
+          "employees": [
+            {
+              "id": "E5645",
+              "name": "양은선",
+              "position": "PL"
+            }
+          ]
+        },
+        {
+          "code": "9335",
+          "name": "BD2 2PL",
+          "employees": [
+            {
+              "id": "E9335",
+              "name": "염건선",
+              "position": "PL"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5650",
+      "name": "BD3실",
+      "children": [
+        {
+          "code": "5650",
+          "name": "BD3실",
+          "employees": [
+            {
+              "id": "E5650",
+              "name": "안익성",
+              "position": "실장"
+            }
+          ]
+        },
+        {
+          "code": "5655",
+          "name": "BD3 1팀",
+          "employees": [
+            {
+              "id": "E5655",
+              "name": "전창현",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "5656",
+          "name": "BD3 2팀",
+          "employees": [
+            {
+              "id": "E5656",
+              "name": "최진영",
+              "position": "팀장"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5353",
+      "name": "국내마케팅실",
+      "children": [
+        {
+          "code": "5353",
+          "name": "국내마케팅실",
+          "employees": [
+            {
+              "id": "E5353",
+              "name": "유수안",
+              "position": "실장"
+            }
+          ]
+        },
+        {
+          "code": "5283",
+          "name": "마케팅기획팀",
+          "employees": [
+            {
+              "id": "E5283",
+              "name": "채현주",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "5258",
+          "name": "공공사업팀",
+          "employees": [
+            {
+              "id": "E5258",
+              "name": "이원석",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "3583",
+          "name": "종합병원팀",
+          "employees": [
+            {
+              "id": "E3583",
+              "name": "김광모",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "5491",
+          "name": "수도권남부팀",
+          "employees": [
+            {
+              "id": "E5491",
+              "name": "이재성",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "5492",
+          "name": "수도권북부팀",
+          "employees": [
+            {
+              "id": "E5492",
+              "name": "이영환",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "5494",
+          "name": "영남팀",
+          "employees": [
+            {
+              "id": "E5494",
+              "name": "이현지",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "5495",
+          "name": "충청호남팀",
+          "employees": [
+            {
+              "id": "E5495",
+              "name": "김승길",
+              "position": "팀장"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "3639",
+      "name": "Bio1실",
+      "children": [
+        {
+          "code": "3639",
+          "name": "Bio1실",
+          "employees": [
+            {
+              "id": "E3639",
+              "name": "이건세",
+              "position": "실장"
+            }
+          ]
+        },
+        {
+          "code": "3650",
+          "name": "USP팀",
+          "employees": [
+            {
+              "id": "E3650",
+              "name": "오후근",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "3665",
+          "name": "DSP팀",
+          "employees": [
+            {
+              "id": "E3665",
+              "name": "김판겸",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "4371",
+          "name": "분석팀",
+          "employees": [
+            {
+              "id": "E4371",
+              "name": "김고운",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "9324",
+          "name": "Modality Development팀",
+          "employees": [
+            {
+              "id": "E9324",
+              "name": "전형진",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "3645",
+          "name": "Open Innovation팀",
+          "employees": [
+            {
+              "id": "E3645",
+              "name": "한영우",
+              "position": "팀장"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "4379",
+      "name": "Bio2실",
+      "children": [
+        {
+          "code": "4379",
+          "name": "Bio2실",
+          "employees": [
+            {
+              "id": "E4379",
+              "name": "신진환",
+              "position": "실장"
+            }
+          ]
+        },
+        {
+          "code": "4385",
+          "name": "CPS팀",
+          "employees": [
+            {
+              "id": "E4385",
+              "name": "김의민",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "4390",
+          "name": "Conjugation1팀",
+          "employees": [
+            {
+              "id": "E4390",
+              "name": "양선영",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "3653",
+          "name": "Conjugation2팀",
+          "employees": [
+            {
+              "id": "E3653",
+              "name": "하경호",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "3580",
+          "name": "Bioassay팀",
+          "employees": [
+            {
+              "id": "E3580",
+              "name": "백승범",
+              "position": "팀장"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "9326",
+      "name": "R&D기획운영실",
+      "children": [
+        {
+          "code": "9326",
+          "name": "R&D기획운영실",
+          "employees": [
+            {
+              "id": "E9326",
+              "name": "마상호",
+              "position": "실장"
+            }
+          ]
+        },
+        {
+          "code": "4132",
+          "name": "R&D기획팀",
+          "employees": [
+            {
+              "id": "E4132",
+              "name": "조희상",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "9309",
+          "name": "Bio규제관리팀",
+          "employees": [
+            {
+              "id": "E9309",
+              "name": "윤혁",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "4372",
+          "name": "NCS팀",
+          "employees": [
+            {
+              "id": "E4372",
+              "name": "안성원",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "4370",
+          "name": "GCLP팀",
+          "employees": [
+            {
+              "id": "E4370",
+              "name": "김학",
+              "position": "팀장"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5660",
+      "name": "Medical Affairs실",
+      "children": [
+        {
+          "code": "5660",
+          "name": "Medical Affairs실",
+          "employees": [
+            {
+              "id": "E5660",
+              "name": "김혜영",
+              "position": "실장"
+            }
+          ]
+        },
+        {
+          "code": "5662",
+          "name": "Medical Information팀",
+          "employees": [
+            {
+              "id": "E5662",
+              "name": "김혜영",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "5663",
+          "name": "Medical Affairs팀",
+          "employees": [
+            {
+              "id": "E5663",
+              "name": "오경민",
+              "position": "팀장"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "1146",
+      "name": "임상허가개발실",
+      "children": [
+        {
+          "code": "1146",
+          "name": "임상허가개발실",
+          "employees": [
+            {
+              "id": "E1146",
+              "name": "박진선",
+              "position": "실장"
+            }
+          ]
+        },
+        {
+          "code": "9327",
+          "name": "임상개발그룹",
+          "employees": [
+            {
+              "id": "E9327",
+              "name": "박호근",
+              "position": "그룹장"
+            }
+          ]
+        },
+        {
+          "code": "5572",
+          "name": "임상전략팀",
+          "employees": [
+            {
+              "id": "E5572",
+              "name": "박호근",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "5573",
+          "name": "임상운영팀",
+          "employees": [
+            {
+              "id": "E5573",
+              "name": "신종훈",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "5305",
+          "name": "Development QM팀",
+          "employees": [
+            {
+              "id": "E5305",
+              "name": "유재은",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "4386",
+          "name": "DM/STAT팀",
+          "employees": [
+            {
+              "id": "E4386",
+              "name": "한수연",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "4376",
+          "name": "PV팀",
+          "employees": [
+            {
+              "id": "E4376",
+              "name": "김지홍",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "9317",
+          "name": "RA그룹",
+          "employees": [
+            {
+              "id": "E9317",
+              "name": "박종국",
+              "position": "그룹장"
+            }
+          ]
+        },
+        {
+          "code": "5465",
+          "name": "RA1팀",
+          "employees": [
+            {
+              "id": "E5465",
+              "name": "정나리",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "5466",
+          "name": "RA2팀",
+          "employees": [
+            {
+              "id": "E5466",
+              "name": "홍승희",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "9328",
+          "name": "RA3팀",
+          "employees": [
+            {
+              "id": "E9328",
+              "name": "박종국",
+              "position": "팀장"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "0",
+      "name": "L HOUSE 공장",
+      "children": [
+        {
+          "code": "4305",
+          "name": "O/E팀",
+          "employees": [
+            {
+              "id": "E4305",
+              "name": "민병혁",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "4351",
+          "name": "Industrial Project팀",
+          "employees": [
+            {
+              "id": "E4351",
+              "name": "윤진희",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "4339",
+          "name": "GMP Execution System팀",
+          "employees": [
+            {
+              "id": "E4339",
+              "name": "이을형",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "9310",
+          "name": "Bio규제관리팀 (안동)",
+          "employees": [
+            {
+              "id": "E9310",
+              "name": "윤혁",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "9318",
+          "name": "GMP Infra그룹",
+          "employees": [
+            {
+              "id": "E9318",
+              "name": "주재권",
+              "position": "그룹장"
+            }
+          ]
+        },
+        {
+          "code": "9323",
+          "name": "Facility Engineering팀",
+          "employees": [
+            {
+              "id": "E9323",
+              "name": "신영성",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "9320",
+          "name": "UT설비팀",
+          "employees": [
+            {
+              "id": "E9320",
+              "name": "주재권",
+              "position": "팀장"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "1349",
+      "name": "원액생산실",
+      "children": [
+        {
+          "code": "1349",
+          "name": "원액생산실",
+          "employees": [
+            {
+              "id": "E1349",
+              "name": "조봉준",
+              "position": "실장"
+            }
+          ]
+        },
+        {
+          "code": "5284",
+          "name": "DS1팀",
+          "employees": [
+            {
+              "id": "E5284",
+              "name": "오두진",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "4310",
+          "name": "DS2팀",
+          "employees": [
+            {
+              "id": "E4310",
+              "name": "박민주",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "3636",
+          "name": "DS3팀",
+          "employees": [
+            {
+              "id": "E3636",
+              "name": "박준형",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "5006",
+          "name": "DS4팀",
+          "employees": [
+            {
+              "id": "E5006",
+              "name": "나동주",
+              "position": "팀장"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "4313",
+      "name": "완제생산실",
+      "children": [
+        {
+          "code": "4313",
+          "name": "완제생산실",
+          "employees": [
+            {
+              "id": "E4313",
+              "name": "진병관",
+              "position": "실장"
+            }
+          ]
+        },
+        {
+          "code": "5308",
+          "name": "DP1팀",
+          "employees": [
+            {
+              "id": "E5308",
+              "name": "김경태",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "4121",
+          "name": "DP2팀",
+          "employees": [
+            {
+              "id": "E4121",
+              "name": "이제헌",
+              "position": "팀장"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "4332",
+      "name": "운영지원실",
+      "children": [
+        {
+          "code": "4332",
+          "name": "운영지원실",
+          "employees": [
+            {
+              "id": "E4332",
+              "name": "배정진",
+              "position": "실장"
+            }
+          ]
+        },
+        {
+          "code": "4312",
+          "name": "생산기획팀",
+          "employees": [
+            {
+              "id": "E4312",
+              "name": "이풍태",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "5286",
+          "name": "원가회계팀",
+          "employees": [
+            {
+              "id": "E5286",
+              "name": "권석희",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "4333",
+          "name": "HR/GA팀",
+          "employees": [
+            {
+              "id": "E4333",
+              "name": "태락환",
+              "position": "팀장"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "4345",
+      "name": "SHE실 (안동)",
+      "children": [
+        {
+          "code": "4345",
+          "name": "SHE실 (안동)",
+          "employees": [
+            {
+              "id": "E4345",
+              "name": "김창신",
+              "position": "실장"
+            }
+          ]
+        },
+        {
+          "code": "4334",
+          "name": "SHE팀",
+          "employees": [
+            {
+              "id": "E4334",
+              "name": "이현의",
+              "position": "팀장"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "0",
+      "name": "Quality본부",
+      "children": [
+        {
+          "code": "9337",
+          "name": "QC Innovation TF",
+          "employees": [
+            {
+              "id": "E9337",
+              "name": "김희정",
+              "position": "TF장"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5297",
+      "name": "QA실",
+      "children": [
+        {
+          "code": "5297",
+          "name": "QA실",
+          "employees": [
+            {
+              "id": "E5297",
+              "name": "박재하",
+              "position": "실장"
+            }
+          ]
+        },
+        {
+          "code": "5488",
+          "name": "QA Operation팀",
+          "employees": [
+            {
+              "id": "E5488",
+              "name": "황진석",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "4357",
+          "name": "QA Validation팀",
+          "employees": [
+            {
+              "id": "E4357",
+              "name": "신현구",
+              "position": "팀장"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "4359",
+      "name": "QC실",
+      "children": [
+        {
+          "code": "4359",
+          "name": "QC실",
+          "employees": [
+            {
+              "id": "E4359",
+              "name": "김은정",
+              "position": "실장"
+            }
+          ]
+        },
+        {
+          "code": "5310",
+          "name": "QC System팀",
+          "employees": [
+            {
+              "id": "E5310",
+              "name": "김은정",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "5004",
+          "name": "QC Chem팀",
+          "employees": [
+            {
+              "id": "E5004",
+              "name": "김성진",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "4381",
+          "name": "QC Micro팀",
+          "employees": [
+            {
+              "id": "E4381",
+              "name": "황혁",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "5008",
+          "name": "QC Bio팀",
+          "employees": [
+            {
+              "id": "E5008",
+              "name": "정미나",
+              "position": "팀장"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "4382",
+      "name": "QE실",
+      "children": [
+        {
+          "code": "4382",
+          "name": "QE실",
+          "employees": [
+            {
+              "id": "E4382",
+              "name": "이범한",
+              "position": "실장"
+            }
+          ]
+        },
+        {
+          "code": "5487",
+          "name": "QE System팀",
+          "employees": [
+            {
+              "id": "E5487",
+              "name": "조재현",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "4352",
+          "name": "Quality Innovation팀",
+          "employees": [
+            {
+              "id": "E4352",
+              "name": "조재현",
+              "position": "팀장"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "7000",
+      "name": "SKBS USA",
+      "children": [
+        {
+          "code": "7000",
+          "name": "SKBS USA",
+          "employees": [
+            {
+              "id": "E7000",
+              "name": "배진우",
+              "position": "실장"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "0",
+      "name": "경영지원본부",
+      "children": [
+        {
+          "code": "4151",
+          "name": "IR팀",
+          "employees": [
+            {
+              "id": "E4151",
+              "name": "조훈",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "9339",
+          "name": "송도Infra그룹",
+          "employees": [
+            {
+              "id": "E9339",
+              "name": "김창신",
+              "position": "그룹장"
+            }
+          ]
+        },
+        {
+          "code": "1523",
+          "name": "Engineering 1PL",
+          "employees": [
+            {
+              "id": "E1523",
+              "name": "김용준",
+              "position": "PL"
+            }
+          ]
+        },
+        {
+          "code": "1524",
+          "name": "Engineering 2PL",
+          "employees": [
+            {
+              "id": "E1524",
+              "name": "김도영",
+              "position": "PL"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5413",
+      "name": "전략기획실",
+      "children": [
+        {
+          "code": "5413",
+          "name": "전략기획실",
+          "employees": [
+            {
+              "id": "E5413",
+              "name": "최재영",
+              "position": "실장"
+            }
+          ]
+        },
+        {
+          "code": "5377",
+          "name": "전략팀",
+          "employees": [
+            {
+              "id": "E5377",
+              "name": "이미혜",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "4377",
+          "name": "기획팀",
+          "employees": [
+            {
+              "id": "E4377",
+              "name": "김동현",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "5388",
+          "name": "ESG팀",
+          "employees": [
+            {
+              "id": "E5388",
+              "name": "김슬기",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "4200",
+          "name": "IMO TF",
+          "employees": [
+            {
+              "id": "E4200",
+              "name": "윤제임스",
+              "position": "팀장"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5416",
+      "name": "재무실",
+      "children": [
+        {
+          "code": "5416",
+          "name": "재무실",
+          "employees": [
+            {
+              "id": "E5416",
+              "name": "배진우",
+              "position": "실장"
+            }
+          ]
+        },
+        {
+          "code": "5421",
+          "name": "회계팀",
+          "employees": [
+            {
+              "id": "E5421",
+              "name": "김태희",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "4146",
+          "name": "비즈니스재무팀",
+          "employees": [
+            {
+              "id": "E4146",
+              "name": "송승재",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "4133",
+          "name": "금융팀",
+          "employees": [
+            {
+              "id": "E4133",
+              "name": "김종현",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "4143",
+          "name": "구매팀",
+          "employees": [
+            {
+              "id": "E4143",
+              "name": "배진우",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "9308",
+          "name": "S&OP TF",
+          "employees": [
+            {
+              "id": "E9308",
+              "name": "김태규",
+              "position": "팀장"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "4142",
+      "name": "대외협력홍보실",
+      "children": [
+        {
+          "code": "4142",
+          "name": "대외협력홍보실",
+          "employees": [
+            {
+              "id": "E4142",
+              "name": "김바른",
+              "position": "실장"
+            }
+          ]
+        },
+        {
+          "code": "4153",
+          "name": "홍보팀",
+          "employees": [
+            {
+              "id": "E4153",
+              "name": "진창현",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "4155",
+          "name": "대외협력팀",
+          "employees": [
+            {
+              "id": "E4155",
+              "name": "장일준",
+              "position": "팀장"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "4175",
+      "name": "기업문화실",
+      "children": [
+        {
+          "code": "4175",
+          "name": "기업문화실",
+          "employees": [
+            {
+              "id": "E4175",
+              "name": "안기채",
+              "position": "실장"
+            }
+          ]
+        },
+        {
+          "code": "4135",
+          "name": "People팀",
+          "employees": [
+            {
+              "id": "E4135",
+              "name": "김창호",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "4182",
+          "name": "CS팀",
+          "employees": [
+            {
+              "id": "E4182",
+              "name": "안세원",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "9322",
+          "name": "GWP TF",
+          "employees": [
+            {
+              "id": "E9322",
+              "name": "엄태영",
+              "position": "TF장"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "4138",
+      "name": "법무특허실",
+      "children": [
+        {
+          "code": "4138",
+          "name": "법무특허실",
+          "employees": [
+            {
+              "id": "E4138",
+              "name": "유지현",
+              "position": "실장"
+            }
+          ]
+        },
+        {
+          "code": "4148",
+          "name": "법무팀",
+          "employees": [
+            {
+              "id": "E4148",
+              "name": "김미란",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "4150",
+          "name": "특허팀",
+          "employees": [
+            {
+              "id": "E4150",
+              "name": "박은주",
+              "position": "팀장"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "4184",
+      "name": "AX추진실",
+      "children": [
+        {
+          "code": "4184",
+          "name": "AX추진실",
+          "employees": [
+            {
+              "id": "E4184",
+              "name": "황재선",
+              "position": "실장"
+            }
+          ]
+        },
+        {
+          "code": "4185",
+          "name": "AX기획팀",
+          "employees": [
+            {
+              "id": "E4185",
+              "name": "이용",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "4186",
+          "name": "AX개발운영팀",
+          "employees": [
+            {
+              "id": "E4186",
+              "name": "민수홍",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "4188",
+          "name": "정보보안팀",
+          "employees": [
+            {
+              "id": "E4188",
+              "name": "조관현",
+              "position": "팀장"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "5620",
+      "name": "SHE실",
+      "children": [
+        {
+          "code": "5620",
+          "name": "SHE실",
+          "employees": [
+            {
+              "id": "E5620",
+              "name": "김창신",
+              "position": "실장"
+            }
+          ]
+        },
+        {
+          "code": "5621",
+          "name": "SHE기획팀",
+          "employees": [
+            {
+              "id": "E5621",
+              "name": "안재홍",
+              "position": "팀장"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "9304",
+      "name": "CEO 직속",
+      "children": [
+        {
+          "code": "9304",
+          "name": "CEO 직속",
+          "employees": [
+            {
+              "id": "E9304",
+              "name": "이용",
+              "position": "실장"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "9330",
+      "name": "감사지원실",
+      "children": [
+        {
+          "code": "9330",
+          "name": "감사지원실",
+          "employees": [
+            {
+              "id": "E9330",
+              "name": "유지현",
+              "position": "실장"
+            }
+          ]
+        },
+        {
+          "code": "3584",
+          "name": "윤리경영팀",
+          "employees": [
+            {
+              "id": "E3584",
+              "name": "유병선",
+              "position": "팀장"
+            }
+          ]
+        },
+        {
+          "code": "9332",
+          "name": "내부회계팀",
+          "employees": [
+            {
+              "id": "E9332",
+              "name": "김태희",
+              "position": "팀장"
             }
           ]
         }

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for, Response
 import json, os
 from datetime import date, timedelta
 
@@ -6,6 +6,32 @@ app = Flask(__name__)
 app.json.sort_keys = False
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')
+
+# 데모 배포용 기본 인증 — 환경변수 DEMO_USER/DEMO_PASSWORD가 설정된 경우에만 활성화된다.
+DEMO_USER = os.environ.get('DEMO_USER')
+DEMO_PASSWORD = os.environ.get('DEMO_PASSWORD')
+
+
+@app.before_request
+def require_demo_auth():
+    if not DEMO_USER or not DEMO_PASSWORD:
+        return None
+    auth = request.authorization
+    if not auth or auth.username != DEMO_USER or auth.password != DEMO_PASSWORD:
+        return Response(
+            '인증이 필요합니다.', 401,
+            {'WWW-Authenticate': 'Basic realm="Contract Management Demo"'}
+        )
+    return None
+
+
+class ReadOnlyDemoError(Exception):
+    pass
+
+
+@app.errorhandler(ReadOnlyDemoError)
+def handle_read_only_demo_error(_e):
+    return jsonify({'error': '데모 환경에서는 저장 기능이 지원되지 않습니다.'}), 503
 
 # Q&A AI Agent 링크 — 별도 서비스 주소가 정해지면 여기만 채우면 된다.
 AGENT_URL = ''
@@ -16,8 +42,7 @@ DOCUMENT_SYSTEM_URL = ''
 
 # 좌측 사이드바에 노출되는 페이지 목록 — 새 페이지 추가 시 여기에 항목을 더한다
 NAV_PAGES = [
-    {'key': 'hub', 'label': '계약서 Hub', 'icon': 'bi-grid-3x3-gap', 'url': '/'},
-    {'key': 'hub_v2', 'label': '계약서 Hub v2', 'icon': 'bi-layout-split', 'url': '/hub-v2'},
+    {'key': 'hub_v2', 'label': '계약서 Hub', 'icon': 'bi-grid-3x3-gap', 'url': '/hub-v2'},
     {'key': 'obligations', 'label': '의무조항 관리', 'icon': 'bi-clipboard-check', 'url': '/obligations'},
     {'key': 'dashboard', 'label': 'Dashboard', 'icon': 'bi-speedometer2', 'url': '/dashboard'},
     {'key': 'agent', 'label': 'Q&A AI Agent', 'icon': 'bi-robot', 'url': AGENT_URL, 'external': True},
@@ -63,13 +88,19 @@ def load_permissions():
 
 def save_permissions(perms):
     path = os.path.join(DATA_DIR, 'permissions.json')
-    with open(path, 'w', encoding='utf-8') as f:
-        json.dump(perms, f, ensure_ascii=False, indent=2)
+    try:
+        with open(path, 'w', encoding='utf-8') as f:
+            json.dump(perms, f, ensure_ascii=False, indent=2)
+    except OSError:
+        raise ReadOnlyDemoError()
 
 
 def save_obligations(obligations):
-    with open(OBLIGATIONS_PATH, 'w', encoding='utf-8') as f:
-        json.dump({'obligations': obligations}, f, ensure_ascii=False, indent=2)
+    try:
+        with open(OBLIGATIONS_PATH, 'w', encoding='utf-8') as f:
+            json.dump({'obligations': obligations}, f, ensure_ascii=False, indent=2)
+    except OSError:
+        raise ReadOnlyDemoError()
 
 
 def obligation_summary(o):
@@ -119,7 +150,7 @@ def contract_summary(c):
 
 @app.route('/')
 def index():
-    return render_template('index.html', active_page='hub')
+    return redirect(url_for('hub_v2'))
 
 
 @app.route('/hub-v2')
@@ -342,17 +373,21 @@ def api_obligation_detail(obligation_id):
 @app.route('/api/obligations/<obligation_id>', methods=['PUT'])
 def api_obligation_update(obligation_id):
     body = request.json or {}
-    status = body.get('status')
-    note = body.get('note', '')
-
-    if status not in STATUS_OPTIONS:
-        return jsonify({'error': f'invalid status: {status}'}), 400
 
     obligations = load_obligations()
     for o in obligations:
         if o['id'] == obligation_id:
-            o['status'] = status
-            o['note'] = note
+            if 'status' in body:
+                status = body.get('status')
+                if status not in STATUS_OPTIONS:
+                    return jsonify({'error': f'invalid status: {status}'}), 400
+                o['status'] = status
+                o['note'] = body.get('note', '')
+            if 'assignee' in body:
+                assignee = (body.get('assignee') or '').strip()
+                if not assignee:
+                    return jsonify({'error': 'assignee is required'}), 400
+                o['assignee'] = assignee
             o['updated_at'] = date.today().isoformat()
             save_obligations(obligations)
             return jsonify(o)

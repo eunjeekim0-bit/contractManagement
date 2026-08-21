@@ -478,6 +478,1189 @@
           }
         ]
       }
+    },
+    {
+      "id": "CT2026025",
+      "contract_type": "보조금(Grant) 지원 계약",
+      "contract_name": "Grant Agreement (Attachment A, B)",
+      "language": "en",
+      "division_name": "BD1실",
+      "dept_code": "BD1",
+      "dept_name": "BD1팀",
+      "drafter_id": "E5001",
+      "drafter_name": "김채린",
+      "partner": "Foundation",
+      "start_date": "2026-08-21",
+      "end_date": "2099-12-31",
+      "amount": 0,
+      "currency": "USD",
+      "status": "계약중",
+      "file_name": "Grant Agreement (Foundation).pdf",
+      "ai": {
+        "clause_count": 25,
+        "important_clause_count": 6,
+        "obligation_clause_count": 14,
+        "risk_clause_count": 5,
+        "overall_risk": "높음",
+        "summary": "본 계약은 Foundation(지원기관)이 SK bioscience(You)에게 Grant Funds를 지원하고, SK bioscience는 프로젝트를 수행하여 Global Access를 달성하기 위한 보조금(Grant) 지원 계약입니다. AI 분석 결과 리스크 조항 5건이 확인되었으며, 주요 리스크는 Funded Developments 및 Essential Background Technology에 대한 영구적·취소불가·무상 Humanitarian License 부여와 Foundation의 광범위한 사유에 의한 일방적 계약 해지권에 집중되어 있습니다. SK bioscience는 프로젝트 산출물을 신속히 공개해야 하며, 계약 종료 후 6개월이 경과하면 별도 합의가 없는 한 모든 데이터를 일반 대중에 공개해야 하고, 분기별 미감사 및 연간 외부감사 재무제표를 작성 완료 후 30일 이내에 Foundation에 제출해야 합니다.",
+        "clauses": [
+          {
+            "no": 1,
+            "type": "의무",
+            "risk_level": null,
+            "category": "라이선스",
+            "duty_party": "을",
+            "title": "Humanitarian License 부여",
+            "content": "Funded Developments 및 Essential Background Technology에 대해 Foundation에 비독점적·영구적·취소불가·전 세계적·무상·재실시권 포함 Humanitarian License를 부여해야 한다."
+          },
+          {
+            "no": 2,
+            "type": "의무",
+            "risk_level": null,
+            "category": "라이선스",
+            "duty_party": "을",
+            "title": "Humanitarian License 존속 보장",
+            "content": "Humanitarian License가 Funded Developments 또는 Essential Background Technology의 양도·이전 이후에도 존속하도록 보장해야 한다."
+          },
+          {
+            "no": 3,
+            "type": "의무",
+            "risk_level": null,
+            "category": "라이선스",
+            "duty_party": "을",
+            "title": "Foundation 요청 시 신속 제공 의무",
+            "content": "Foundation의 요청 시 Funded Developments 및 Essential Background Technology를 Humanitarian License 목적으로만 신속히 제공해야 한다."
+          },
+          {
+            "no": 4,
+            "type": "의무",
+            "risk_level": null,
+            "category": "제3자 IP",
+            "duty_party": "을",
+            "title": "제3자 라이선스 협상 지원 의무",
+            "content": "Humanitarian License 행사에 제3자 IP가 필요한 경우, 해당 제3자 라이선서와 Foundation 간의 협상을 선의로 합리적으로 지원해야 한다."
+          },
+          {
+            "no": 5,
+            "type": "의무",
+            "risk_level": null,
+            "category": "제3자 IP",
+            "duty_party": "을",
+            "title": "in-license 제한 해소 노력 의무",
+            "content": "Global Access 달성을 저해할 수 있는 in-license 계약상 제한(예: 계약 기간 제한 등)을 해소하기 위해 commercially reasonable and good faith efforts를 사용해야 한다."
+          },
+          {
+            "no": 6,
+            "type": "의무",
+            "risk_level": null,
+            "category": "공개",
+            "duty_party": "을",
+            "title": "Funded Development 신속 공개 의무",
+            "content": "프로젝트에서 발생한 Funded Development를 신속히 공개해야 하며, 공개 지연은 특허출원을 위한 합리적 기간 내로만 허용된다. 단, Global Access를 촉진하는 방식으로 특허를 작성·출원·관리해야 한다."
+          },
+          {
+            "no": 7,
+            "type": "의무",
+            "risk_level": null,
+            "category": "공개",
+            "duty_party": "을",
+            "title": "Open Access 및 저작 표시 의무",
+            "content": "Peer-review 저널에 공개하는 경우 open access policy를 따라야 하며, Funded Development에 작성자·날짜·저작권 표시 등 적절한 attribution을 표기해야 한다."
+          },
+          {
+            "no": 8,
+            "type": "의무",
+            "risk_level": null,
+            "category": "데이터 보호",
+            "duty_party": "을",
+            "title": "계약 종료 후 데이터 공개 의무",
+            "content": "계약 종료 후 6개월이 경과하면 별도 합의가 없는 한 모든 데이터를 일반 대중에 공개해야 하며, 공개 방식 및 조건은 Foundation과 협의하여 결정한다."
+          },
+          {
+            "no": 9,
+            "type": "의무",
+            "risk_level": null,
+            "category": "회계장부",
+            "duty_party": "을",
+            "title": "타임시트 기록 의무",
+            "content": "Grant Funds로 보상받는 모든 인력의 근무시간을 60분 이하 단위로 타임시트에 task 설명과 함께 기록해야 하며, 이 기록은 progress report 및 final budget report와 일관되어야 한다."
+          },
+          {
+            "no": 10,
+            "type": "의무",
+            "risk_level": null,
+            "category": "정보 제공",
+            "duty_party": "을",
+            "title": "분기별 미감사 재무제표 제출 의무",
+            "content": "분기별 미감사(unaudited) 재무제표를 작성 완료 후 30일 이내에 Foundation에 제출해야 한다. 미제출 시 계약 위반으로 30일 Cure Period 후 계약이 해지될 수 있다."
+          },
+          {
+            "no": 11,
+            "type": "의무",
+            "risk_level": null,
+            "category": "정보 제공",
+            "duty_party": "을",
+            "title": "연간 외부감사 재무제표 제출 의무",
+            "content": "연간 외부감사(externally audited) 재무제표를 작성 완료 후 30일 이내에 Foundation에 제출해야 한다. 미제출 시 계약 위반으로 30일 Cure Period 후 계약이 해지될 수 있다."
+          },
+          {
+            "no": 12,
+            "type": "의무",
+            "risk_level": null,
+            "category": "정보 제공",
+            "duty_party": "을",
+            "title": "감사보고서 및 Remediation Plan 제출 의무",
+            "content": "내부감사 또는 제3자 감사 결과가 본 계약과 직접 관련되거나 Grant Funds 관련 내부통제·프로세스에 영향을 미치는 경우, Foundation의 요청 시 감사보고서(management letter 포함) 및 Remediation Plan을 제출해야 한다. Remediation Plan에는 (a) 결함 시정 조치 내용, (b) 시정 완료 목표 일정을 포함해야 한다."
+          },
+          {
+            "no": 13,
+            "type": "의무",
+            "risk_level": null,
+            "category": "홍보",
+            "duty_party": "을",
+            "title": "펀딩 사실 공개 시 사전 동의 의무",
+            "content": "Foundation과의 펀딩 사실, 펀딩 금액 및 프로젝트 설명을 공개하려면 Foundation의 사전 서면 동의(prior written consent)를 받아야 하며, Foundation의 base guideline을 따라야 한다."
+          },
+          {
+            "no": 14,
+            "type": "의무",
+            "risk_level": null,
+            "category": "원료관리",
+            "duty_party": "을",
+            "title": "Subgrantee 사용 금지",
+            "content": "Subgrantee는 사용 불가하며, subcontractor만 사용할 수 있다."
+          },
+          {
+            "no": 15,
+            "type": "중요",
+            "risk_level": null,
+            "category": "라이선스",
+            "duty_party": "양당사자",
+            "title": "Humanitarian License 부여",
+            "content": "SK 바이오사이언스는 Funded Developments 및 Essential Background Technology에 대해 Foundation에 비독점적·영구적·취소불가·전 세계적·무상의 재실시권 포함 Humanitarian License를 부여한다. 영구적·취소불가 라이선스로서 핵심 개발 성과물과 필수 배경기술에 대한 광범위한 권리가 무상으로 Foundation에 이전되며, 이는 SK 바이오사이언스의 IP 활용 권한에 직접적인 영향을 미친다."
+          },
+          {
+            "no": 16,
+            "type": "중요",
+            "risk_level": null,
+            "category": "지적재산권",
+            "duty_party": "양당사자",
+            "title": "Essential Background Technology 범위",
+            "content": "\"Essential Background Technology\"는 Funded Development에 포함되거나 Humanitarian License 행사에 합리적으로 필요한 SK 바이오사이언스의 소유·통제·개발 기술 또는 재실시권이 있는 in-license 기술을 포함한다. 라이선스 대상 범위가 사전 보유 기술(Background Technology)까지 확장될 수 있어, SK 바이오사이언스의 기존 IP 자산에 대한 권리 제한이 발생할 수 있다."
+          },
+          {
+            "no": 17,
+            "type": "중요",
+            "risk_level": null,
+            "category": "해지",
+            "duty_party": "양당사자",
+            "title": "Foundation의 일방적 계약 해지권",
+            "content": "Foundation은 (a) 프로젝트 진행 불만족, (b) 리더십 중대 변경, (c) 지배구조(control) 변경, (d) 세금 지위 변경, (e) 계약 위반 시 Grant Funds 지급 정지·수정 또는 계약을 해지할 수 있으며, 30일의 서면 통지 후 시정되지 않은 경우 해지가 가능하다. Foundation이 광범위한 사유로 일방적 해지권을 보유하고 있어, SK 바이오사이언스의 Grant Funds 수령 및 프로젝트 지속성에 직접적인 영향을 미친다."
+          },
+          {
+            "no": 18,
+            "type": "중요",
+            "risk_level": null,
+            "category": "데이터 보호",
+            "duty_party": "을",
+            "title": "데이터 공개 의무",
+            "content": "계약 종료 후 6개월이 경과하면 별도 합의가 없는 한 모든 데이터를 일반 대중에 공개해야 한다. 프로젝트 종료 후 데이터 공개가 의무화되어 있어, 데이터의 상업적 활용 또는 비밀유지 필요성이 있는 경우 사업에 영향을 줄 수 있다."
+          },
+          {
+            "no": 19,
+            "type": "중요",
+            "risk_level": null,
+            "category": "제3자 IP",
+            "duty_party": "을",
+            "title": "Third Party IP 관련 의무",
+            "content": "Humanitarian License 행사에 제3자 IP가 필요한 경우 SK 바이오사이언스는 협상 지원 및 in-license 계약상 제한 해소를 위한 commercially reasonable and good faith efforts 의무를 부담한다. 제3자 라이선서와의 in-license 계약 조건에 따라 SK 바이오사이언스가 추가적인 협상 의무 및 계약 연장 등의 부담을 질 수 있다."
+          },
+          {
+            "no": 20,
+            "type": "중요",
+            "risk_level": null,
+            "category": "홍보",
+            "duty_party": "양당사자",
+            "title": "Publicity 제한",
+            "content": "Foundation과의 펀딩 사실, 금액, 프로젝트 설명의 공개에는 Foundation의 사전 서면 동의 및 base guideline 준수가 요구된다. 외부 홍보 및 IR 활동 시 Foundation의 승인 절차가 선행되어야 하므로 커뮤니케이션 활동에 제약이 발생한다."
+          },
+          {
+            "no": 21,
+            "type": "리스크",
+            "risk_level": "높음",
+            "category": "지적재산권",
+            "duty_party": "을",
+            "title": "IP 권리 상실 / 광범위한 라이선스 범위",
+            "content": "Humanitarian License의 대상이 Funded Developments뿐 아니라 Essential Background Technology(기존 보유 기술 포함)까지 확장되며, 해당 라이선스는 영구적·취소불가·무상으로 설정된다. Essential Background Technology의 범위를 사전에 명확히 특정하고, in-license 계약상 재실시권 허용 여부 확인이 필요하다."
+          },
+          {
+            "no": 22,
+            "type": "리스크",
+            "risk_level": "높음",
+            "category": "해지",
+            "duty_party": "갑",
+            "title": "Foundation의 일방적 해지권",
+            "content": "Foundation은 프로젝트 진행 불만족, 리더십 변경, 지배구조 변경, 세금 지위 변경, 계약 위반 등 광범위한 사유로 Grant Funds 지급 정지·수정 또는 계약 해지 권한을 보유한다. 지배구조 변경(Change of Control), 리더십 변경 등 해지 트리거 사유 해당 여부를 사전에 모니터링해야 한다."
+          },
+          {
+            "no": 23,
+            "type": "리스크",
+            "risk_level": "중간",
+            "category": "데이터 보호",
+            "duty_party": "을",
+            "title": "데이터 강제 공개 의무",
+            "content": "계약 종료 후 6개월 경과 시 별도 합의가 없는 한 모든 데이터를 일반 대중에 공개해야 한다. 계약 종료 전 공개 제외 또는 유예가 필요한 데이터에 대해 Foundation과 사전 합의 여부를 확인해야 한다."
+          },
+          {
+            "no": 24,
+            "type": "리스크",
+            "risk_level": "중간",
+            "category": "제3자 IP",
+            "duty_party": "을",
+            "title": "Third Party IP 관련 의무 부담",
+            "content": "Humanitarian License 행사에 SK 바이오사이언스가 in-license한 제3자 IP가 필요한 경우, 해당 제3자와 Foundation 간 협상 지원 및 in-license 계약상 제한(계약 기간 등) 해소를 위한 commercially reasonable efforts 의무가 발생한다. 현재 보유 중인 in-license 계약의 재실시권 허용 범위 및 계약 기간 조건을 사전에 점검해야 한다."
+          },
+          {
+            "no": 25,
+            "type": "리스크",
+            "risk_level": "낮음",
+            "category": "감사",
+            "duty_party": "을",
+            "title": "Audit 결과 공개 및 Remediation 의무",
+            "content": "내부감사 또는 제3자 감사 결과가 본 계약 또는 Grant Funds 관련 내부통제에 영향을 미치는 경우, Foundation의 요청 시 감사보고서 및 Remediation Plan을 제출해야 한다. 감사 범위가 본 계약과 관련되는지 여부를 사전에 판단하고, Remediation Plan 작성 체계를 마련해야 한다."
+          }
+        ]
+      }
+    },
+    {
+      "id": "CT2026026",
+      "contract_type": "라이선스 / 기술이전 / 공급 Term Sheet (비구속적)",
+      "contract_name": "Non-binding Term Sheet",
+      "language": "en",
+      "division_name": "BD2실",
+      "dept_code": "9335",
+      "dept_name": "BD2 2PL",
+      "drafter_id": "E9335",
+      "drafter_name": "박수진",
+      "partner": "Jiangsu Recbio Technology Co., Ltd.",
+      "start_date": "2026-08-21",
+      "end_date": "2099-12-31",
+      "amount": 0,
+      "currency": "USD",
+      "status": "계약중",
+      "file_name": "Non-binding Term Sheet (Jiangsu Recbio Technology).pdf",
+      "ai": {
+        "clause_count": 34,
+        "important_clause_count": 9,
+        "obligation_clause_count": 18,
+        "risk_clause_count": 7,
+        "overall_risk": "높음",
+        "summary": "본 Term Sheet는 Jiangsu Recbio Technology Co., Ltd.(Recbio)와 SK bioscience(SK) 간 대상포진 백신(Licensed Product)의 한국 내 개발·제조·상업화 및 기술이전에 관한 Definitive Agreement 체결을 위한 비구속적 주요 조건 합의서입니다. AI 분석 결과 리스크 조항 7건이 확인되었으며, 주요 리스크는 SK 해지 사유 중 일부(clause ii~iv)에는 Upfront Fee 환급 규정이 없다는 점과 Recbio의 Phase 3 임상·중국 허가 일정 지연 시 기지급 비용 회수 조건이 불명확하다는 점에 집중되어 있습니다. SK는 Upfront Fee USD 1,000,000과 총 USD 5,500,000 규모의 개발 마일스톤을 지급하고 상업화 이후 10년간 순매출 구간별 로열티(5%~8%)를 지급하며, 본 Term Sheet 체결 후 90일 이내 Due Diligence를 완료해야 합니다. 준거법(싱가포르법) 및 분쟁해결(SIAC 중재) 조항은 비구속적 성격에도 불구하고 양 당사자를 구속합니다.",
+        "clauses": [
+          {
+            "no": 1,
+            "type": "의무",
+            "risk_level": null,
+            "category": "라이선스",
+            "duty_party": "을",
+            "title": "Licensed Territory 상업화 Best Efforts 의무",
+            "content": "Licensed Territory 내에서 Licensed Product의 상업화(마케팅, 판매, 유통 및 관련 활동)를 위해 best efforts를 다해야 한다."
+          },
+          {
+            "no": 2,
+            "type": "의무",
+            "risk_level": null,
+            "category": "라이선스",
+            "duty_party": "을",
+            "title": "기타 Licensed Activities Best Efforts 의무",
+            "content": "Licensed Territory 내에서 기타 Licensed Activities(개발, 허가 취득 등)를 위해 best efforts를 다해야 한다."
+          },
+          {
+            "no": 3,
+            "type": "의무",
+            "risk_level": null,
+            "category": "Non-compete",
+            "duty_party": "을",
+            "title": "경쟁 제품 개발·상업화 금지",
+            "content": "Definitive Agreement 존속 기간 동안, Recbio의 사전 서면 동의 없이, Licensed Territory 내에서 대상포진 예방을 목적으로 하고 Licensed Product와 동일한 항원 및/또는 아주반트를 포함하는 제품을 개발하거나 상업화하여서는 안 된다."
+          },
+          {
+            "no": 4,
+            "type": "의무",
+            "risk_level": null,
+            "category": "기술이전",
+            "duty_party": "갑",
+            "title": "Licensed Technology 이전 의무",
+            "content": "SK가 Licensed Product 및 Antigen을 개발·제조할 수 있도록 필요한 Licensed Technology(분석·시험 방법 포함)를 Definitive Agreement에서 합의할 기술이전 계획에 따라 SK에 이전해야 한다."
+          },
+          {
+            "no": 5,
+            "type": "의무",
+            "risk_level": null,
+            "category": "생산 및 공급",
+            "duty_party": "갑",
+            "title": "개발·규제 지원용 무상 공급 의무",
+            "content": "개발 활동 및 규제 신청을 지원하기 위해 양 당사자가 서면으로 합의한 수량의 Licensed Product(Bulk Licensed Product 포함), Antigen 및 Adjuvant를 SK에 무상으로 공급해야 한다."
+          },
+          {
+            "no": 6,
+            "type": "의무",
+            "risk_level": null,
+            "category": "원료 공급",
+            "duty_party": "갑",
+            "title": "Antigen·Adjuvant 독점 공급 의무",
+            "content": "SK의 수요를 충족하기에 충분한 수량의 Antigen 및 Adjuvant를 Licensed Territory 내 Licensed Product 제조 및 상업화를 위해 독점적으로 SK에 공급해야 하며(수출 허가 포함), 공급 가격은 양 당사자가 서면으로 합의하여 결정한다."
+          },
+          {
+            "no": 7,
+            "type": "의무",
+            "risk_level": null,
+            "category": "정보 제공",
+            "duty_party": "갑",
+            "title": "Recbio Documentation 제공 의무",
+            "content": "영문으로 된 완전한 규제 서류(regulatory dossier) 및 그 업데이트본, 전임상·임상 데이터, CMC 데이터(감소 용량 투여 임상 포함)를 포함한 Recbio Documentation을 SK에 제공해야 하며, 해당 서류는 SK가 Licensed Territory 내에서 Regulatory Approval을 신청·취득·유지하기에 충분하고 적합해야 한다. 미충족 시 SK의 계약 해지권이 발생한다."
+          },
+          {
+            "no": 8,
+            "type": "의무",
+            "risk_level": null,
+            "category": "지급",
+            "duty_party": "을",
+            "title": "Upfront Fee 지급 의무",
+            "content": "Definitive Agreement 서명 시 Upfront Fee USD 1,000,000을 Recbio에 지급해야 한다."
+          },
+          {
+            "no": 9,
+            "type": "의무",
+            "risk_level": null,
+            "category": "지급",
+            "duty_party": "을",
+            "title": "개발 마일스톤 지급 의무",
+            "content": "각 개발 마일스톤 이벤트 달성 시, Exhibit A에 규정된 마일스톤 금액(총 USD 5,500,000)을 Recbio에 지급해야 한다."
+          },
+          {
+            "no": 10,
+            "type": "의무",
+            "risk_level": null,
+            "category": "비용지급",
+            "duty_party": "을",
+            "title": "직접 제조분 로열티 지급 의무",
+            "content": "Licensed Territory 내 SK가 직접 완전 제조한 Licensed Product의 연간 순매출에 대해 10년간 구간별 로열티(USD 5백만 이하: 5%, USD 5백만 초과~USD 1천만 미만: 7%, USD 1천만 초과: 8%)를 Recbio에 지급해야 한다."
+          },
+          {
+            "no": 11,
+            "type": "의무",
+            "risk_level": null,
+            "category": "비용지급",
+            "duty_party": "을",
+            "title": "Bulk 사용분 민간부문 로열티 지급 의무",
+            "content": "Recbio가 공급한 Bulk Licensed Product를 사용하여 SK가 제조한 Licensed Product의 민간 부문(private sector) 연간 순매출에 대해 10년간 구간별 로열티(USD 5백만 이하: 5%, USD 5백만 초과~USD 1천만 미만: 7%, USD 1천만 초과: 8%)를 Recbio에 지급해야 한다."
+          },
+          {
+            "no": 12,
+            "type": "의무",
+            "risk_level": null,
+            "category": "Governance",
+            "duty_party": "양당사자",
+            "title": "Joint Project Team 구성 의무",
+            "content": "Definitive Agreement 체결 직후 각 당사자에서 동일한 수의 인원으로 구성된 Joint Project Team(JPT)을 구성하여 Licensed Activities를 감독해야 한다."
+          },
+          {
+            "no": 13,
+            "type": "의무",
+            "risk_level": null,
+            "category": "기밀정보유지",
+            "duty_party": "양당사자",
+            "title": "Term Sheet 존재 및 내용 기밀유지 의무",
+            "content": "본 Term Sheet의 존재 및 내용은 기밀로 유지해야 하며, 2024년 2월 27일 체결된 NDA에 따라 관리되어야 한다."
+          },
+          {
+            "no": 14,
+            "type": "의무",
+            "risk_level": null,
+            "category": "기밀정보유지",
+            "duty_party": "양당사자",
+            "title": "Due Diligence 취득정보 기밀유지 의무",
+            "content": "Due Diligence 과정에서 취득한 모든 정보는 2024년 2월 27일 체결된 NDA에 따라 기밀로 유지해야 한다."
+          },
+          {
+            "no": 15,
+            "type": "의무",
+            "risk_level": null,
+            "category": "감사",
+            "duty_party": "을",
+            "title": "On-site Inspection 권한 및 Recbio 협조 의무",
+            "content": "Term Sheet 체결일로부터 60일 이내에 Recbio의 제조 시설 및 품질관리 실험실에 대한 On-site Inspection(관련 문서 검토, 인원 인터뷰, 시설·장비 점검, 현장 작업 관찰 포함)을 수행할 수 있으며, Recbio는 이에 합리적인 접근 및 지원을 제공해야 한다."
+          },
+          {
+            "no": 16,
+            "type": "의무",
+            "risk_level": null,
+            "category": "Due Diligence",
+            "duty_party": "양당사자",
+            "title": "Due Diligence 90일 이내 완료 의무",
+            "content": "Term Sheet 체결 후 Definitive Agreement 체결 전까지 Due Diligence(현장 및 온라인)를 상업적으로 합리적인 노력을 다하여 Term Sheet 체결일로부터 90일 이내에 완료해야 한다."
+          },
+          {
+            "no": 17,
+            "type": "의무",
+            "risk_level": null,
+            "category": "기술이전",
+            "duty_party": "갑",
+            "title": "요청 자료 10영업일 이내 제공 의무",
+            "content": "Term Sheet 체결일로부터 10 영업일 이내에 SK가 합리적으로 요청하는 모든 문서·데이터·정보(기술 사양(CMC 포함), 전임상·임상 데이터, IP 현황 및 FTO 분석, 규제 컴플라이언스 및 GLP/GCP/GMP 준수 현황 포함)에 대한 접근을 영문으로 SK에 제공해야 한다."
+          },
+          {
+            "no": 18,
+            "type": "의무",
+            "risk_level": null,
+            "category": "해지",
+            "duty_party": "갑",
+            "title": "Upfront Fee 50% 환급 의무",
+            "content": "SK가 Termination 조항의 clause (i)에 따라 Definitive Agreement 전체를 해지하는 경우, Recbio는 Upfront Fee USD 1,000,000의 50%인 USD 500,000을 SK에 환급해야 한다."
+          },
+          {
+            "no": 19,
+            "type": "중요",
+            "risk_level": null,
+            "category": "라이선스",
+            "duty_party": "양당사자",
+            "title": "라이선스 범위",
+            "content": "Recbio는 SK에게 Licensed Territory(대한민국) 내에서 Licensed Technology를 활용하여 Licensed Product를 개발·제조·상업화할 수 있는 독점적·재실시 가능 라이선스를 부여한다. SK는 Antigen 직접 제조(upstream 포함) 권한을 보유하며, 추후 협의를 통해 Territory 확장이 가능하다. 본 계약의 핵심 목적이자 SK의 사업 수행 근거가 되는 권리의 범위와 조건을 규정한다."
+          },
+          {
+            "no": 20,
+            "type": "중요",
+            "risk_level": null,
+            "category": "비용지급",
+            "duty_party": "양당사자",
+            "title": "지급 조건(Upfront, Milestone, Royalty)",
+            "content": "Upfront Fee USD 1,000,000, 개발 마일스톤 총 USD 5,500,000(6개 이벤트), 연간 순매출 기준 로열티 5%~8%(10년간)로 구성된다. Recbio 공급 Bulk 사용 시 공공 부문 USD 5.0/dz, 민간 부문 USD 10.0/dz의 공급가 및 민간 부문에 한해 로열티가 추가로 부과된다. SK의 총 재무적 부담 규모 및 구조를 결정하는 핵심 경제 조건이다."
+          },
+          {
+            "no": 21,
+            "type": "중요",
+            "risk_level": null,
+            "category": "비용지급",
+            "duty_party": "양당사자",
+            "title": "Upfront Fee 환급 조건",
+            "content": "SK가 Termination 조항 clause (i)(Recbio의 Phase 3 임상 미완료 또는 중국 허가 미취득)에 따라 Definitive Agreement 전체를 해지하는 경우, Recbio는 Upfront Fee의 50%(USD 500,000)를 환급해야 한다. SK의 해지 사유 중 일부에 한해서만 50% 환급이 명시되어 있어, 다른 해지 사유에서는 환급 여부가 불명확하여 재무적 Risk와 직결된다."
+          },
+          {
+            "no": 22,
+            "type": "중요",
+            "risk_level": null,
+            "category": "해지",
+            "duty_party": "을",
+            "title": "SK의 해지권",
+            "content": "SK는 다음의 경우 계약을 해지할 수 있다: (i) Recbio가 2026년 말까지 Phase 3 임상 완료 실패 또는 2027년 말까지 중국 내 허가 미취득, (ii) Recbio Documentation이 규제 당국으로부터 부적합 판정, (iii) SK의 합리적 판단에 따라 상업적 비타당성 확인, (iv) 안전성 우려(심각한 이상반응 포함) 발생. SK가 사업 중단 및 손실 최소화를 위해 계약을 종료할 수 있는 조건을 규정하고 있어 계약 지속 여부와 직결된다."
+          },
+          {
+            "no": 23,
+            "type": "중요",
+            "risk_level": null,
+            "category": "해지",
+            "duty_party": "양당사자",
+            "title": "Recbio의 해지권",
+            "content": "Recbio는 SK의 귀책으로 Licensed Territory 내 Regulatory Approval을 Definitive Agreement에서 지정할 기한까지 취득하지 못한 경우 계약을 해지할 수 있다. SK의 허가 취득 의무 이행 여부에 따라 계약이 해지될 수 있으며, \"solely attributable to SK\" 기준의 해석이 분쟁 요인이 될 수 있다."
+          },
+          {
+            "no": 24,
+            "type": "중요",
+            "risk_level": null,
+            "category": "Non-compete",
+            "duty_party": "을",
+            "title": "Non-compete",
+            "content": "Definitive Agreement 존속 기간 동안 SK는 Recbio의 사전 서면 동의 없이 대상포진 예방을 목적으로 하고 Licensed Product와 동일한 항원 및/또는 아주반트를 포함하는 제품을 Licensed Territory 내에서 개발·상업화할 수 없다. SK의 유사 제품 개발 및 상업화 활동을 제한하는 조건으로, 사업 전략에 영향을 미칠 수 있다."
+          },
+          {
+            "no": 25,
+            "type": "중요",
+            "risk_level": null,
+            "category": "면책",
+            "duty_party": "양당사자",
+            "title": "IP 보증 및 면책",
+            "content": "Recbio는 Licensed Technology가 제3자의 IP를 침해하지 않음을 보증하며, Licensed Territory 내 Licensed Technology 침해로 인한 제3자 클레임에 대해 SK를 면책해야 한다. SK의 Third Party IP 관련 책임을 Recbio가 부담하는 조건으로, SK의 사업 리스크를 일정 수준 완화하는 핵심 보호 조항이다."
+          },
+          {
+            "no": 26,
+            "type": "중요",
+            "risk_level": null,
+            "category": "분쟁해결",
+            "duty_party": "양당사자",
+            "title": "준거법 및 분쟁해결",
+            "content": "본 Term Sheet는 싱가포르 법률에 의해 규율되며, 분쟁은 SIAC 중재(싱가포르, 영어)로 최종 해결하고 중재 판정은 최종적이고 구속력이 있다. 본 조항은 Term Sheet의 비구속적 성격에도 불구하고 양 당사자를 구속하며, Term Sheet 단계에서도 구속력이 인정되는 유일한 조항으로 향후 분쟁 해결의 기준이 된다."
+          },
+          {
+            "no": 27,
+            "type": "중요",
+            "risk_level": null,
+            "category": "성과 및 보고",
+            "duty_party": "양당사자",
+            "title": "Recbio Documentation 충분성 의무",
+            "content": "Recbio가 제공하는 규제 서류는 SK가 Licensed Territory에서 Regulatory Approval을 신청·취득·유지하기에 충분하고 적합해야 하며, 이에 미달할 경우 SK의 해지권이 발생한다. 허가 취득의 선행 조건이 되는 문서의 충분성이 계약 유지 여부에 직접 영향을 미친다."
+          },
+          {
+            "no": 28,
+            "type": "리스크",
+            "risk_level": "높음",
+            "category": "비용지급",
+            "duty_party": "을",
+            "title": "Upfront Fee 환급 제한",
+            "content": "Recbio의 해지 사유(clause i) 외 다른 SK의 해지 사유(clause ii~iv)에 따라 Definitive Agreement를 해지하는 경우에는 Upfront Fee 환급 규정이 없어, SK가 USD 1,000,000 전액을 회수하지 못할 리스크가 있다. Definitive Agreement 협상 시 모든 SK 해지 사유에 대한 환급 조건 명확화가 필요하다."
+          },
+          {
+            "no": 29,
+            "type": "리스크",
+            "risk_level": "높음",
+            "category": "해지",
+            "duty_party": "을",
+            "title": "Recbio Phase 3 임상 및 허가 일정 리스크",
+            "content": "Recbio가 2026년 말까지 Phase 3 임상을 완료하지 못하거나 2027년 말까지 중국 내 허가를 취득하지 못할 경우, SK는 해지권을 행사할 수 있으나 이미 지급한 Upfront Fee 및 마일스톤의 회수 조건이 명확하지 않다. Definitive Agreement에서 해당 일정 지연 시 기지급 마일스톤 환급 조건 명확화가 필요하다."
+          },
+          {
+            "no": 30,
+            "type": "리스크",
+            "risk_level": "중간",
+            "category": "Non-compete",
+            "duty_party": "을",
+            "title": "Non-compete 범위 리스크",
+            "content": "Definitive Agreement 존속 기간 전체에 걸쳐 SK는 동일 항원 및/또는 아주반트를 포함하는 대상포진 예방 제품을 Licensed Territory 내에서 개발·상업화할 수 없다. 계약 기간 미확정 상태에서 장기 제한 가능성이 존재하여, Definitive Agreement 협상 시 계약 기간 및 Non-compete 범위·예외 조건 명확화가 필요하다."
+          },
+          {
+            "no": 31,
+            "type": "리스크",
+            "risk_level": "중간",
+            "category": "해지",
+            "duty_party": "을",
+            "title": "Regulatory Approval 미취득에 따른 Recbio 해지권",
+            "content": "Definitive Agreement에서 지정할 기한 내 SK 귀책으로 Regulatory Approval을 취득하지 못할 경우 Recbio가 해지권을 행사할 수 있으며, \"solely attributable to SK\" 기준의 해석이 불명확하여 분쟁 가능성이 있다. Definitive Agreement에서 허가 취득 기한 및 귀책 판단 기준을 명확히 규정할 필요가 있다."
+          },
+          {
+            "no": 32,
+            "type": "리스크",
+            "risk_level": "중간",
+            "category": "기술이전",
+            "duty_party": "을",
+            "title": "Licensed Technology 및 Recbio Documentation 충분성 불확실성",
+            "content": "Recbio가 제공한 기술 및 서류가 규제 당국에 의해 Regulatory Approval 취득·유지에 부족하다고 판단될 경우 SK는 해지권을 행사할 수 있으나, 이미 투입된 개발 비용의 회수 방안이 명시되지 않았다. Definitive Agreement에서 Recbio Documentation 부적합 시 기지급 비용 환급 또는 보상 조건 협의가 필요하다."
+          },
+          {
+            "no": 33,
+            "type": "리스크",
+            "risk_level": "중간",
+            "category": "비구속성",
+            "duty_party": "을",
+            "title": "비구속적 Term Sheet에 따른 거래 불성립 리스크",
+            "content": "본 Term Sheet는 비구속적이며, 어느 당사자도 어떤 이유로든 Proposed Transaction을 진행하지 않을 수 있고 이로 인해 상대방에 대한 법적 책임을 부담하지 않는다. Definitive Agreement 미체결 시 본 Term Sheet의 합의 내용은 효력이 없으므로, Due Diligence 결과를 신속히 확인하고 Definitive Agreement 체결 일정을 구체화할 필요가 있다."
+          },
+          {
+            "no": 34,
+            "type": "리스크",
+            "risk_level": "낮음",
+            "category": "감사",
+            "duty_party": "을",
+            "title": "Third Party Audit 미정",
+            "content": "Term Sheet 내 \"Third Party Audit\" 항목이 내용 없이 공란으로 남아 있어, 해당 Audit의 주체·대상·범위·결과 활용 방법이 불명확하다. Definitive Agreement 또는 Due Diligence 절차 협의 시 Third Party Audit의 구체적 조건 확인 및 합의가 필요하다."
+          }
+        ]
+      }
+    },
+    {
+      "id": "CT2026027",
+      "contract_type": "자문 계약",
+      "contract_name": "자문 계약서",
+      "language": "ko",
+      "division_name": "R&D기획운영실",
+      "dept_code": "4132",
+      "dept_name": "R&D기획팀",
+      "drafter_id": "E4132",
+      "drafter_name": "조영현",
+      "partner": "주지영",
+      "start_date": "2026-04-16",
+      "end_date": "2026-06-11",
+      "amount": 10500000,
+      "currency": "KRW",
+      "status": "만료",
+      "file_name": "자문 계약서(주지영).pdf",
+      "ai": {
+        "clause_count": 24,
+        "important_clause_count": 6,
+        "obligation_clause_count": 14,
+        "risk_clause_count": 4,
+        "overall_risk": "중간",
+        "summary": "본 계약은 SK바이오사이언스가 연구소 QA 시스템 분석에 관한 자문 서비스를 자문인 주지영으로부터 제공받기 위해 체결한 자문 계약서입니다. 자문인은 QA 시스템 점검·분석, PCV 과제 관련 문서 GAP Analysis, BLA 신청 후 업무 방향성 제안을 수행하며 7주 차에 결과 보고서를 제출하고 8주 차에 공유합니다. AI 분석 결과 리스크 조항 4건이 확인되었으며, 주요 리스크는 SK바이오사이언스의 1주일 전 통지만으로 가능한 임의 해지권과 계약 종료 후 5년간 존속하는 비밀유지 의무에 집중되어 있습니다. 자문료는 총 10,500,000원(세전)이며 자문 결과물의 소유권 및 지적재산권은 전부 SK바이오사이언스에 귀속됩니다.",
+        "clauses": [
+          {
+            "no": 1,
+            "type": "의무",
+            "risk_level": null,
+            "category": "정보 제공",
+            "duty_party": "을",
+            "title": "자문 수행 관련 사전 정보 제공 의무",
+            "content": "자문인이 효율적으로 자문을 수행할 수 있도록 자문 목적 및 내용, 기타 자문에 필요한 구체적인 정보를 사전에 제공하여야 한다."
+          },
+          {
+            "no": 2,
+            "type": "의무",
+            "risk_level": null,
+            "category": "정보 제공",
+            "duty_party": "갑",
+            "title": "자문 수행 및 결과 보고서 제출 의무",
+            "content": "의뢰받은 자문 목적에 부합하는 자문을 진행하여야 하고, 사전에 관련 정보를 수집하는 등 효율적인 자문이 될 수 있도록 노력해야 한다. 7주 차에 자문 결과 보고서를 제출하고 8주 차에 공유하여야 한다. 미이행 시 계약 해지(제9조 제1항) 사유가 된다."
+          },
+          {
+            "no": 3,
+            "type": "의무",
+            "risk_level": null,
+            "category": "준법",
+            "duty_party": "갑",
+            "title": "공무원 행동강령상 사전 신고 의무",
+            "content": "자문인이 공무원 신분인 경우, 「공무원 행동강령」 제15조에 따라 본 계약 체결 전 \"자문 요청자, 사유, 장소, 일시, 대가\"를 소속 기관장에게 신고하여야 한다. 「부정청탁 및 금품등 수수의 금지에 관한 법률」 제2조 제2항의 \"공무원등\"에 해당하는 경우도 동일하게 적용된다."
+          },
+          {
+            "no": 4,
+            "type": "의무",
+            "risk_level": null,
+            "category": "지급",
+            "duty_party": "을",
+            "title": "자문료 지급 의무",
+            "content": "자문료(총 10,500,000원, 원천징수 세액 공제 후)를 자문 수행 완료 후 1개월 이내에 자문인 본인 명의 계좌(우리은행, 계좌번호: 1002-648-200711, 예금주: 주지영)로 송금하여야 한다. 식대, 교통비, 숙박비 등 기타 필요비용은 자문료에 포함되지 않는다."
+          },
+          {
+            "no": 5,
+            "type": "의무",
+            "risk_level": null,
+            "category": "Non-compete",
+            "duty_party": "갑",
+            "title": "경쟁 자문 수행 금지",
+            "content": "계약 기간 중 SK바이오사이언스의 사전 서면 승인 없이 동일한 목적이나 내용의 자문을 타인을 위하여 수행하여서는 안 된다. 위반 시 계약 해지(제9조 제1항) 사유가 된다."
+          },
+          {
+            "no": 6,
+            "type": "의무",
+            "risk_level": null,
+            "category": "정보 제공",
+            "duty_party": "갑",
+            "title": "전문 의견서 제공 의무",
+            "content": "양 당사자 간 합의한 경우 자문 내용에 대한 전문적인 의견서를 SK바이오사이언스에게 제공하여야 하며, SK바이오사이언스가 요청한 경우 해당 의견서 관련 자료를 함께 제공해야 한다."
+          },
+          {
+            "no": 7,
+            "type": "의무",
+            "risk_level": null,
+            "category": "기밀정보유지",
+            "duty_party": "갑",
+            "title": "비밀유지 의무",
+            "content": "자문 수행 중 취득한 SK바이오사이언스의 기술 정보, 사업 전략, 영업비밀 등 비밀 정보를 제3자에게 공개하거나 제공하여서는 안 된다. 동 의무는 계약 만료·해지 후 5년간 존속한다. 위반 시 계약 해지(제9조 제1항) 사유가 된다."
+          },
+          {
+            "no": 8,
+            "type": "의무",
+            "risk_level": null,
+            "category": "준법",
+            "duty_party": "갑",
+            "title": "관계 법령 준수 의무",
+            "content": "본 계약상 의무를 수행함에 있어 관계 법령 및 규정을 준수하여야 한다."
+          },
+          {
+            "no": 9,
+            "type": "의무",
+            "risk_level": null,
+            "category": "양도제한",
+            "duty_party": "양당사자",
+            "title": "양도 제한",
+            "content": "상대방의 사전 서면동의 없이 제3자에게 본 계약상의 지위, 계약 이행 등을 전부 또는 일부 양도하거나 위임할 수 없다."
+          },
+          {
+            "no": 10,
+            "type": "의무",
+            "risk_level": null,
+            "category": "변경관리",
+            "duty_party": "양당사자",
+            "title": "계약 변경 시 서면 합의 의무",
+            "content": "본 계약의 변경 또는 수정은 서면 합의에 의하여야 한다. 계약 기간 조정 역시 양 당사자 간 서면 합의에 의한다."
+          },
+          {
+            "no": 11,
+            "type": "의무",
+            "risk_level": null,
+            "category": "기밀정보유지",
+            "duty_party": "갑",
+            "title": "종료 후 정보 파기·반환 의무",
+            "content": "계약이 해지되거나 만료되는 경우, SK바이오사이언스로부터 제공받은 정보를 파기하거나 반환하여야 하며, SK바이오사이언스의 요구에 따라 해당 행위를 완료했음을 서면으로 SK바이오사이언스에게 전달해야 한다."
+          },
+          {
+            "no": 12,
+            "type": "의무",
+            "risk_level": null,
+            "category": "해지",
+            "duty_party": "을",
+            "title": "임의 해지 시 사전 통지 및 일할 지급 의무",
+            "content": "사업 중단·전략 변경 등으로 계약을 임의 해지하는 경우, 자문인에게 1주일 전 서면 통지하여야 한다. 임의 해지 또는 SK바이오사이언스 귀책으로 인한 해지 시 해지일까지 수행한 자문에 대한 대가를 일할 계산하여 지급하여야 한다."
+          },
+          {
+            "no": 13,
+            "type": "의무",
+            "risk_level": null,
+            "category": "개인정보보호",
+            "duty_party": "갑",
+            "title": "개인정보 수집·이용 동의서 제공 의무",
+            "content": "계약 체결 즉시 별첨 1에 정한 양식의 개인정보 수집·이용 및 제공 동의서를 작성하여 SK바이오사이언스에게 제공하여야 한다."
+          },
+          {
+            "no": 14,
+            "type": "의무",
+            "risk_level": null,
+            "category": "개인정보보호",
+            "duty_party": "양당사자",
+            "title": "개인정보보호법 준수 및 보유 의무",
+            "content": "개인정보보호법 등 관련 법규를 준수하여야 한다. 수집된 개인정보(성명, 연락처, 주소, 계좌번호 등)는 계약 기간 동안 및 계약 종료 후 5년간 보유한다."
+          },
+          {
+            "no": 15,
+            "type": "중요",
+            "risk_level": null,
+            "category": "비용지급",
+            "duty_party": "양당사자",
+            "title": "자문료 및 지급 조건",
+            "content": "자문료는 총 10,500,000원(1주당 1,500,000원 × 7주, 세금 공제 전)이며, 원천징수 세액 공제 후 자문 수행 완료 후 1개월 이내에 지급한다. 식대, 교통비, 숙박비 등 기타 비용은 자문료에 포함되지 않는다. 계약의 핵심 경제 조건으로, 지급 금액·기준·기한이 명시되어 있으며 기타 비용 미포함 여부가 비용 정산 분쟁의 소지가 될 수 있다."
+          },
+          {
+            "no": 16,
+            "type": "중요",
+            "risk_level": null,
+            "category": "지적재산권",
+            "duty_party": "양당사자",
+            "title": "결과물 귀속 및 IP",
+            "content": "자문 결과 산출되는 결과물 및 수행 과정에서 산출된 모든 유·무형의 산출물에 관한 소유권 및 지적재산권은 SK바이오사이언스에 귀속된다. SK바이오사이언스는 자문 목적 달성 외에도 임직원 교육용·내부 참고용으로 활용할 수 있다. 자문 결과물 전체에 대한 소유권 및 IP가 SK바이오사이언스에 귀속됨을 명시하여 지식재산 권리 확보의 근거가 된다."
+          },
+          {
+            "no": 17,
+            "type": "중요",
+            "risk_level": null,
+            "category": "해지",
+            "duty_party": "양당사자",
+            "title": "임의 해지권 (SK바이오사이언스)",
+            "content": "SK바이오사이언스는 자문 관련 사업 중단, 사업전략 변경 등의 사유로 자문인에게 1주일 전 서면 통지 후 계약을 해지할 수 있다. 이 경우 해지일까지 수행한 자문 대가를 일할 계산하여 지급한다. SK바이오사이언스에 일방적 해지권이 부여되어 있으며, 사전 통지 기간이 1주일로 비교적 짧다."
+          },
+          {
+            "no": 18,
+            "type": "중요",
+            "risk_level": null,
+            "category": "기밀정보유지",
+            "duty_party": "갑",
+            "title": "비밀유지 의무 및 존속 기간",
+            "content": "자문인은 자문 수행 중 취득한 SK바이오사이언스의 비밀 정보를 제3자에게 공개·제공할 수 없으며, 본 의무는 계약 만료·해지 후 5년간 존속한다. 계약 종료 후에도 5년간 비밀유지 의무가 존속하여 SK바이오사이언스의 기술 정보 및 영업비밀 보호에 직접적으로 기여한다."
+          },
+          {
+            "no": 19,
+            "type": "중요",
+            "risk_level": null,
+            "category": "면책",
+            "duty_party": "양당사자",
+            "title": "자문인 보증 및 면책 의무",
+            "content": "자문인은 자문 수행이 제3자의 권리를 침해하지 않으며 계약 이행을 불가능·곤란하게 하는 사유가 없음을 보증한다. 제3자가 이의 제기 또는 권리를 주장하는 경우 자문인이 모든 책임을 지고 필요 시 SK바이오사이언스를 면책하여야 한다. 자문인의 계약 이행 관련 제3자 리스크를 자문인 책임으로 귀속시키는 조항으로, SK바이오사이언스의 면책 근거가 된다."
+          },
+          {
+            "no": 20,
+            "type": "중요",
+            "risk_level": null,
+            "category": "Non-compete",
+            "duty_party": "갑",
+            "title": "Non-compete (계약 기간 중)",
+            "content": "자문인은 계약 기간 중 SK바이오사이언스의 사전 서면 승인 없이 동일한 목적·내용의 자문을 타인을 위해 수행할 수 없다. 자문의 독점성 확보를 위한 조항이나, 적용 범위가 계약 기간 내로 한정되어 있다."
+          },
+          {
+            "no": 21,
+            "type": "리스크",
+            "risk_level": "중간",
+            "category": "해지",
+            "duty_party": "갑",
+            "title": "임의 해지권 및 짧은 사전 통지",
+            "content": "SK바이오사이언스는 사업 중단·전략 변경 등의 사유로 1주일 전 서면 통지만으로 계약을 해지할 수 있다. 이 경우 자문인은 해지일까지 수행분에 대한 일할 자문료만 수령하게 된다. 사전 통지 기간(1주일)이 짧아 자문인 입장에서 수익 손실이 발생할 수 있으므로 일할 계산 기준 및 지급 절차를 사전에 확인할 필요가 있다."
+          },
+          {
+            "no": 22,
+            "type": "리스크",
+            "risk_level": "중간",
+            "category": "비용지급",
+            "duty_party": "양당사자",
+            "title": "기타 비용 미보전",
+            "content": "자문인의 식대, 교통비, 숙박비 등 기타 필요비용이 자문료에 포함되지 않으며, 별도 지급 조건에 대한 규정이 계약서에 존재하지 않는다. 자문 수행 중 발생하는 실비용(교통비, 숙박비 등)의 처리 방식에 대해 별도 합의가 없을 경우 분쟁 가능성이 있다. 사전에 별도 비용 처리 기준을 확인하거나 서면으로 합의해 둘 필요가 있다."
+          },
+          {
+            "no": 23,
+            "type": "리스크",
+            "risk_level": "낮음",
+            "category": "면책",
+            "duty_party": "갑",
+            "title": "자문인 보증 위반 시 면책 의무",
+            "content": "제3자가 자문인의 계약 이행에 이의를 제기하거나 이행을 곤란·불가능하게 할 수 있는 권리를 주장하는 경우, 자문인이 모든 책임을 지고 SK바이오사이언스를 면책하여야 한다. 자문인의 면책 의무 이행 능력에 한계가 있을 수 있으므로, 자문 내용이 제3자 IP 또는 기밀과 충돌하지 않는지 사전에 확인하는 것이 필요하다."
+          },
+          {
+            "no": 24,
+            "type": "리스크",
+            "risk_level": "중간",
+            "category": "기밀정보유지",
+            "duty_party": "갑",
+            "title": "비밀유지 의무 위반",
+            "content": "자문인이 계약 기간 중 또는 종료 후 5년 이내에 SK바이오사이언스의 비밀 정보를 제3자에게 공개·제공하는 경우, SK바이오사이언스에 직접적인 정보 유출 피해가 발생할 수 있다. 계약 종료 시 제9조 제4항에 따라 제공받은 정보의 파기·반환 및 완료 서면 확인을 철저히 이행하도록 관리할 필요가 있다."
+          }
+        ]
+      }
+    },
+    {
+      "id": "CT2026028",
+      "contract_type": "상호 물질이전계약 (Mutual MTA)",
+      "contract_name": "Mutual Material Transfer Agreement",
+      "language": "en",
+      "division_name": "R&D기획운영실",
+      "dept_code": "4132",
+      "dept_name": "R&D기획팀",
+      "drafter_id": "E4132",
+      "drafter_name": "조영현",
+      "partner": "Fina Biosolutions LLC.",
+      "start_date": "2024-08-27",
+      "end_date": "2099-12-31",
+      "amount": 0,
+      "currency": "USD",
+      "status": "계약중",
+      "file_name": "Mutual Material Transfer Agreement (Fina Biosolutions).pdf",
+      "ai": {
+        "clause_count": 36,
+        "important_clause_count": 8,
+        "obligation_clause_count": 21,
+        "risk_clause_count": 7,
+        "overall_risk": "높음",
+        "summary": "본 계약은 SK bioscience와 Fina Biosolutions LLC. 간 상호 물질이전계약(Mutual MTA)으로, SK가 폐렴구균 다당류(SK Material)를 Fina Bio에 제공하여 접합체 제조 연구를 수행하게 하고, Fina Bio가 제조한 접합체(Fina Bio Material)를 SK에 제공하여 동물시험을 통한 면역원성 평가를 수행하기 위한 계약입니다. AI 분석 결과 리스크 조항 7건이 확인되었으며, 주요 리스크는 Provider의 상업 라이선스 체결 의무 부재로 인한 상업화 경로 불확실성과 45 business days 사전 통지만으로 가능한 임의 해지권에 집중되어 있습니다. Material은 Research Project 목적으로만 사용해야 하며 상업적 이용·인체 적용·제3자 이전은 전면 금지되고, Results는 양 당사자의 기밀정보로서 계약 종료 후 10년간 비밀유지 의무가 존속합니다. Provider는 Material을 AS IS로 제공하며 일체의 보증을 부인합니다.",
+        "clauses": [
+          {
+            "no": 1,
+            "type": "의무",
+            "risk_level": null,
+            "category": "생산 및 공급",
+            "duty_party": "양당사자",
+            "title": "Material 인도를 위한 상업적 합리적 노력 의무",
+            "content": "합의된 수량 및 납기 일정에 따라 Material을 Recipient에게 인도하기 위해 상업적으로 합리적인 노력(commercially reasonable efforts)을 기울여야 한다. (§2.1)"
+          },
+          {
+            "no": 2,
+            "type": "의무",
+            "risk_level": null,
+            "category": "생산 및 공급",
+            "duty_party": "양당사자",
+            "title": "운송 수배 및 비용 부담 의무",
+            "content": "Material의 최종 목적지까지의 운송에 필요한 모든 수배를 하고, 운임·보험료·세금·수출입 관세·검사비 및 기타 합리적인 운송 관련 비용 일체를 부담해야 한다. (§2.2)"
+          },
+          {
+            "no": 3,
+            "type": "의무",
+            "risk_level": null,
+            "category": "개발 및 상업화",
+            "duty_party": "양당사자",
+            "title": "허용된 용도 외 사용 및 Research Project 변경 금지",
+            "content": "Material을 본 계약에서 명시적으로 허용된 용도 이외에 사용하거나 사용하도록 허용해서는 안 된다. Research Project는 해당 Schedule에 기재된 계획에 따라 수행해야 하며, Provider의 사전 서면 승인 없이 Research Project에 어떠한 변경도 가해서는 안 된다. (§3.1(a)) 위반 시 계약 위반(Breach)에 해당하며, Material breach의 경우 30 business days Cure Period 후 계약 해지가 가능하다."
+          },
+          {
+            "no": 4,
+            "type": "의무",
+            "risk_level": null,
+            "category": "원료 관리",
+            "duty_party": "양당사자",
+            "title": "Material 사용 조건 준수 의무",
+            "content": "Material을 (i) Research Project 목적으로만, (ii) Recipient의 실험실 내에서, (iii) 적용 법령을 준수하여, (iv) Provider의 보관·취급·사용·반환·폐기 지침에 따라, (v) 본 계약의 모든 조건에 따라 사용해야 한다. (§3.1(b)) 위반 시 계약 위반(Breach)에 해당하며, Material breach의 경우 30 business days Cure Period 후 계약 해지가 가능하다."
+          },
+          {
+            "no": 5,
+            "type": "의무",
+            "risk_level": null,
+            "category": "제3자 IP",
+            "duty_party": "양당사자",
+            "title": "제3자 이전·배포 금지 및 접근 제한",
+            "content": "Provider의 사전 서면 동의 없이 Material을 제3자(하수급인 또는 계열사 포함)에게 이전 또는 배포해서는 안 된다. Material에 대한 접근 및 사용은 Research Project에 직접 종사하고, 접근·사용·이전·공개 제한에 대해 고지받은 후 법적 구속력 있는 서면 계약을 체결한 개인으로 제한해야 한다. (§3.1(c)) 위반 시 계약 위반(Breach)에 해당한다."
+          },
+          {
+            "no": 6,
+            "type": "의무",
+            "risk_level": null,
+            "category": "라이선스",
+            "duty_party": "양당사자",
+            "title": "금지된 사용 목적 제한",
+            "content": "Provider의 사전 서면 동의 없이 Material을 (i) 인체 시험·임상·동물 실험, (ii) 상업 목적의 제3자 지원 연구, (iii) 제3자에게 IP 권리를 부여하는 방식, (iv) 상업적 목적(제품 판매 포함), (v) 구조·서열 분석·변형·역설계 등에 사용하거나 허용해서는 안 된다. (§3.1(d)) 위반 시 계약 위반(Breach)에 해당한다."
+          },
+          {
+            "no": 7,
+            "type": "의무",
+            "risk_level": null,
+            "category": "정보 제공",
+            "duty_party": "양당사자",
+            "title": "진행 현황 및 Results 보고서 제출 의무",
+            "content": "Provider의 요청 시, Research Project의 진행 현황 및 Results를 포함한 서면 보고서를 Provider에게 제출해야 한다. (§3.1(e))"
+          },
+          {
+            "no": 8,
+            "type": "의무",
+            "risk_level": null,
+            "category": "정보 제공",
+            "duty_party": "을",
+            "title": "SK Research Project 결과 요약본 제공 의무",
+            "content": "SK Research Project 완료 후 60일 이내에 Results의 서면 요약본을 Fina Bio에게 제공해야 한다. (§3.2(a))"
+          },
+          {
+            "no": 9,
+            "type": "의무",
+            "risk_level": null,
+            "category": "회계장부",
+            "duty_party": "을",
+            "title": "Research Project 기록 유지 의무",
+            "content": "SK Research Project와 관련하여 동시대적(contemporaneous)이고 완전하며 정확한 기록을 계약 Term 동안 및 그 종료 후 5년간(Retention Period) 유지해야 한다. (§3.2(b))"
+          },
+          {
+            "no": 10,
+            "type": "의무",
+            "risk_level": null,
+            "category": "기밀정보유지",
+            "duty_party": "양당사자",
+            "title": "Results 사용 목적 제한 및 제3자 공유 금지",
+            "content": "Results를 내부 연구 목적 및 사업 협력 기회 평가 목적으로만 사용하고, 상대방의 사전 서면 동의 없이 Results를 제3자와 공유해서는 안 된다. (§3.2(c))"
+          },
+          {
+            "no": 11,
+            "type": "의무",
+            "risk_level": null,
+            "category": "기밀정보유지",
+            "duty_party": "양당사자",
+            "title": "Confidential Information 보호 의무",
+            "content": "Confidential Information을 자신의 유사한 민감 정보 보호 수준 이상, 최소한 합리적인 수준의 주의를 기울여 보호해야 한다. Disclosing Party의 사전 서면 승인 없이 Confidential Information을 제3자에게 공개 또는 이전해서는 안 된다. (§5.3)"
+          },
+          {
+            "no": 12,
+            "type": "의무",
+            "risk_level": null,
+            "category": "기밀정보유지",
+            "duty_party": "양당사자",
+            "title": "공개 강제 시 사전 통지 의무",
+            "content": "법령 또는 규정에 의해 Confidential Information 공개가 강제되는 경우, 허용되는 범위 내에서 사전에 Disclosing Party에게 서면으로 통지해야 하며, 법적으로 요구되는 최소한의 범위만 공개해야 한다. (§5.3)"
+          },
+          {
+            "no": 13,
+            "type": "의무",
+            "risk_level": null,
+            "category": "공개",
+            "duty_party": "양당사자",
+            "title": "출판물 사전 제공 및 의견 반영 의무",
+            "content": "Results를 포함한 출판물·공개 자료를 제출하기 최소 30 business days 전에 Provider에게 사본을 제공하고, Provider의 합리적인 의견을 반영해야 한다. Provider가 해당 출판물에 Confidential Information 또는 IP가 포함되어 있다고 통지하는 경우, 해당 내용을 삭제하거나 통지 후 추가 30 business days 동안 출판을 지연해야 한다. (§6.2)"
+          },
+          {
+            "no": 14,
+            "type": "의무",
+            "risk_level": null,
+            "category": "공개",
+            "duty_party": "양당사자",
+            "title": "출처 인정(Acknowledgment) 의무",
+            "content": "Results와 관련된 모든 출판물(논문, 발표 포함)에 Provider를 Material의 출처로 인정(acknowledgment 또는 authorship)해야 한다. (§6.3)"
+          },
+          {
+            "no": 15,
+            "type": "의무",
+            "risk_level": null,
+            "category": "공개",
+            "duty_party": "양당사자",
+            "title": "계약 존재 공표 금지",
+            "content": "상대방의 사전 서면 동의 없이 본 계약의 존재를 보도자료, 광고 또는 기타 공개 발표에서 언급해서는 안 된다. (§6.1)"
+          },
+          {
+            "no": 16,
+            "type": "의무",
+            "risk_level": null,
+            "category": "준법",
+            "duty_party": "양당사자",
+            "title": "관계 법령 준수 및 인허가 취득 의무",
+            "content": "본 계약에 적용되는 모든 연방·주·지방 법령, 조례, 규정, 명령(Material의 보관·취급·사용·수출·반환·폐기, 반부패, 데이터 프라이버시 법 포함)을 항상 준수해야 한다. Material 사용 및 계약상 의무 이행에 필요한 모든 인증·자격·허가·면허를 자비로 취득하고 유지해야 한다. (§9.1)"
+          },
+          {
+            "no": 17,
+            "type": "의무",
+            "risk_level": null,
+            "category": "양도제한",
+            "duty_party": "양당사자",
+            "title": "양도 제한",
+            "content": "Provider의 사전 서면 동의 없이 본 계약상의 권리를 양도하거나, 의무 또는 이행을 위임·이전해서는 안 된다. 위임 또는 이전 후에도 Recipient의 계약상 의무는 면제되지 않는다. (§9.6)"
+          },
+          {
+            "no": 18,
+            "type": "의무",
+            "risk_level": null,
+            "category": "해지",
+            "duty_party": "양당사자",
+            "title": "계약 종료 시 Material 폐기 의무",
+            "content": "계약 종료 또는 만료 시 Material의 모든 사용을 즉시 중단하고, 잔여 Material에 대해 Provider에게 통지한 후 Provider의 지시에 따라 Material을 폐기하고 서면으로 폐기 확인서를 Provider에게 제출해야 한다. (§8.3(a))"
+          },
+          {
+            "no": 19,
+            "type": "의무",
+            "risk_level": null,
+            "category": "기밀정보유지",
+            "duty_party": "을",
+            "title": "종료 시 Results 공개 의무",
+            "content": "계약 종료 또는 만료 시 (이전에 공개되지 않은 경우) Results를 Fina Bio에 공개해야 한다. (§8.3(b))"
+          },
+          {
+            "no": 20,
+            "type": "의무",
+            "risk_level": null,
+            "category": "기밀정보유지",
+            "duty_party": "양당사자",
+            "title": "종료 시 정보 반환·폐기 의무",
+            "content": "계약 종료 또는 만료 시 상대방의 선택에 따라 Confidential Information 및 그 사본·유형적 표현물 전체를 반환하거나 폐기하고, 폐기 시 권한 있는 대표자가 서명한 확인서를 제출해야 한다. 단, 계약상 의무 준수를 위한 보관용 사본 1부는 보유 가능하다. (§8.3(c))"
+          },
+          {
+            "no": 21,
+            "type": "의무",
+            "risk_level": null,
+            "category": "해지",
+            "duty_party": "양당사자",
+            "title": "조기 종료 시 질서있는 종료계획 수립 의무",
+            "content": "계약 종료 시 진행 중인 Research Project 활동에 대해 서면으로 합의된 조건에 따라 질서 있는 종료 계획을 공동으로 수립하고 이행해야 한다. (§8.3(d))"
+          },
+          {
+            "no": 22,
+            "type": "중요",
+            "risk_level": null,
+            "category": "라이선스",
+            "duty_party": "양당사자",
+            "title": "Material 사용 제한",
+            "content": "Material은 Research Project 목적으로만 사용해야 하며, 상업적 이용·인체 적용·제3자 이전·역설계 등은 Provider의 사전 서면 동의 없이 전면 금지된다. 상업적 이용을 위해서는 별도의 상업 라이선스 계약이 필요하며, Provider는 해당 계약 체결 의무가 없다. (§3.1(d), §4.2) 본 MTA를 통해 취득한 Material을 상업적으로 활용하기 위해서는 반드시 별도 라이선스 계약이 필요하며, Provider가 이를 거절할 수 있어 SK의 후속 사업화 경로에 직접적인 영향을 미친다."
+          },
+          {
+            "no": 23,
+            "type": "중요",
+            "risk_level": null,
+            "category": "지적재산권",
+            "duty_party": "양당사자",
+            "title": "IP 귀속",
+            "content": "각 당사자의 Background IP는 해당 당사자 또는 그 라이선서에게 귀속되며, 본 계약의 영향을 받지 않는다. 본 계약은 Recipient에게 Material에 대한 명시적·묵시적 라이선스를 부여하지 않는다. (§4.1, §4.2) Research Project 수행 과정에서 발생하는 Inventions 및 Background IP의 귀속 관계가 사업화 단계에서 중요하며, 본 계약이 라이선스를 부여하지 않음을 명확히 한다."
+          },
+          {
+            "no": 24,
+            "type": "중요",
+            "risk_level": null,
+            "category": "기밀정보유지",
+            "duty_party": "양당사자",
+            "title": "Results 취급",
+            "content": "Results는 양 당사자의 Confidential Information으로 취급되며, 내부 연구 목적 및 사업 협력 기회 평가 목적으로만 사용 가능하다. 제3자 공유는 상대방의 사전 서면 동의가 필요하다. (§3.2(c), §5.1) SK Research Project에서 도출된 면역원성 평가 결과(Results)가 양 당사자 공동의 기밀로 관리되므로, SK의 독자적 활용에 제약이 있을 수 있다."
+          },
+          {
+            "no": 25,
+            "type": "중요",
+            "risk_level": null,
+            "category": "기밀정보유지",
+            "duty_party": "양당사자",
+            "title": "비밀유지 존속",
+            "content": "비밀유지 의무는 계약 종료 또는 만료 후 10년간 존속한다. (§5.4) 계약 종료 이후에도 장기간 비밀유지 의무가 지속되어 양 당사자의 관련 정보 활용에 제약이 발생한다."
+          },
+          {
+            "no": 26,
+            "type": "중요",
+            "risk_level": null,
+            "category": "면책",
+            "duty_party": "양당사자",
+            "title": "No Warranty (무보증)",
+            "content": "Provider는 Material을 \"AS IS\"로 제공하며, 상품성·특정 목적 적합성·제3자 IP 비침해 여부를 포함한 일체의 명시적·묵시적 보증을 제공하지 않는다. Material이 실험적이고 미지의 특성을 가질 수 있음을 Recipient가 인정한다. (§7.2) SK가 Recipient로서 Fina Bio로부터 Material을 제공받는 경우, Material의 품질·안전성·IP 침해 여부에 대한 보증을 받을 수 없어 연구 수행 및 후속 활용 시 리스크가 존재한다."
+          },
+          {
+            "no": 27,
+            "type": "중요",
+            "risk_level": null,
+            "category": "손해배상",
+            "duty_party": "양당사자",
+            "title": "책임 제한 (Limitation of Liability)",
+            "content": "Provider는 본 계약 또는 Material과 관련하여 Recipient에게 발생한 수익 손실, 이익 손실, 절감액 손실 및 일체의 간접·부수·특별·징벌적·결과적 손해에 대해 법이 허용하는 최대 범위 내에서 책임을 지지 않는다. 또한 어느 당사자도 분쟁과 관련하여 변호사 비용의 회수를 구할 수 없다. (§7.1) Provider로서의 SK도 동일한 책임 제한 보호를 받으나, Recipient로서의 SK는 Material 관련 손해에 대해 Fina Bio에게 보상을 청구하기 어렵다."
+          },
+          {
+            "no": 28,
+            "type": "중요",
+            "risk_level": null,
+            "category": "해지",
+            "duty_party": "양당사자",
+            "title": "계약 해지 (임의해지 포함)",
+            "content": "어느 당사자도 45 business days 사전 서면 통지로 사유 없이 계약을 해지할 수 있다. Material breach의 경우 30 business days Cure Period 후 해지 가능하며, 치유 불가능한 위반의 경우 즉시 해지 가능하다. (§8.2) Fina Bio가 임의로 계약을 해지할 경우 SK는 Fina Bio Material을 제공받지 못하게 되어 SK Research Project 수행에 차질이 발생할 수 있다."
+          },
+          {
+            "no": 29,
+            "type": "중요",
+            "risk_level": null,
+            "category": "분쟁해결",
+            "duty_party": "양당사자",
+            "title": "준거법 및 분쟁해결",
+            "content": "준거법은 미국 메릴랜드주법이며, 분쟁은 JAMS 국제중재규칙에 따라 단독 중재인에 의한 중재로 최종 해결한다. 중재지는 미국 메릴랜드주 록빌이며, 중재 언어는 영어이다. (§9.4) 분쟁 발생 시 SK에게 불리한 준거법(미국 메릴랜드주) 및 중재지(미국)가 적용되어 분쟁 대응에 상당한 비용과 시간이 소요될 수 있다."
+          },
+          {
+            "no": 30,
+            "type": "리스크",
+            "risk_level": "높음",
+            "category": "라이선스",
+            "duty_party": "양당사자",
+            "title": "상업화 경로 제한",
+            "content": "Provider는 상업 라이선스 계약 체결 의무가 없으므로, SK가 연구를 통해 유효한 결과를 확보하더라도 Fina Bio Material을 상업적으로 활용하기 위한 라이선스 취득이 보장되지 않는다. (§4.2) Recipient(SK)가 Material의 상업적 이용을 원할 경우 Provider(Fina Bio)와 별도 상업 라이선스 계약 체결이 필요하나, Fina Bio는 이를 거절할 수 있다. 연구 착수 전 또는 연구 진행 중 후속 상업화 조건에 대한 별도 협의 및 합의 가능성을 사전에 확인할 필요가 있다."
+          },
+          {
+            "no": 31,
+            "type": "리스크",
+            "risk_level": "높음",
+            "category": "해지",
+            "duty_party": "을",
+            "title": "임의 해지에 따른 연구 차질",
+            "content": "Fina Bio가 45 business days 사전 통지만으로 사유 없이 계약을 해지할 경우, Fina Bio Material이 SK에 제공되지 않아 SK Research Project(동물시험 및 면역원성 평가)를 수행하지 못할 수 있다. (§8.2(b)) 어느 당사자든 45 business days 사전 서면 통지로 임의 해지 가능하며, Fina Bio Material의 수량이 \"TBD(제조 수율에 따라 결정)\"로 확정되지 않은 상태이다. Fina Bio Material 인도 전 임의 해지 가능성에 대비하여 주요 Milestone별 진행 상황을 모니터링할 필요가 있다."
+          },
+          {
+            "no": 32,
+            "type": "리스크",
+            "risk_level": "중간",
+            "category": "면책",
+            "duty_party": "을",
+            "title": "No Warranty로 인한 Material 품질 리스크",
+            "content": "SK가 Recipient로서 Fina Bio로부터 수령한 Material의 품질·효능·제3자 IP 비침해 여부에 대해 어떠한 보증도 받지 못하며, 이로 인한 연구 결과의 신뢰성 저하나 IP 분쟁 발생 시 Fina Bio에 대한 책임 추궁이 어렵다. (§7.2) Fina Bio가 Material을 \"AS IS\"로 제공하며 일체의 보증을 면책하는 조항이 명시되어 있다. Fina Bio Material 수령 시 자체적으로 품질 적격성 확인 절차를 수행하는 것이 바람직하다."
+          },
+          {
+            "no": 33,
+            "type": "리스크",
+            "risk_level": "중간",
+            "category": "지적재산권",
+            "duty_party": "양당사자",
+            "title": "Inventions 귀속 불명확",
+            "content": "계약서에 Background IP 귀속 규정은 있으나, Research Project 수행 중 발생하는 Inventions(§1.5에 정의됨)의 귀속에 관한 명시적 규정이 없어, SK가 SK Research Project에서 창출한 성과의 소유권이 불분명하다. SK Research Project 수행 중 SK 또는 Fina Bio Material을 활용하여 새로운 발명이 창출될 경우 귀속 관계가 명확하지 않다. Inventions 귀속 조건을 후속 상업 라이선스 계약 또는 별도 협약을 통해 명확히 할 필요가 있다."
+          },
+          {
+            "no": 34,
+            "type": "리스크",
+            "risk_level": "중간",
+            "category": "분쟁해결",
+            "duty_party": "을",
+            "title": "준거법 및 중재지 불리",
+            "content": "준거법이 미국 메릴랜드주법이고 중재지가 미국 록빌로 지정되어, 분쟁 발생 시 SK가 상당한 비용과 지리적 불편을 감수해야 한다. (§9.4) 분쟁이 발생하는 경우 JAMS 국제중재에 따라 미국에서 영어로 진행된다. 분쟁 발생 가능성이 있는 사안에 대해 사전에 내부 법무 및 외부 미국 법률 자문을 통한 대응 준비가 필요하다."
+          },
+          {
+            "no": 35,
+            "type": "리스크",
+            "risk_level": "중간",
+            "category": "생산 및 공급",
+            "duty_party": "양당사자",
+            "title": "Fina Bio Material 수량 미확정",
+            "content": "Schedule 2에서 Fina Bio Material의 수량이 \"TBD(제조 수율에 따라 결정)\"로 명시되어, SK Research Project 수행에 필요한 충분한 물량이 보장되지 않는다. (Schedule 2) Fina Bio의 제조 수율에 따라 제공 가능한 물량이 결정되며, Provider는 \"commercially reasonable efforts\" 수준의 납품 의무만 부담한다. Fina Bio Material 제조 진행 상황을 조기에 확인하고, 수량이 연구 수행에 부족할 경우의 대응 방안을 사전에 협의할 필요가 있다."
+          },
+          {
+            "no": 36,
+            "type": "리스크",
+            "risk_level": "낮음",
+            "category": "기밀정보유지",
+            "duty_party": "양당사자",
+            "title": "비밀유지 장기 존속",
+            "content": "계약 종료 후 10년간 비밀유지 의무가 존속하여, 계약 종료 이후에도 Results 및 Confidential Information의 활용에 장기간 제약이 발생한다. (§5.4) 계약 종료 또는 만료 시점부터 10년간 비밀유지 의무가 유지된다. Results의 공개 또는 제3자 제공 필요성이 있는 경우 사전에 상대방의 서면 동의 절차를 준수해야 한다."
+          }
+        ]
+      }
     }
   ]
 }

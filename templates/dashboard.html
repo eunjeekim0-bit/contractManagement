@@ -102,7 +102,6 @@ table.ob-table thead th, table.ct-table thead th { vertical-align: middle; text-
             <th>파트너사</th>
             <th style="min-width:200px">계약명</th>
             <th>조항 구분</th>
-            <th style="min-width:260px">내용</th>
             <th>기한일</th>
             <th>부서</th>
             <th>담당자</th>
@@ -170,7 +169,6 @@ table.ob-table thead th, table.ct-table thead th { vertical-align: middle; text-
                 <th>파트너사</th>
                 <th style="min-width:200px">계약명</th>
                 <th>조항 구분</th>
-                <th style="min-width:260px">내용</th>
                 <th>기한일</th>
                 <th>부서</th>
                 <th>담당자</th>
@@ -375,7 +373,6 @@ function renderObligationRows(results, bodyId, emptyId, source) {
       <td class="center-cell">${o.partner}</td>
       <td>${o.contract_name}</td>
       <td class="center-cell">${categoryBadge(o.category)}</td>
-      <td class="ob-content small">${o.content}</td>
       <td class="center-cell ${dueClass}">${o.due_date}${overdue ? ' (만료)' : ''}</td>
       <td class="center-cell">${o.dept_name}</td>
       <td class="center-cell">${o.assignee}</td>

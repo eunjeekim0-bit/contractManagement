@@ -4,8 +4,11 @@
 
 {% block extra_style %}
 <style>
-.search-card { border-radius: 16px; border: none; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+.search-card { border-radius: 14px; border: none; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
 .form-label { font-weight: 600; font-size: .85rem; color: #444; }
+.search-card .form-label { font-size: .78rem; margin-bottom: .2rem; }
+.search-card .form-control, .search-card .form-select, .search-card .btn { font-size: .82rem; padding: .3rem .6rem; }
+.search-card .input-group .btn { padding: .3rem .55rem; }
 .advanced-toggle-btn { font-size: .8rem; font-weight: 600; color: var(--primary); background: none; border: none; padding: 4px 8px; }
 .advanced-toggle-btn:hover { text-decoration: underline; }
 .advanced-toggle-btn .chevron { transition: transform .18s ease; display: inline-block; }
@@ -57,8 +60,8 @@
 {% block content %}
 
   <!-- Search -->
-  <div class="card search-card p-3 mb-3">
-    <div class="row g-3">
+  <div class="card search-card p-2 mb-3">
+    <div class="row g-2">
       <div class="col-md-3 col-sm-6">
         <label class="form-label">기안부서</label>
         <div class="input-group">
@@ -89,7 +92,7 @@
       </div>
 
       <div class="collapse col-12" id="advancedSearch">
-        <div class="row g-3">
+        <div class="row g-2">
           <div class="col-md-4 col-sm-6">
             <label class="form-label">계약기간</label>
             <div class="d-flex align-items-center gap-2">
@@ -111,8 +114,8 @@
       </div>
 
       <div class="col-12 d-flex justify-content-end gap-2 mt-2">
-        <button class="btn btn-outline-secondary" onclick="resetSearch()"><i class="bi bi-arrow-counterclockwise me-1"></i>초기화</button>
-        <button class="btn btn-primary px-4" onclick="runSearch()"><i class="bi bi-search me-1"></i>검색</button>
+        <button class="btn btn-outline-secondary btn-sm" onclick="resetSearch()"><i class="bi bi-arrow-counterclockwise me-1"></i>초기화</button>
+        <button class="btn btn-primary btn-sm px-3" onclick="runSearch()"><i class="bi bi-search me-1"></i>검색</button>
       </div>
     </div>
   </div>
