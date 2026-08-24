@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, Response
+import ipaddress
 import json, os
 from datetime import date, timedelta
 
@@ -6,6 +7,49 @@ app = Flask(__name__)
 app.json.sort_keys = False
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')
+
+# 사내 공인 IP 접근 제한 — 환경변수 ALLOWED_IPS로 콤마 구분 IP/CIDR 목록을 지정한다.
+# 지정하지 않으면 아래 기본값(사내 Zscaler 리전 대역)이 적용된다.
+# 로컬 개발 편의를 위해 localhost는 항상 허용한다.
+DEFAULT_ALLOWED_IPS = '165.225.228.0/23,147.161.192.0/23,165.225.102.0/24'
+_LOCALHOST_NETS = [ipaddress.ip_network('127.0.0.1/32'), ipaddress.ip_network('::1/128')]
+
+
+def _parse_ip_networks(raw):
+    networks = []
+    for part in raw.split(','):
+        part = part.strip()
+        if not part:
+            continue
+        try:
+            networks.append(ipaddress.ip_network(part, strict=False))
+        except ValueError:
+            pass
+    return networks
+
+
+ALLOWED_IP_NETWORKS = _parse_ip_networks(os.environ.get('ALLOWED_IPS', DEFAULT_ALLOWED_IPS)) + _LOCALHOST_NETS
+
+
+def _client_ip():
+    xff = request.headers.get('X-Forwarded-For', '')
+    if xff:
+        return xff.split(',')[0].strip()
+    return request.remote_addr or ''
+
+
+@app.before_request
+def require_ip_allowlist():
+    if not ALLOWED_IP_NETWORKS:
+        return None
+    try:
+        ip = ipaddress.ip_address(_client_ip())
+    except ValueError:
+        return render_template('forbidden.html'), 403
+    if any(ip in net for net in ALLOWED_IP_NETWORKS):
+        return None
+    return render_template('forbidden.html'), 403
+
 
 # 데모 배포용 기본 인증 — 환경변수 DEMO_USER/DEMO_PASSWORD가 설정된 경우에만 활성화된다.
 DEMO_USER = os.environ.get('DEMO_USER')
