@@ -147,6 +147,17 @@ def save_obligations(obligations):
         raise ReadOnlyDemoError()
 
 
+CONTRACTS_PATH = os.path.join(os.path.dirname(__file__), 'data', 'contracts.json')
+
+
+def save_contracts(contracts):
+    try:
+        with open(CONTRACTS_PATH, 'w', encoding='utf-8') as f:
+            json.dump({'contracts': contracts}, f, ensure_ascii=False, indent=2)
+    except OSError:
+        raise ReadOnlyDemoError()
+
+
 def obligation_summary(o):
     return {
         'id': o['id'],
@@ -364,12 +375,76 @@ def api_search():
     return jsonify({'count': len(results), 'results': results})
 
 
+def _related_contracts(ids, contracts_by_id):
+    results = []
+    for rid in ids or []:
+        rc = contracts_by_id.get(rid)
+        if not rc:
+            continue
+        results.append({
+            'id': rc['id'],
+            'contract_name': rc['contract_name'],
+            'contract_type': rc['contract_type'],
+            'partner': rc['partner'],
+            'status': rc['status'],
+        })
+    return results
+
+
 @app.route('/api/contracts/<contract_id>', methods=['GET'])
 def api_detail(contract_id):
-    for c in load_contracts():
-        if c['id'] == contract_id:
-            return jsonify(c)
-    return jsonify({'error': 'not found'}), 404
+    contracts = load_contracts()
+    contracts_by_id = {c['id']: c for c in contracts}
+    c = contracts_by_id.get(contract_id)
+    if not c:
+        return jsonify({'error': 'not found'}), 404
+    data = dict(c)
+    data['related_contracts'] = _related_contracts(c.get('related_contract_ids'), contracts_by_id)
+    return jsonify(data)
+
+
+@app.route('/api/contracts/<contract_id>/related', methods=['POST'])
+def api_contract_add_related(contract_id):
+    body = request.json or {}
+    related_id = (body.get('related_id') or '').strip()
+    if not related_id:
+        return jsonify({'error': 'related_id is required'}), 400
+    if related_id == contract_id:
+        return jsonify({'error': '자기 자신은 연관 계약으로 지정할 수 없습니다.'}), 400
+
+    contracts = load_contracts()
+    contracts_by_id = {c['id']: c for c in contracts}
+    c = contracts_by_id.get(contract_id)
+    rc = contracts_by_id.get(related_id)
+    if not c or not rc:
+        return jsonify({'error': 'not found'}), 404
+
+    c.setdefault('related_contract_ids', [])
+    rc.setdefault('related_contract_ids', [])
+    if related_id not in c['related_contract_ids']:
+        c['related_contract_ids'].append(related_id)
+    if contract_id not in rc['related_contract_ids']:
+        rc['related_contract_ids'].append(contract_id)
+
+    save_contracts(contracts)
+    return jsonify({'related_contracts': _related_contracts(c['related_contract_ids'], contracts_by_id)})
+
+
+@app.route('/api/contracts/<contract_id>/related/<related_id>', methods=['DELETE'])
+def api_contract_remove_related(contract_id, related_id):
+    contracts = load_contracts()
+    contracts_by_id = {c['id']: c for c in contracts}
+    c = contracts_by_id.get(contract_id)
+    if not c:
+        return jsonify({'error': 'not found'}), 404
+
+    c['related_contract_ids'] = [rid for rid in c.get('related_contract_ids', []) if rid != related_id]
+    rc = contracts_by_id.get(related_id)
+    if rc:
+        rc['related_contract_ids'] = [rid for rid in rc.get('related_contract_ids', []) if rid != contract_id]
+
+    save_contracts(contracts)
+    return jsonify({'related_contracts': _related_contracts(c['related_contract_ids'], contracts_by_id)})
 
 
 @app.route('/api/obligations/search', methods=['GET'])

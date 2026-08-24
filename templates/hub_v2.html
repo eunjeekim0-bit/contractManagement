@@ -47,6 +47,9 @@
 .status-만료 { background:#f0f0f0; color:#888; }
 .status-예정 { background:#e8eaff; color:#3b4bd0; }
 
+.related-contract-item { cursor: pointer; }
+.related-contract-item:hover { background: #f7f8ff; }
+
 .org-tree .division-header { font-weight: 700; background: #f0f2ff; padding: 6px 10px; border-radius: 8px; cursor: pointer; }
 .org-tree .team-block { margin: 4px 0 8px 14px; }
 .org-tree .team-name { font-weight: 600; color: var(--primary); padding: 4px 6px; cursor: pointer; border-radius: 6px; }
@@ -176,6 +179,8 @@ let orgModal = null;
 let orgMode = 'dept'; // 'dept' | 'drafter'
 let currentResults = [];
 let selectedId = null;
+let currentDetail = null;
+let allContractsCache = null;
 
 document.addEventListener('DOMContentLoaded', () => {
   orgModal = new bootstrap.Modal(document.getElementById('orgModal'));
@@ -280,6 +285,7 @@ async function selectContract(id) {
 }
 
 function renderDetail(c) {
+  currentDetail = c;
   const ai = c.ai;
   document.getElementById('detailPlaceholder').style.display = 'none';
   const el = document.getElementById('detailContent');
@@ -348,7 +354,100 @@ function renderDetail(c) {
         </a>
       </div>
     </div>
+
+    <div class="mt-4">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <div class="fw-bold"><i class="bi bi-link-45deg me-1 text-primary"></i>연관 계약서 <span class="badge bg-secondary">${(c.related_contracts || []).length}</span></div>
+        <button class="btn btn-sm btn-outline-primary" type="button" onclick="toggleRelatedAdd()"><i class="bi bi-plus-lg me-1"></i>추가</button>
+      </div>
+
+      <div id="relatedAddBox" style="display:none" class="mb-2">
+        <input type="text" class="form-control form-control-sm" id="relatedSearchInput" placeholder="계약명, 파트너사로 검색" oninput="renderRelatedCandidates()">
+        <div class="list-group mt-1" id="relatedCandidateList" style="max-height:180px; overflow-y:auto;"></div>
+      </div>
+
+      <div class="list-group" id="relatedList">
+        ${(c.related_contracts || []).map(rc => `
+          <div class="list-group-item related-contract-item d-flex justify-content-between align-items-center" data-id="${rc.id}">
+            <div class="flex-grow-1">
+              <div class="fw-semibold">${rc.contract_name}</div>
+              <div class="small text-muted">${rc.contract_type} · ${rc.partner}</div>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+              ${statusBadge(rc.status)}
+              <button class="btn btn-sm btn-link text-danger p-0" type="button" title="연관 해제" onclick="event.stopPropagation(); removeRelatedContract('${rc.id}')"><i class="bi bi-x-lg"></i></button>
+            </div>
+          </div>
+        `).join('') || '<div class="text-muted small">등록된 연관 계약서가 없습니다</div>'}
+      </div>
+    </div>
   `;
+
+  el.querySelectorAll('.related-contract-item').forEach(item => {
+    item.addEventListener('click', () => selectContract(item.dataset.id));
+  });
+}
+
+// ==================== RELATED CONTRACTS ====================
+async function toggleRelatedAdd() {
+  const box = document.getElementById('relatedAddBox');
+  const show = box.style.display === 'none';
+  box.style.display = show ? '' : 'none';
+  if (!show) return;
+
+  document.getElementById('relatedSearchInput').value = '';
+  if (!allContractsCache) {
+    const res = await fetch('/api/contracts/search');
+    const data = await res.json();
+    allContractsCache = data.results;
+  }
+  renderRelatedCandidates();
+  document.getElementById('relatedSearchInput').focus();
+}
+
+function renderRelatedCandidates() {
+  const q = document.getElementById('relatedSearchInput').value.trim().toLowerCase();
+  const excludeIds = new Set([selectedId, ...((currentDetail.related_contracts || []).map(rc => rc.id))]);
+  const list = (allContractsCache || [])
+    .filter(r => !excludeIds.has(r.id))
+    .filter(r => !q || r.contract_name.toLowerCase().includes(q) || r.partner.toLowerCase().includes(q))
+    .slice(0, 8);
+
+  const container = document.getElementById('relatedCandidateList');
+  container.innerHTML = list.map(r => `
+    <div class="list-group-item related-candidate-item" data-id="${r.id}" style="cursor:pointer">
+      <div class="fw-semibold small">${r.contract_name}</div>
+      <div class="text-muted" style="font-size:.75rem">${r.contract_type} · ${r.partner}</div>
+    </div>
+  `).join('') || '<div class="text-muted small p-2">검색 결과가 없습니다</div>';
+
+  container.querySelectorAll('.related-candidate-item').forEach(item => {
+    item.addEventListener('click', () => addRelatedContract(item.dataset.id));
+  });
+}
+
+async function addRelatedContract(relatedId) {
+  const res = await fetch(`/api/contracts/${selectedId}/related`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ related_id: relatedId }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    alert(err.error || '연관 계약서 추가에 실패했습니다.');
+    return;
+  }
+  await selectContract(selectedId);
+}
+
+async function removeRelatedContract(relatedId) {
+  const res = await fetch(`/api/contracts/${selectedId}/related/${relatedId}`, { method: 'DELETE' });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    alert(err.error || '연관 계약서 해제에 실패했습니다.');
+    return;
+  }
+  await selectContract(selectedId);
 }
 
 // ==================== ORG MODAL ====================
