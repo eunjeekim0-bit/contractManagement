@@ -375,10 +375,10 @@ def api_search():
     return jsonify({'count': len(results), 'results': results})
 
 
-def _related_contracts(ids, contracts_by_id):
+def _related_contracts(links, contracts_by_id):
     results = []
-    for rid in ids or []:
-        rc = contracts_by_id.get(rid)
+    for link in links or []:
+        rc = contracts_by_id.get(link['id'])
         if not rc:
             continue
         results.append({
@@ -387,6 +387,7 @@ def _related_contracts(ids, contracts_by_id):
             'contract_type': rc['contract_type'],
             'partner': rc['partner'],
             'status': rc['status'],
+            'source': link.get('source', 'manual'),
         })
     return results
 
@@ -421,10 +422,10 @@ def api_contract_add_related(contract_id):
 
     c.setdefault('related_contract_ids', [])
     rc.setdefault('related_contract_ids', [])
-    if related_id not in c['related_contract_ids']:
-        c['related_contract_ids'].append(related_id)
-    if contract_id not in rc['related_contract_ids']:
-        rc['related_contract_ids'].append(contract_id)
+    if not any(l['id'] == related_id for l in c['related_contract_ids']):
+        c['related_contract_ids'].append({'id': related_id, 'source': 'manual'})
+    if not any(l['id'] == contract_id for l in rc['related_contract_ids']):
+        rc['related_contract_ids'].append({'id': contract_id, 'source': 'manual'})
 
     save_contracts(contracts)
     return jsonify({'related_contracts': _related_contracts(c['related_contract_ids'], contracts_by_id)})
@@ -438,10 +439,21 @@ def api_contract_remove_related(contract_id, related_id):
     if not c:
         return jsonify({'error': 'not found'}), 404
 
-    c['related_contract_ids'] = [rid for rid in c.get('related_contract_ids', []) if rid != related_id]
+    links = c.get('related_contract_ids', [])
+    link = next((l for l in links if l['id'] == related_id), None)
+    if link is None:
+        return jsonify({'error': 'not found'}), 404
+    if link.get('source') == 'if':
+        return jsonify({'error': 'e-legal I/F로 수신된 연관 계약서는 삭제할 수 없습니다.'}), 400
+
+    c['related_contract_ids'] = [l for l in links if l['id'] != related_id]
+
     rc = contracts_by_id.get(related_id)
     if rc:
-        rc['related_contract_ids'] = [rid for rid in rc.get('related_contract_ids', []) if rid != contract_id]
+        rc['related_contract_ids'] = [
+            l for l in rc.get('related_contract_ids', [])
+            if not (l['id'] == contract_id and l.get('source') != 'if')
+        ]
 
     save_contracts(contracts)
     return jsonify({'related_contracts': _related_contracts(c['related_contract_ids'], contracts_by_id)})

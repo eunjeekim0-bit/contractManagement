@@ -479,7 +479,12 @@
           }
         ]
       },
-      "related_contract_ids": []
+      "related_contract_ids": [
+        {
+          "id": "CT2026025",
+          "source": "manual"
+        }
+      ]
     },
     {
       "id": "CT2026025",
@@ -734,7 +739,10 @@
         ]
       },
       "related_contract_ids": [
-        "CT2026027"
+        {
+          "id": "CT2026024",
+          "source": "manual"
+        }
       ]
     },
     {
@@ -1315,9 +1323,7 @@
           }
         ]
       },
-      "related_contract_ids": [
-        "CT2026025"
-      ]
+      "related_contract_ids": []
     },
     {
       "id": "CT2026028",
