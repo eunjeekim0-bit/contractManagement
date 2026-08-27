@@ -116,6 +116,12 @@
               <option value="만료">만료</option>
             </select>
           </div>
+          <div class="col-md-3 col-sm-6">
+            <label class="form-label">계약유형</label>
+            <select class="form-select" id="q-type">
+              <option value="">전체</option>
+            </select>
+          </div>
         </div>
       </div>
 
@@ -189,12 +195,26 @@ document.addEventListener('DOMContentLoaded', () => {
   orgModal = new bootstrap.Modal(document.getElementById('orgModal'));
   document.getElementById('orgSearchInput').addEventListener('input', e => renderOrgTree(e.target.value.trim().toLowerCase()));
   loadOrg();
+  loadContractTypes();
   runSearch();
 });
 
 async function loadOrg() {
   const res = await fetch('/api/org');
   orgData = await res.json();
+}
+
+async function loadContractTypes() {
+  const res = await fetch('/api/contracts/search');
+  const data = await res.json();
+  const types = [...new Set(data.results.map(r => r.contract_type))].sort();
+  const select = document.getElementById('q-type');
+  types.forEach(t => {
+    const opt = document.createElement('option');
+    opt.value = t;
+    opt.textContent = t;
+    select.appendChild(opt);
+  });
 }
 
 function fmt(n) {
@@ -210,7 +230,7 @@ function formatAmount(amount, currency) {
 }
 
 function resetSearch() {
-  ['q-dept','q-drafter','q-name','q-partner','q-start','q-end','q-status'].forEach(id => document.getElementById(id).value = '');
+  ['q-dept','q-drafter','q-name','q-partner','q-start','q-end','q-status','q-type'].forEach(id => document.getElementById(id).value = '');
   runSearch();
 }
 
@@ -223,6 +243,7 @@ async function runSearch() {
     start: document.getElementById('q-start').value,
     end: document.getElementById('q-end').value,
     status: document.getElementById('q-status').value,
+    type: document.getElementById('q-type').value,
   });
   const res = await fetch('/api/contracts/search?' + params.toString());
   const data = await res.json();

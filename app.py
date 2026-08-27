@@ -352,6 +352,7 @@ def api_search():
     start = request.args.get('start', '').strip()
     end = request.args.get('end', '').strip()
     status = request.args.get('status', '').strip()
+    contract_type = request.args.get('type', '').strip()
 
     results = []
     for c in load_contracts():
@@ -368,6 +369,8 @@ def api_search():
         if end and c['start_date'] > end:
             continue
         if status and c['status'] != status:
+            continue
+        if contract_type and c['contract_type'] != contract_type:
             continue
         results.append(contract_summary(c))
 
