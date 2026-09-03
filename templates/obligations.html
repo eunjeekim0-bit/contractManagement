@@ -24,6 +24,8 @@ table.ob-table thead th { vertical-align: middle; text-align: center; white-spac
 .status-진행중 { background:#d4eef8; color:#118ab2; }
 .status-완료 { background:#d8f8ee; color:#06a075; }
 .status-지연 { background:#fde0e8; color:#c0394a; }
+.status-불필요 { background:#f5f5f5; color:#aaa; }
+.text-na { color:#aaa; }
 .due-overdue { color:#c0394a; font-weight:700; }
 .empty-state { text-align:center; padding: 60px 0; color:#999; }
 
@@ -49,188 +51,111 @@ table.ob-table thead th { vertical-align: middle; text-align: center; white-spac
 
 {% block content %}
 
-<ul class="nav nav-tabs mb-3" id="obTab">
-  <li class="nav-item"><a class="nav-link active" data-tab="quant" href="#"><i class="bi bi-calendar-check me-1"></i>정량적 의무사항</a></li>
-  <li class="nav-item"><a class="nav-link" data-tab="qual" href="#"><i class="bi bi-list-check me-1"></i>정성적 의무사항</a></li>
-</ul>
+<div class="kind-hint mb-2" id="obKindHint"><i class="bi bi-info-circle me-1"></i>기한에 맞춰 후속 조치가 필요한 의무 조항입니다.</div>
 
-<!-- ===================== 정량적 의무사항 ===================== -->
-<div id="pane-quant">
-  <div class="kind-hint mb-2"><i class="bi bi-info-circle me-1"></i>기한에 맞춰 후속 조치가 필요한 의무 조항입니다.</div>
-
-  <div class="card search-card p-2 mb-3">
-    <div class="row g-2">
-      <div class="col-md-3 col-sm-6">
-        <label class="form-label">기안부서</label>
-        <div class="input-group">
-          <input type="text" class="form-control" id="qt-dept" placeholder="부서명 입력 또는 검색">
-          <button class="btn btn-outline-secondary" type="button" onclick="openOrgModal('dept','qt-dept','qt-drafter')"><i class="bi bi-diagram-3"></i></button>
-        </div>
-      </div>
-      <div class="col-md-3 col-sm-6">
-        <label class="form-label">기안자</label>
-        <div class="input-group">
-          <input type="text" class="form-control" id="qt-drafter" placeholder="이름 입력 또는 검색">
-          <button class="btn btn-outline-secondary" type="button" onclick="openOrgModal('drafter','qt-dept','qt-drafter')"><i class="bi bi-person-badge"></i></button>
-        </div>
-      </div>
-      <div class="col-md-3 col-sm-6">
-        <label class="form-label">계약명</label>
-        <input type="text" class="form-control" id="qt-name" placeholder="계약명 일부 입력">
-      </div>
-      <div class="col-md-3 col-sm-6">
-        <label class="form-label">파트너사</label>
-        <input type="text" class="form-control" id="qt-partner" placeholder="파트너사명 일부 입력">
-      </div>
-
-      <div class="col-12">
-        <button class="advanced-toggle-btn" type="button" data-bs-toggle="collapse" data-bs-target="#qtAdvancedSearch" aria-expanded="false" aria-controls="qtAdvancedSearch">
-          상세 검색 조건 <i class="bi bi-chevron-down chevron"></i>
-        </button>
-      </div>
-
-      <div class="collapse col-12" id="qtAdvancedSearch">
-        <div class="row g-2">
-          <div class="col-md-3 col-sm-6">
-            <label class="form-label">조항 구분</label>
-            <select class="form-select" id="qt-category">
-              <option value="">전체</option>
-              {% for cat in quant_categories %}
-              <option value="{{ cat }}">{{ cat }}</option>
-              {% endfor %}
-            </select>
-          </div>
-          <div class="col-md-3 col-sm-6">
-            <label class="form-label">진행 상태</label>
-            <select class="form-select" id="qt-status">
-              <option value="">전체</option>
-              {% for st in status_options %}
-              <option value="{{ st }}">{{ st }}</option>
-              {% endfor %}
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-12 d-flex justify-content-end gap-2 mt-2">
-        <button class="btn btn-outline-secondary btn-sm" onclick="resetQuantSearch()"><i class="bi bi-arrow-counterclockwise me-1"></i>초기화</button>
-        <button class="btn btn-primary btn-sm px-3" onclick="runQuantSearch()"><i class="bi bi-search me-1"></i>검색</button>
+<div class="card search-card p-2 mb-3">
+  <div class="row g-2">
+    <div class="col-md-2 col-sm-6">
+      <label class="form-label">구분</label>
+      <select class="form-select" id="ob-kind" onchange="onKindChange()">
+        <option value="quant" selected>정량적 의무사항</option>
+        <option value="qual">정성적 의무사항</option>
+      </select>
+    </div>
+    <div class="col-md-2 col-sm-6">
+      <label class="form-label">부서</label>
+      <div class="input-group">
+        <input type="text" class="form-control" id="ob-dept" placeholder="부서명 입력 또는 검색">
+        <button class="btn btn-outline-secondary" type="button" onclick="openOrgModal('dept','ob-dept','ob-drafter')"><i class="bi bi-diagram-3"></i></button>
       </div>
     </div>
-  </div>
-
-  <div class="card result-card">
-    <div class="card-header bg-white fw-bold d-flex justify-content-between align-items-center">
-      <span><i class="bi bi-list-ul me-2 text-primary"></i>조회 결과 <span class="badge bg-secondary" id="qtResultCount">0</span></span>
+    <div class="col-md-2 col-sm-6">
+      <label class="form-label">기안자</label>
+      <div class="input-group">
+        <input type="text" class="form-control" id="ob-drafter" placeholder="이름 입력 또는 검색">
+        <button class="btn btn-outline-secondary" type="button" onclick="openOrgModal('drafter','ob-dept','ob-drafter')"><i class="bi bi-person-badge"></i></button>
+      </div>
     </div>
-    <div class="card-body p-0">
-      <div class="table-responsive">
-        <table class="table table-bordered table-hover ob-table mb-0">
-          <thead>
-            <tr>
-              <th>파트너사</th>
-              <th style="min-width:200px">계약명</th>
-              <th>조항 구분</th>
-              <th style="min-width:280px">내용</th>
-              <th>기한일</th>
-              <th>부서</th>
-              <th>담당자</th>
-              <th>후속 조치 상태</th>
-              <th style="width:90px">관리</th>
-            </tr>
-          </thead>
-          <tbody id="qtBody"></tbody>
-        </table>
+    <div class="col-md-3 col-sm-6">
+      <label class="form-label">계약명</label>
+      <input type="text" class="form-control" id="ob-name" placeholder="계약명 일부 입력">
+    </div>
+    <div class="col-md-3 col-sm-6">
+      <label class="form-label">파트너사</label>
+      <input type="text" class="form-control" id="ob-partner" placeholder="파트너사명 일부 입력">
+    </div>
+
+    <div class="col-12">
+      <button class="advanced-toggle-btn" type="button" data-bs-toggle="collapse" data-bs-target="#obAdvancedSearch" aria-expanded="false" aria-controls="obAdvancedSearch">
+        상세 검색 조건 <i class="bi bi-chevron-down chevron"></i>
+      </button>
+    </div>
+
+    <div class="collapse col-12" id="obAdvancedSearch">
+      <div class="row g-2">
+        <div class="col-md-3 col-sm-6">
+          <label class="form-label">연구과제</label>
+          <select class="form-select" id="ob-research-project">
+            <option value="">전체</option>
+            {% for rp in research_projects %}
+            <option value="{{ rp }}">{{ rp }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <label class="form-label">조항 구분</label>
+          <select class="form-select" id="ob-category">
+            <option value="">전체</option>
+          </select>
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <label class="form-label">진행 상태</label>
+          <select class="form-select" id="ob-status">
+            <option value="">전체</option>
+            {% for st in status_options %}
+            <option value="{{ st }}">{{ st }}</option>
+            {% endfor %}
+          </select>
+          <div class="form-text" id="obStatusHint" style="display:none">정성적 의무사항은 후속 조치가 필요하지 않습니다.</div>
+        </div>
       </div>
-      <div class="empty-state" id="qtEmpty">
-        <i class="bi bi-inbox" style="font-size:2.5rem"></i>
-        <div class="mt-2">검색 조건을 입력하고 검색 버튼을 눌러주세요</div>
-      </div>
+    </div>
+
+    <div class="col-12 d-flex justify-content-end gap-2 mt-2">
+      <button class="btn btn-outline-secondary btn-sm" onclick="resetObSearch()"><i class="bi bi-arrow-counterclockwise me-1"></i>초기화</button>
+      <button class="btn btn-primary btn-sm px-3" onclick="runObSearch()"><i class="bi bi-search me-1"></i>검색</button>
     </div>
   </div>
 </div>
 
-<!-- ===================== 정성적 의무사항 ===================== -->
-<div id="pane-qual" style="display:none">
-  <div class="kind-hint mb-2"><i class="bi bi-info-circle me-1"></i>별도의 기한이나 후속 조치가 필요하지 않은 의무 조항입니다.</div>
-
-  <div class="card search-card p-2 mb-3">
-    <div class="row g-2">
-      <div class="col-md-3 col-sm-6">
-        <label class="form-label">기안부서</label>
-        <div class="input-group">
-          <input type="text" class="form-control" id="ql-dept" placeholder="부서명 입력 또는 검색">
-          <button class="btn btn-outline-secondary" type="button" onclick="openOrgModal('dept','ql-dept','ql-drafter')"><i class="bi bi-diagram-3"></i></button>
-        </div>
-      </div>
-      <div class="col-md-3 col-sm-6">
-        <label class="form-label">기안자</label>
-        <div class="input-group">
-          <input type="text" class="form-control" id="ql-drafter" placeholder="이름 입력 또는 검색">
-          <button class="btn btn-outline-secondary" type="button" onclick="openOrgModal('drafter','ql-dept','ql-drafter')"><i class="bi bi-person-badge"></i></button>
-        </div>
-      </div>
-      <div class="col-md-3 col-sm-6">
-        <label class="form-label">계약명</label>
-        <input type="text" class="form-control" id="ql-name" placeholder="계약명 일부 입력">
-      </div>
-      <div class="col-md-3 col-sm-6">
-        <label class="form-label">파트너사</label>
-        <input type="text" class="form-control" id="ql-partner" placeholder="파트너사명 일부 입력">
-      </div>
-
-      <div class="col-12">
-        <button class="advanced-toggle-btn" type="button" data-bs-toggle="collapse" data-bs-target="#qlAdvancedSearch" aria-expanded="false" aria-controls="qlAdvancedSearch">
-          상세 검색 조건 <i class="bi bi-chevron-down chevron"></i>
-        </button>
-      </div>
-
-      <div class="collapse col-12" id="qlAdvancedSearch">
-        <div class="row g-2">
-          <div class="col-md-3 col-sm-6">
-            <label class="form-label">조항 구분</label>
-            <select class="form-select" id="ql-category">
-              <option value="">전체</option>
-              {% for cat in qual_categories %}
-              <option value="{{ cat }}">{{ cat }}</option>
-              {% endfor %}
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-12 d-flex justify-content-end gap-2 mt-2">
-        <button class="btn btn-outline-secondary btn-sm" onclick="resetQualSearch()"><i class="bi bi-arrow-counterclockwise me-1"></i>초기화</button>
-        <button class="btn btn-primary btn-sm px-3" onclick="runQualSearch()"><i class="bi bi-search me-1"></i>검색</button>
-      </div>
-    </div>
+<div class="card result-card">
+  <div class="card-header bg-white fw-bold d-flex justify-content-between align-items-center">
+    <span><i class="bi bi-list-ul me-2 text-primary"></i>조회 결과 <span class="badge bg-secondary" id="obResultCount">0</span></span>
   </div>
-
-  <div class="card result-card">
-    <div class="card-header bg-white fw-bold d-flex justify-content-between align-items-center">
-      <span><i class="bi bi-list-ul me-2 text-primary"></i>조회 결과 <span class="badge bg-secondary" id="qlResultCount">0</span></span>
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover ob-table mb-0">
+        <thead>
+          <tr>
+            <th>연구과제</th>
+            <th>파트너사</th>
+            <th style="min-width:200px">계약명</th>
+            <th>조항 구분</th>
+            <th>이행 주체</th>
+            <th style="min-width:280px">내용</th>
+            <th>기한일</th>
+            <th>부서</th>
+            <th>담당자</th>
+            <th>후속 조치 상태</th>
+            <th style="width:90px">관리</th>
+          </tr>
+        </thead>
+        <tbody id="obBody"></tbody>
+      </table>
     </div>
-    <div class="card-body p-0">
-      <div class="table-responsive">
-        <table class="table table-bordered table-hover ob-table mb-0">
-          <thead>
-            <tr>
-              <th>파트너사</th>
-              <th style="min-width:200px">계약명</th>
-              <th>조항 구분</th>
-              <th style="min-width:320px">내용</th>
-              <th>부서</th>
-              <th>담당자</th>
-              <th style="width:90px">관리</th>
-            </tr>
-          </thead>
-          <tbody id="qlBody"></tbody>
-        </table>
-      </div>
-      <div class="empty-state" id="qlEmpty">
-        <i class="bi bi-inbox" style="font-size:2.5rem"></i>
-        <div class="mt-2">검색 조건을 입력하고 검색 버튼을 눌러주세요</div>
-      </div>
+    <div class="empty-state" id="obEmpty">
+      <i class="bi bi-inbox" style="font-size:2.5rem"></i>
+      <div class="mt-2">검색 조건을 입력하고 검색 버튼을 눌러주세요</div>
     </div>
   </div>
 </div>
@@ -256,7 +181,7 @@ table.ob-table thead th { vertical-align: middle; text-align: center; white-spac
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header py-2">
-        <h6 class="modal-title fw-bold"><i class="bi bi-pencil-square me-2 text-primary"></i>후속 조치 업데이트</h6>
+        <h6 class="modal-title fw-bold"><i class="bi bi-pencil-square me-2 text-primary"></i>변경</h6>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
@@ -267,24 +192,33 @@ table.ob-table thead th { vertical-align: middle; text-align: center; white-spac
         </div>
         <div class="row mb-2">
           <div class="col-6"><span class="text-muted small">조항 구분</span><div class="fw-semibold" id="um-category"></div></div>
-          <div class="col-6"><span class="text-muted small">기한일</span><div class="fw-semibold" id="um-due"></div></div>
         </div>
         <div class="mb-3">
           <span class="text-muted small">조항 내용</span>
           <div class="small border rounded p-2 bg-light" id="um-content" style="max-height:100px; overflow-y:auto"></div>
         </div>
         <hr>
-        <div class="mb-3">
-          <label class="form-label fw-semibold">진행 상태</label>
-          <select class="form-select" id="um-status">
-            {% for st in status_options %}
-            <option value="{{ st }}">{{ st }}</option>
-            {% endfor %}
-          </select>
+        <div class="row mb-3">
+          <div class="col-6">
+            <label class="form-label fw-semibold">기한일</label>
+            <input type="date" class="form-control" id="um-due">
+          </div>
+          <div class="col-6">
+            <label class="form-label fw-semibold">진행 상태</label>
+            <select class="form-select" id="um-status">
+              {% for st in status_options %}
+              <option value="{{ st }}">{{ st }}</option>
+              {% endfor %}
+            </select>
+          </div>
         </div>
         <div class="mb-2">
           <label class="form-label fw-semibold">후속 조치 내용</label>
           <textarea class="form-control" id="um-note" rows="4" placeholder="처리 내용을 입력하세요"></textarea>
+        </div>
+        <div class="mb-2">
+          <label class="form-label fw-semibold">비고</label>
+          <textarea class="form-control" id="um-memo" rows="3" placeholder="자유롭게 메모를 입력하세요"></textarea>
         </div>
       </div>
       <div class="modal-footer border-0 pt-0">
@@ -300,7 +234,7 @@ table.ob-table thead th { vertical-align: middle; text-align: center; white-spac
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header py-2">
-        <h6 class="modal-title fw-bold"><i class="bi bi-person-gear me-2 text-primary"></i>담당자 변경</h6>
+        <h6 class="modal-title fw-bold"><i class="bi bi-person-gear me-2 text-primary"></i>담당자/부서 변경</h6>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
@@ -314,6 +248,13 @@ table.ob-table thead th { vertical-align: middle; text-align: center; white-spac
           <div class="small border rounded p-2 bg-light" id="am-content" style="max-height:100px; overflow-y:auto"></div>
         </div>
         <hr>
+        <div class="mb-2">
+          <label class="form-label fw-semibold">부서</label>
+          <div class="input-group">
+            <input type="text" class="form-control" id="am-dept" placeholder="부서명 입력 또는 검색">
+            <button class="btn btn-outline-secondary" type="button" onclick="openOrgModal('dept', 'am-dept', null)"><i class="bi bi-diagram-3"></i></button>
+          </div>
+        </div>
         <div class="mb-2">
           <label class="form-label fw-semibold">담당자</label>
           <div class="input-group">
@@ -338,33 +279,35 @@ let orgData = [];
 let orgModal = null;
 let updateModal = null;
 let assigneeModal = null;
+let orgParentModal = null;
 let orgMode = 'dept';
 let orgTargetDept = null;
 let orgTargetDrafter = null;
 let currentUpdateId = null;
 let currentAssigneeId = null;
-let qtResults = [];
-let qlResults = [];
+let obResults = [];
+
+const CATEGORY_OPTIONS = {
+  quant: {{ quant_categories | tojson }},
+  qual: {{ qual_categories | tojson }},
+};
+const KIND_HINTS = {
+  quant: '기한에 맞춰 후속 조치가 필요한 의무 조항입니다.',
+  qual: '별도의 기한이나 후속 조치가 필요하지 않은 의무 조항입니다.',
+};
 
 document.addEventListener('DOMContentLoaded', () => {
   orgModal = new bootstrap.Modal(document.getElementById('orgModal'));
   updateModal = new bootstrap.Modal(document.getElementById('updateModal'));
   assigneeModal = new bootstrap.Modal(document.getElementById('assigneeModal'));
   document.getElementById('orgSearchInput').addEventListener('input', e => renderOrgTree(e.target.value.trim().toLowerCase()));
-
-  document.querySelectorAll('[data-tab]').forEach(link => {
-    link.addEventListener('click', e => {
-      e.preventDefault();
-      document.querySelectorAll('[data-tab]').forEach(l => l.classList.remove('active'));
-      link.classList.add('active');
-      const tab = link.dataset.tab;
-      document.getElementById('pane-quant').style.display = tab === 'quant' ? '' : 'none';
-      document.getElementById('pane-qual').style.display = tab === 'qual' ? '' : 'none';
-    });
+  document.getElementById('orgModal').addEventListener('hidden.bs.modal', () => {
+    if (orgParentModal) { orgParentModal.show(); orgParentModal = null; }
   });
 
   loadOrg();
-  runQuantSearch();
+  applyKindUI('quant');
+  runObSearch();
 });
 
 async function loadOrg() {
@@ -382,92 +325,105 @@ function categoryBadge(cat) {
   return `<span class="badge category-badge">${cat}</span>`;
 }
 
-// ==================== 정량적 의무사항 ====================
-function resetQuantSearch() {
-  ['qt-dept','qt-drafter','qt-name','qt-partner','qt-category','qt-status'].forEach(id => document.getElementById(id).value = '');
-  runQuantSearch();
+const DUTY_LABELS = { '갑': '당사', '을': '상대방', '양당사자': '공통' };
+
+function dutyBadge(dutyParty) {
+  const label = DUTY_LABELS[dutyParty] || dutyParty;
+  return `<span class="badge duty-badge duty-${dutyParty}">${label}</span>`;
 }
 
-async function runQuantSearch() {
+// ==================== 의무사항 검색/조회 ====================
+function applyKindUI(kind) {
+  const categorySelect = document.getElementById('ob-category');
+  categorySelect.innerHTML = '<option value="">전체</option>' +
+    CATEGORY_OPTIONS[kind].map(cat => `<option value="${cat}">${cat}</option>`).join('');
+
+  const statusSelect = document.getElementById('ob-status');
+  const statusHint = document.getElementById('obStatusHint');
+  if (kind === 'qual') {
+    statusSelect.value = '';
+    statusSelect.disabled = true;
+    statusHint.style.display = '';
+  } else {
+    statusSelect.disabled = false;
+    statusHint.style.display = 'none';
+  }
+
+  document.getElementById('obKindHint').innerHTML =
+    `<i class="bi bi-info-circle me-1"></i>${KIND_HINTS[kind]}`;
+}
+
+function onKindChange() {
+  applyKindUI(document.getElementById('ob-kind').value);
+  runObSearch();
+}
+
+function resetObSearch() {
+  ['ob-dept','ob-drafter','ob-name','ob-partner','ob-research-project'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('ob-kind').value = 'quant';
+  applyKindUI('quant');
+  runObSearch();
+}
+
+async function runObSearch() {
+  const kind = document.getElementById('ob-kind').value;
   const params = new URLSearchParams({
-    kind: 'quant',
-    dept: document.getElementById('qt-dept').value.trim(),
-    drafter: document.getElementById('qt-drafter').value.trim(),
-    name: document.getElementById('qt-name').value.trim(),
-    partner: document.getElementById('qt-partner').value.trim(),
-    category: document.getElementById('qt-category').value,
-    status: document.getElementById('qt-status').value,
+    kind,
+    dept: document.getElementById('ob-dept').value.trim(),
+    drafter: document.getElementById('ob-drafter').value.trim(),
+    name: document.getElementById('ob-name').value.trim(),
+    partner: document.getElementById('ob-partner').value.trim(),
+    category: document.getElementById('ob-category').value,
+    status: kind === 'quant' ? document.getElementById('ob-status').value : '',
+    research_project: document.getElementById('ob-research-project').value,
   });
   const res = await fetch('/api/obligations/search?' + params.toString());
   const data = await res.json();
-  qtResults = data.results;
-  renderQuantResults();
+  obResults = data.results;
+  renderObResults();
 }
 
-function renderQuantResults() {
-  const tbody = document.getElementById('qtBody');
+function renderObResults() {
+  const kind = document.getElementById('ob-kind').value;
+  const tbody = document.getElementById('obBody');
   tbody.innerHTML = '';
-  document.getElementById('qtResultCount').textContent = qtResults.length;
-  document.getElementById('qtEmpty').style.display = qtResults.length ? 'none' : '';
+  document.getElementById('obResultCount').textContent = obResults.length;
+  document.getElementById('obEmpty').style.display = obResults.length ? 'none' : '';
 
-  qtResults.forEach(o => {
+  obResults.forEach(o => {
     const tr = document.createElement('tr');
-    const overdue = o.due_date && o.due_date < TODAY && o.status !== '완료';
+
+    let dueCell, statusCell, actionsCell;
+    if (kind === 'qual') {
+      dueCell = o.due_date
+        ? `<td class="center-cell">${o.due_date}</td>`
+        : `<td class="center-cell text-na">미지정</td>`;
+      statusCell = `<td class="center-cell"><span class="badge status-badge status-불필요">불필요</span></td>`;
+      actionsCell = `<td class="center-cell"><button class="btn btn-sm btn-outline-secondary" title="담당자/부서 변경" onclick="openAssigneeModal('${o.id}')"><i class="bi bi-person-gear"></i></button></td>`;
+    } else {
+      const overdue = o.due_date && o.due_date < TODAY && o.status !== '완료';
+      dueCell = `<td class="center-cell ${overdue ? 'due-overdue' : ''}">${o.due_date || '-'}</td>`;
+      statusCell = `<td class="center-cell">${statusBadge(o.status)}</td>`;
+      actionsCell = `
+        <td class="center-cell">
+          <button class="btn btn-sm btn-outline-primary" title="변경" onclick="openUpdateModal('${o.id}')"><i class="bi bi-pencil-square"></i></button>
+          <button class="btn btn-sm btn-outline-secondary" title="담당자/부서 변경" onclick="openAssigneeModal('${o.id}')"><i class="bi bi-person-gear"></i></button>
+        </td>
+      `;
+    }
+
     tr.innerHTML = `
+      <td class="center-cell">${o.research_project || '-'}</td>
       <td class="center-cell">${o.partner}</td>
       <td>${o.contract_name}</td>
       <td class="center-cell">${categoryBadge(o.category)}</td>
+      <td class="center-cell">${dutyBadge(o.duty_party)}</td>
       <td class="ob-content small">${o.content}</td>
-      <td class="center-cell ${overdue ? 'due-overdue' : ''}">${o.due_date || '-'}</td>
+      ${dueCell}
       <td class="center-cell">${o.dept_name}</td>
       <td class="center-cell">${o.assignee}</td>
-      <td class="center-cell">${statusBadge(o.status)}</td>
-      <td class="center-cell">
-        <button class="btn btn-sm btn-outline-primary" title="후속 조치 업데이트" onclick="openUpdateModal('${o.id}')"><i class="bi bi-pencil-square"></i></button>
-        <button class="btn btn-sm btn-outline-secondary" title="담당자 변경" onclick="openAssigneeModal('quant','${o.id}')"><i class="bi bi-person-gear"></i></button>
-      </td>
-    `;
-    tbody.appendChild(tr);
-  });
-}
-
-// ==================== 정성적 의무사항 ====================
-function resetQualSearch() {
-  ['ql-dept','ql-drafter','ql-name','ql-partner','ql-category'].forEach(id => document.getElementById(id).value = '');
-  runQualSearch();
-}
-
-async function runQualSearch() {
-  const params = new URLSearchParams({
-    kind: 'qual',
-    dept: document.getElementById('ql-dept').value.trim(),
-    drafter: document.getElementById('ql-drafter').value.trim(),
-    name: document.getElementById('ql-name').value.trim(),
-    partner: document.getElementById('ql-partner').value.trim(),
-    category: document.getElementById('ql-category').value,
-  });
-  const res = await fetch('/api/obligations/search?' + params.toString());
-  const data = await res.json();
-  qlResults = data.results;
-  renderQualResults();
-}
-
-function renderQualResults() {
-  const tbody = document.getElementById('qlBody');
-  tbody.innerHTML = '';
-  document.getElementById('qlResultCount').textContent = qlResults.length;
-  document.getElementById('qlEmpty').style.display = qlResults.length ? 'none' : '';
-
-  qlResults.forEach(o => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td class="center-cell">${o.partner}</td>
-      <td>${o.contract_name}</td>
-      <td class="center-cell">${categoryBadge(o.category)}</td>
-      <td class="ob-content small">${o.content}</td>
-      <td class="center-cell">${o.dept_name}</td>
-      <td class="center-cell">${o.assignee}</td>
-      <td class="center-cell"><button class="btn btn-sm btn-outline-secondary" title="담당자 변경" onclick="openAssigneeModal('qual','${o.id}')"><i class="bi bi-person-gear"></i></button></td>
+      ${statusCell}
+      ${actionsCell}
     `;
     tbody.appendChild(tr);
   });
@@ -475,20 +431,22 @@ function renderQualResults() {
 
 // ==================== 후속조치 업데이트 모달 ====================
 function openUpdateModal(id) {
-  const o = qtResults.find(r => r.id === id);
+  const o = obResults.find(r => r.id === id);
   if (!o) return;
   currentUpdateId = id;
   document.getElementById('um-contract-name').textContent = o.contract_name;
   document.getElementById('um-partner').textContent = o.partner;
   document.getElementById('um-assignee').textContent = o.assignee;
   document.getElementById('um-category').textContent = o.category;
-  document.getElementById('um-due').textContent = o.due_date || '-';
+  document.getElementById('um-due').value = o.due_date || '';
   document.getElementById('um-content').textContent = o.content;
   document.getElementById('um-status').value = o.status;
   document.getElementById('um-note').value = '';
+  document.getElementById('um-memo').value = '';
 
   fetch(`/api/obligations/${id}`).then(r => r.json()).then(full => {
     document.getElementById('um-note').value = full.note || '';
+    document.getElementById('um-memo').value = full.memo || '';
   });
 
   updateModal.show();
@@ -497,51 +455,54 @@ function openUpdateModal(id) {
 async function saveUpdate() {
   const status = document.getElementById('um-status').value;
   const note = document.getElementById('um-note').value.trim();
+  const due_date = document.getElementById('um-due').value;
+  const memo = document.getElementById('um-memo').value.trim();
   const res = await fetch(`/api/obligations/${currentUpdateId}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ status, note }),
+    body: JSON.stringify({ status, note, due_date, memo }),
   });
   if (!res.ok) { alert('저장에 실패했습니다.'); return; }
   const updated = await res.json();
 
-  const idx = qtResults.findIndex(r => r.id === currentUpdateId);
-  if (idx >= 0) { qtResults[idx].status = updated.status; }
-  renderQuantResults();
+  const idx = obResults.findIndex(r => r.id === currentUpdateId);
+  if (idx >= 0) { obResults[idx].status = updated.status; obResults[idx].due_date = updated.due_date; }
+  renderObResults();
 
   updateModal.hide();
 }
 
 // ==================== 담당자 변경 모달 ====================
-function openAssigneeModal(kind, id) {
-  const o = (kind === 'quant' ? qtResults : qlResults).find(r => r.id === id);
+function openAssigneeModal(id) {
+  const o = obResults.find(r => r.id === id);
   if (!o) return;
   currentAssigneeId = id;
   document.getElementById('am-contract-name').textContent = o.contract_name;
   document.getElementById('am-partner').textContent = o.partner;
   document.getElementById('am-category').textContent = o.category;
   document.getElementById('am-content').textContent = o.content;
+  document.getElementById('am-dept').value = o.dept_name;
   document.getElementById('am-assignee').value = o.assignee;
 
   assigneeModal.show();
 }
 
 async function saveAssignee() {
+  const dept_name = document.getElementById('am-dept').value.trim();
   const assignee = document.getElementById('am-assignee').value.trim();
+  if (!dept_name) { alert('부서를 입력해주세요.'); return; }
   if (!assignee) { alert('담당자를 입력해주세요.'); return; }
 
   const res = await fetch(`/api/obligations/${currentAssigneeId}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ assignee }),
+    body: JSON.stringify({ dept_name, assignee }),
   });
   if (!res.ok) { alert('저장에 실패했습니다.'); return; }
   const updated = await res.json();
 
-  let idx = qtResults.findIndex(r => r.id === currentAssigneeId);
-  if (idx >= 0) { qtResults[idx].assignee = updated.assignee; renderQuantResults(); }
-  idx = qlResults.findIndex(r => r.id === currentAssigneeId);
-  if (idx >= 0) { qlResults[idx].assignee = updated.assignee; renderQualResults(); }
+  const idx = obResults.findIndex(r => r.id === currentAssigneeId);
+  if (idx >= 0) { obResults[idx].dept_name = updated.dept_name; obResults[idx].assignee = updated.assignee; renderObResults(); }
 
   assigneeModal.hide();
 }
@@ -552,13 +513,19 @@ function openOrgModal(mode, deptId, drafterId) {
   orgTargetDept = deptId;
   orgTargetDrafter = drafterId;
   const titles = {
-    dept: '<i class="bi bi-diagram-3 me-2"></i>기안부서 검색',
+    dept: '<i class="bi bi-diagram-3 me-2"></i>부서 검색',
     drafter: '<i class="bi bi-person-badge me-2"></i>기안자 검색',
     assignee: '<i class="bi bi-person-badge me-2"></i>담당자 검색',
   };
   document.getElementById('orgModalTitle').innerHTML = titles[mode] || titles.drafter;
   document.getElementById('orgSearchInput').value = '';
   renderOrgTree('');
+
+  orgParentModal = null;
+  if (document.getElementById('assigneeModal').classList.contains('show')) orgParentModal = assigneeModal;
+  else if (document.getElementById('updateModal').classList.contains('show')) orgParentModal = updateModal;
+  if (orgParentModal) orgParentModal.hide();
+
   orgModal.show();
 }
 
@@ -608,7 +575,7 @@ function selectDept(teamName) {
 }
 
 function selectDrafter(teamName, empName) {
-  document.getElementById(orgTargetDrafter).value = empName;
+  if (orgTargetDrafter) document.getElementById(orgTargetDrafter).value = empName;
   if (orgTargetDept) document.getElementById(orgTargetDept).value = teamName;
   orgModal.hide();
 }

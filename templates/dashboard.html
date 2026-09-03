@@ -33,6 +33,34 @@ table.ob-table thead th, table.ct-table thead th { vertical-align: middle; text-
 .due-soon { color:#9c7a00; font-weight:700; }
 .amount-cell { text-align: right; font-variant-numeric: tabular-nums; }
 .empty-state { text-align:center; padding: 40px 0; color:#999; }
+
+.aq-card, .cat-card { border-radius: 16px; border: none; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+.aq-list { max-height: 480px; overflow-y: auto; }
+.aq-item { padding: 12px 16px; border-bottom: 1px solid #f0f0f0; }
+.aq-item:last-child { border-bottom: none; }
+.aq-title { font-weight: 700; font-size: .92rem; color: #222; }
+.aq-badge { font-size: .72rem; font-weight: 700; padding: 3px 9px; border-radius: 999px; white-space: nowrap; flex-shrink: 0; }
+.aq-badge-overdue { background:#fde0e8; color:#c0394a; }
+.aq-badge-soon { background:#fff3cd; color:#9c7a00; }
+.duty-badge { font-size: .7rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; white-space: nowrap; flex-shrink: 0; }
+.duty-갑 { background:#e8eaff; color:#3b4bd0; }
+.duty-을 { background:#fff3cd; color:#9c7a00; }
+.duty-양당사자 { background:#f0f0f0; color:#666; }
+.aq-meta { font-size: .8rem; color: #777; margin-top: 4px; }
+.aq-meta b { color: #444; font-weight: 600; }
+.aq-sep { margin: 0 5px; color: #ccc; }
+
+.cat-legend { display:flex; gap:16px; font-size:.78rem; color:#666; padding: 0 16px 10px; }
+.cat-legend-item { display:flex; align-items:center; gap:5px; }
+.cat-legend-dot { width:9px; height:9px; border-radius:50%; display:inline-block; }
+.cat-bar-row { padding: 9px 16px; }
+.cat-bar-label { font-size: .84rem; font-weight: 600; color: #444; display:flex; justify-content:space-between; margin-bottom: 5px; }
+.cat-bar-label .cat-bar-meta { color: #999; font-weight: 600; font-size: .78rem; }
+.cat-bar-track { background:#f0f1f5; border-radius: 999px; height: 9px; overflow: hidden; display:flex; }
+.cat-bar-seg { height:100%; }
+.seg-당사 { background:#3b4bd0; }
+.seg-상대방 { background:#f0ad4e; }
+.seg-공통 { background:#adb5bd; }
 </style>
 {% endblock %}
 
@@ -44,6 +72,15 @@ table.ob-table thead th, table.ct-table thead th { vertical-align: middle; text-
       <label class="form-label fw-semibold small text-muted">부서 선택</label>
       <select class="form-select" id="deptFilter" onchange="loadDashboard()">
         <option value="">전체</option>
+      </select>
+    </div>
+    <div class="col-md-4 col-sm-6">
+      <label class="form-label fw-semibold small text-muted">연구과제</label>
+      <select class="form-select" id="researchProjectFilter" onchange="loadDashboard()">
+        <option value="">전체</option>
+        {% for rp in research_projects %}
+        <option value="{{ rp }}">{{ rp }}</option>
+        {% endfor %}
       </select>
     </div>
   </div>
@@ -81,40 +118,49 @@ table.ob-table thead th, table.ct-table thead th { vertical-align: middle; text-
         <div>
           <div class="stat-label">의무사항 조치 기한 만료 건수</div>
           <div class="stat-value" id="stat-overdue">-</div>
-          <div class="stat-hint">클릭하여 목록 보기</div>
+          <div class="stat-hint" id="stat-overdue-breakdown">당사 -건 · 상대방 -건 · 공통 -건</div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- 임박·만료 의무사항 -->
-<div class="card result-card">
-  <div class="card-header bg-white fw-bold d-flex justify-content-between align-items-center">
-    <span><i class="bi bi-alarm me-2 text-danger"></i>임박·만료 의무사항 <span class="badge bg-secondary" id="urgentCount">0</span></span>
-    <span class="small text-muted">기한 만료 또는 7일 이내 도래 항목</span>
-  </div>
-  <div class="card-body p-0">
-    <div class="table-responsive">
-      <table class="table table-bordered table-hover ob-table mb-0">
-        <thead>
-          <tr>
-            <th>파트너사</th>
-            <th style="min-width:200px">계약명</th>
-            <th>조항 구분</th>
-            <th>기한일</th>
-            <th>부서</th>
-            <th>담당자</th>
-            <th>상태</th>
-            <th style="width:70px">관리</th>
-          </tr>
-        </thead>
-        <tbody id="urgentBody"></tbody>
-      </table>
+<div class="row g-3">
+  <!-- 의무사항 Action Queue -->
+  <div class="col-lg-6">
+    <div class="card aq-card h-100">
+      <div class="card-header bg-white fw-bold d-flex justify-content-between align-items-center">
+        <span><i class="bi bi-alarm me-2 text-danger"></i>의무사항 Action Queue <span class="badge bg-secondary" id="urgentCount">0</span></span>
+        <span class="small text-muted">기한 만료 또는 7일 이내 도래 항목</span>
+      </div>
+      <div class="card-body p-0">
+        <div class="aq-list" id="aqList"></div>
+        <div class="empty-state" id="urgentEmpty" style="display:none">
+          <i class="bi bi-emoji-smile" style="font-size:2rem"></i>
+          <div class="mt-2">임박하거나 만료된 의무사항이 없습니다</div>
+        </div>
+      </div>
     </div>
-    <div class="empty-state" id="urgentEmpty" style="display:none">
-      <i class="bi bi-emoji-smile" style="font-size:2rem"></i>
-      <div class="mt-2">임박하거나 만료된 의무사항이 없습니다</div>
+  </div>
+
+  <!-- 조항 구분별 비율 -->
+  <div class="col-lg-6">
+    <div class="card cat-card h-100">
+      <div class="card-header bg-white fw-bold d-flex justify-content-between align-items-center">
+        <span><i class="bi bi-bar-chart-line me-2 text-primary"></i>조항 구분별 비율</span>
+        <span class="small text-muted" id="catTotalHint">전체 -건</span>
+      </div>
+      <div class="card-body p-0 pt-3">
+        <div class="cat-legend">
+          <span class="cat-legend-item"><span class="cat-legend-dot seg-당사"></span>당사</span>
+          <span class="cat-legend-item"><span class="cat-legend-dot seg-상대방"></span>상대방</span>
+          <span class="cat-legend-item"><span class="cat-legend-dot seg-공통"></span>공통</span>
+        </div>
+        <div id="catBarList"></div>
+        <div class="empty-state" id="catEmpty" style="display:none">
+          <div class="mt-2">데이터가 없습니다</div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -134,7 +180,7 @@ table.ob-table thead th, table.ct-table thead th { vertical-align: middle; text-
               <tr>
                 <th>계약유형</th>
                 <th style="min-width:200px">계약명</th>
-                <th>기안부서</th>
+                <th>부서</th>
                 <th>기안자</th>
                 <th>계약기간</th>
                 <th>계약금액</th>
@@ -279,12 +325,23 @@ function currentDept() {
   return document.getElementById('deptFilter').value;
 }
 
+function currentResearchProject() {
+  return document.getElementById('researchProjectFilter').value;
+}
+
 function statusBadge(status) {
   return `<span class="badge status-badge status-${status}">${status}</span>`;
 }
 
 function categoryBadge(cat) {
   return `<span class="badge category-badge">${cat}</span>`;
+}
+
+const DUTY_LABELS = { '갑': '당사', '을': '상대방', '양당사자': '공통' };
+
+function dutyBadge(dutyParty) {
+  const label = DUTY_LABELS[dutyParty] || dutyParty;
+  return `<span class="badge duty-badge duty-${dutyParty}">${label}</span>`;
 }
 
 const TODAY = new Date().toISOString().slice(0, 10);
@@ -297,20 +354,26 @@ function daysUntil(dateStr) {
 // ==================== SUMMARY ====================
 async function loadDashboard() {
   const dept = currentDept();
-  const res = await fetch('/api/dashboard/summary?dept=' + encodeURIComponent(dept));
+  const rp = currentResearchProject();
+  const res = await fetch(`/api/dashboard/summary?dept=${encodeURIComponent(dept)}&research_project=${encodeURIComponent(rp)}`);
   const data = await res.json();
   document.getElementById('stat-valid').textContent = data.valid_contracts;
   document.getElementById('stat-expiring').textContent = data.expiring_contracts;
   document.getElementById('stat-overdue').textContent = data.overdue_obligations;
+  const b = data.overdue_obligations_by_duty || {};
+  document.getElementById('stat-overdue-breakdown').textContent =
+    `당사 ${b['갑'] || 0}건 · 상대방 ${b['을'] || 0}건 · 공통 ${b['양당사자'] || 0}건`;
   loadUrgentObligations();
+  loadCategoryBreakdown();
 }
 
 // ==================== 계약 모달 (유효 / 만료임박) ====================
 async function openContractModal(mode) {
   const dept = currentDept();
+  const rp = currentResearchProject();
   const isExpiring = mode === 'expiring';
   const url = isExpiring ? '/api/dashboard/expiring-contracts' : '/api/dashboard/valid-contracts';
-  const res = await fetch(`${url}?dept=${encodeURIComponent(dept)}&days=30`);
+  const res = await fetch(`${url}?dept=${encodeURIComponent(dept)}&research_project=${encodeURIComponent(rp)}&days=30`);
   const data = await res.json();
 
   document.getElementById('contractModalTitle').innerHTML = isExpiring
@@ -345,19 +408,94 @@ async function openContractModal(mode) {
 // ==================== 의무사항 기한만료 모달 ====================
 async function openObligationModal() {
   const dept = currentDept();
-  const res = await fetch('/api/dashboard/overdue-obligations?dept=' + encodeURIComponent(dept));
+  const rp = currentResearchProject();
+  const res = await fetch(`/api/dashboard/overdue-obligations?dept=${encodeURIComponent(dept)}&research_project=${encodeURIComponent(rp)}`);
   const data = await res.json();
   renderObligationRows(data.results, 'obligationModalBody', 'obligationModalEmpty', 'modal');
   obligationModal.show();
 }
 
-// ==================== 임박·만료 의무사항 (대시보드 내 섹션) ====================
+// ==================== 의무사항 Action Queue (대시보드 내 섹션) ====================
 async function loadUrgentObligations() {
   const dept = currentDept();
-  const res = await fetch(`/api/dashboard/urgent-obligations?dept=${encodeURIComponent(dept)}&days=7`);
+  const rp = currentResearchProject();
+  const res = await fetch(`/api/dashboard/urgent-obligations?dept=${encodeURIComponent(dept)}&research_project=${encodeURIComponent(rp)}&days=7`);
   const data = await res.json();
   document.getElementById('urgentCount').textContent = data.count;
-  renderObligationRows(data.results, 'urgentBody', 'urgentEmpty', 'urgent');
+  renderActionQueue(data.results);
+}
+
+function renderActionQueue(results) {
+  const list = document.getElementById('aqList');
+  list.innerHTML = '';
+  document.getElementById('urgentEmpty').style.display = results.length ? 'none' : '';
+
+  results.forEach(o => {
+    const overdue = o.due_date < TODAY;
+    const badge = overdue
+      ? `<span class="badge aq-badge aq-badge-overdue">만료</span>`
+      : `<span class="badge aq-badge aq-badge-soon">D-${daysUntil(o.due_date)}</span>`;
+    const item = document.createElement('div');
+    item.className = 'aq-item';
+    item.innerHTML = `
+      <div class="d-flex justify-content-between align-items-start gap-2">
+        <div class="aq-title">${o.clause_title}</div>
+        <div class="d-flex align-items-center gap-1">
+          ${dutyBadge(o.duty_party)}
+          ${badge}
+        </div>
+      </div>
+      <div class="aq-meta">
+        ${o.research_project ? `<span>${o.research_project}</span>
+        <span class="aq-sep">·</span>` : ''}
+        <span>${o.contract_name}</span>
+        <span class="aq-sep">·</span>
+        <span><i class="bi bi-person me-1"></i><b>${o.assignee}</b></span>
+        <span class="aq-sep">·</span>
+        <span><i class="bi bi-calendar-event me-1"></i>~${o.due_date}</span>
+      </div>
+      <div class="d-flex justify-content-end mt-1">
+        <button class="btn btn-sm btn-outline-primary" onclick="openUpdateModal('${o.id}','urgent')"><i class="bi bi-pencil-square me-1"></i>조치</button>
+      </div>
+    `;
+    list.appendChild(item);
+  });
+}
+
+// ==================== 조항 구분별 비율 ====================
+async function loadCategoryBreakdown() {
+  const dept = currentDept();
+  const rp = currentResearchProject();
+  const res = await fetch(`/api/dashboard/obligations-by-category?dept=${encodeURIComponent(dept)}&research_project=${encodeURIComponent(rp)}`);
+  const data = await res.json();
+  document.getElementById('catTotalHint').textContent = `전체 ${data.total}건`;
+
+  const container = document.getElementById('catBarList');
+  container.innerHTML = '';
+  document.getElementById('catEmpty').style.display = data.categories.length ? 'none' : '';
+
+  data.categories.forEach(c => {
+    const duty = c.duty || {};
+    const segPct = n => data.total ? (n / data.total * 100) : 0;
+    const ourCount = duty['갑'] || 0;
+    const partnerCount = duty['을'] || 0;
+    const mutualCount = duty['양당사자'] || 0;
+    const row = document.createElement('div');
+    row.className = 'cat-bar-row';
+    row.innerHTML = `
+      <div class="cat-bar-label">
+        <span>${c.category}</span>
+        <span class="cat-bar-meta">${c.count}건 · ${c.pct.toFixed(1)}%</span>
+      </div>
+      <div class="cat-bar-track">
+        <div class="cat-bar-seg seg-당사" style="width:${segPct(ourCount)}%" title="당사 ${ourCount}건"></div>
+        <div class="cat-bar-seg seg-상대방" style="width:${segPct(partnerCount)}%" title="상대방 ${partnerCount}건"></div>
+        <div class="cat-bar-seg seg-공통" style="width:${segPct(mutualCount)}%" title="공통 ${mutualCount}건"></div>
+      </div>
+      <div class="cat-bar-meta mt-1">당사 ${ourCount}건 · 상대방 ${partnerCount}건 · 공통 ${mutualCount}건</div>
+    `;
+    container.appendChild(row);
+  });
 }
 
 function renderObligationRows(results, bodyId, emptyId, source) {

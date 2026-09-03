@@ -86,9 +86,10 @@ DOCUMENT_SYSTEM_URL = ''
 
 # 좌측 사이드바에 노출되는 페이지 목록 — 새 페이지 추가 시 여기에 항목을 더한다
 NAV_PAGES = [
+    {'key': 'dashboard', 'label': 'Dashboard', 'icon': 'bi-speedometer2', 'url': '/dashboard'},
+    {'key': 'contract_master', 'label': '계약서마스터', 'icon': 'bi-table', 'url': '/contract-master'},
     {'key': 'hub_v2', 'label': '계약서 Hub', 'icon': 'bi-grid-3x3-gap', 'url': '/hub-v2'},
     {'key': 'obligations', 'label': '의무조항 관리', 'icon': 'bi-clipboard-check', 'url': '/obligations'},
-    {'key': 'dashboard', 'label': 'Dashboard', 'icon': 'bi-speedometer2', 'url': '/dashboard'},
     {'key': 'agent', 'label': 'Q&A AI Agent', 'icon': 'bi-robot', 'url': AGENT_URL, 'external': True},
     {'key': 'access', 'label': '권한 관리', 'icon': 'bi-shield-lock', 'url': '/access'},
 ]
@@ -96,6 +97,15 @@ NAV_PAGES = [
 QUANT_CATEGORIES = ["지급", "추가 비용", "검수", "정보 제공", "안전관리", "비용 부담", "인력관리"]
 QUAL_CATEGORIES = ["기밀정보유지", "준법", "면책", "지적재산권", "양도제한", "해지", "통지", "손해배상"]
 STATUS_OPTIONS = ["대기", "진행중", "완료", "지연"]
+
+RELATION_TYPES = ["원계약", "수정계약", "관련계약"]
+INVERSE_RELATION_TYPE = {"원계약": "수정계약", "수정계약": "원계약", "관련계약": "관련계약"}
+
+# 연구과제 코드 목록 — 통상 e-legal I/F 수신 시 함께 들어오나, 누락 시 이 목록에서 수동 지정한다.
+RESEARCH_PROJECTS = [
+    "GBP410", "GBP412", "GBP413", "GBP470", "GBP480", "GBP490",
+    "GBP511", "GBP540", "GBP560", "GBP570", "GBP610", "GBP620", "NBP626",
+]
 
 OBLIGATIONS_PATH = os.path.join(os.path.dirname(__file__), 'data', 'obligations.json')
 
@@ -158,10 +168,16 @@ def save_contracts(contracts):
         raise ReadOnlyDemoError()
 
 
-def obligation_summary(o):
+def obligation_summary(o, contracts_by_id=None):
+    research_project = None
+    if contracts_by_id:
+        c = contracts_by_id.get(o['contract_id'])
+        if c:
+            research_project = c.get('research_project')
     return {
         'id': o['id'],
         'contract_id': o['contract_id'],
+        'research_project': research_project,
         'partner': o['partner'],
         'contract_name': o['contract_name'],
         'division_name': o['division_name'],
@@ -190,6 +206,8 @@ def contract_summary(c):
         'dept_name': c['dept_name'],
         'drafter_name': c['drafter_name'],
         'partner': c['partner'],
+        'research_project': c.get('research_project'),
+        'sealed': bool(c.get('sealed', False)),
         'start_date': c['start_date'],
         'end_date': c['end_date'],
         'amount': c['amount'],
@@ -213,6 +231,11 @@ def hub_v2():
     return render_template('hub_v2.html', active_page='hub_v2')
 
 
+@app.route('/contract-master')
+def contract_master():
+    return render_template('contract_master.html', active_page='contract_master')
+
+
 @app.route('/contract/<contract_id>')
 def detail(contract_id):
     return render_template('detail.html', contract_id=contract_id)
@@ -223,12 +246,14 @@ def obligations_page():
     return render_template(
         'obligations.html', active_page='obligations',
         quant_categories=QUANT_CATEGORIES, qual_categories=QUAL_CATEGORIES,
-        status_options=STATUS_OPTIONS)
+        status_options=STATUS_OPTIONS, research_projects=RESEARCH_PROJECTS)
 
 
 @app.route('/dashboard')
 def dashboard_page():
-    return render_template('dashboard.html', active_page='dashboard', status_options=STATUS_OPTIONS)
+    return render_template(
+        'dashboard.html', active_page='dashboard',
+        status_options=STATUS_OPTIONS, research_projects=RESEARCH_PROJECTS)
 
 
 @app.route('/access')
@@ -240,6 +265,11 @@ def access_page():
 @app.route('/api/org', methods=['GET'])
 def api_org():
     return jsonify(load_org())
+
+
+@app.route('/api/research-projects', methods=['GET'])
+def api_research_projects():
+    return jsonify(RESEARCH_PROJECTS)
 
 
 @app.route('/api/permissions', methods=['GET'])
@@ -353,6 +383,7 @@ def api_search():
     end = request.args.get('end', '').strip()
     status = request.args.get('status', '').strip()
     contract_type = request.args.get('type', '').strip()
+    research_project = request.args.get('research_project', '').strip()
 
     results = []
     for c in load_contracts():
@@ -372,6 +403,8 @@ def api_search():
             continue
         if contract_type and c['contract_type'] != contract_type:
             continue
+        if research_project and c.get('research_project') != research_project:
+            continue
         results.append(contract_summary(c))
 
     results.sort(key=lambda r: r['start_date'], reverse=True)
@@ -380,7 +413,7 @@ def api_search():
 
 def _related_contracts(links, contracts_by_id):
     results = []
-    for link in links or []:
+    for i, link in enumerate(links or []):
         rc = contracts_by_id.get(link['id'])
         if not rc:
             continue
@@ -391,6 +424,8 @@ def _related_contracts(links, contracts_by_id):
             'partner': rc['partner'],
             'status': rc['status'],
             'source': link.get('source', 'manual'),
+            'relation_type': link.get('relation_type', '관련계약'),
+            'order': i + 1,
         })
     return results
 
@@ -407,14 +442,49 @@ def api_detail(contract_id):
     return jsonify(data)
 
 
+@app.route('/api/contracts/<contract_id>/research-project', methods=['PUT'])
+def api_contract_set_research_project(contract_id):
+    body = request.json or {}
+    research_project = (body.get('research_project') or '').strip()
+
+    contracts = load_contracts()
+    contracts_by_id = {c['id']: c for c in contracts}
+    c = contracts_by_id.get(contract_id)
+    if not c:
+        return jsonify({'error': 'not found'}), 404
+
+    c['research_project'] = research_project or None
+    save_contracts(contracts)
+    return jsonify({'research_project': c['research_project']})
+
+
+@app.route('/api/contracts/<contract_id>/sealed', methods=['PUT'])
+def api_contract_set_sealed(contract_id):
+    body = request.json or {}
+    sealed = bool(body.get('sealed'))
+
+    contracts = load_contracts()
+    contracts_by_id = {c['id']: c for c in contracts}
+    c = contracts_by_id.get(contract_id)
+    if not c:
+        return jsonify({'error': 'not found'}), 404
+
+    c['sealed'] = sealed
+    save_contracts(contracts)
+    return jsonify({'sealed': c['sealed']})
+
+
 @app.route('/api/contracts/<contract_id>/related', methods=['POST'])
 def api_contract_add_related(contract_id):
     body = request.json or {}
     related_id = (body.get('related_id') or '').strip()
+    relation_type = body.get('relation_type') or '관련계약'
     if not related_id:
         return jsonify({'error': 'related_id is required'}), 400
     if related_id == contract_id:
         return jsonify({'error': '자기 자신은 연관 계약으로 지정할 수 없습니다.'}), 400
+    if relation_type not in RELATION_TYPES:
+        return jsonify({'error': f'invalid relation_type: {relation_type}'}), 400
 
     contracts = load_contracts()
     contracts_by_id = {c['id']: c for c in contracts}
@@ -426,9 +496,55 @@ def api_contract_add_related(contract_id):
     c.setdefault('related_contract_ids', [])
     rc.setdefault('related_contract_ids', [])
     if not any(l['id'] == related_id for l in c['related_contract_ids']):
-        c['related_contract_ids'].append({'id': related_id, 'source': 'manual'})
+        links = c['related_contract_ids']
+        order = body.get('order')
+        index = len(links)
+        if isinstance(order, int):
+            index = max(0, min(order - 1, len(links)))
+        links.insert(index, {'id': related_id, 'source': 'manual', 'relation_type': relation_type})
     if not any(l['id'] == contract_id for l in rc['related_contract_ids']):
-        rc['related_contract_ids'].append({'id': contract_id, 'source': 'manual'})
+        rc['related_contract_ids'].append({'id': contract_id, 'source': 'manual', 'relation_type': INVERSE_RELATION_TYPE[relation_type]})
+
+    save_contracts(contracts)
+    return jsonify({'related_contracts': _related_contracts(c['related_contract_ids'], contracts_by_id)})
+
+
+@app.route('/api/contracts/<contract_id>/related/<related_id>', methods=['PUT'])
+def api_contract_update_related(contract_id, related_id):
+    body = request.json or {}
+    order = body.get('order')
+    relation_type = body.get('relation_type')
+    if order is None and relation_type is None:
+        return jsonify({'error': 'order or relation_type is required'}), 400
+    if order is not None and not isinstance(order, int):
+        return jsonify({'error': 'order must be an integer'}), 400
+    if relation_type is not None and relation_type not in RELATION_TYPES:
+        return jsonify({'error': f'invalid relation_type: {relation_type}'}), 400
+
+    contracts = load_contracts()
+    contracts_by_id = {c['id']: c for c in contracts}
+    c = contracts_by_id.get(contract_id)
+    if not c:
+        return jsonify({'error': 'not found'}), 404
+
+    links = c.get('related_contract_ids', [])
+    idx = next((i for i, l in enumerate(links) if l['id'] == related_id), None)
+    if idx is None:
+        return jsonify({'error': 'not found'}), 404
+
+    if relation_type is not None:
+        links[idx]['relation_type'] = relation_type
+        rc = contracts_by_id.get(related_id)
+        if rc:
+            for l in rc.get('related_contract_ids', []):
+                if l['id'] == contract_id:
+                    l['relation_type'] = INVERSE_RELATION_TYPE[relation_type]
+
+    if order is not None:
+        link = links.pop(idx)
+        new_index = max(0, min(order - 1, len(links)))
+        links.insert(new_index, link)
+    c['related_contract_ids'] = links
 
     save_contracts(contracts)
     return jsonify({'related_contracts': _related_contracts(c['related_contract_ids'], contracts_by_id)})
@@ -471,6 +587,9 @@ def api_obligations_search():
     partner = request.args.get('partner', '').strip().lower()
     category = request.args.get('category', '').strip()
     status = request.args.get('status', '').strip()
+    research_project = request.args.get('research_project', '').strip()
+
+    contracts_by_id = {c['id']: c for c in load_contracts()}
 
     results = []
     for o in load_obligations():
@@ -488,7 +607,9 @@ def api_obligations_search():
             continue
         if status and o['status'] != status:
             continue
-        results.append(obligation_summary(o))
+        if research_project and contracts_by_id.get(o['contract_id'], {}).get('research_project') != research_project:
+            continue
+        results.append(obligation_summary(o, contracts_by_id))
 
     def sort_key(r):
         return (r['due_date'] is None, r['due_date'] or '')
@@ -517,6 +638,23 @@ def api_obligation_update(obligation_id):
                     return jsonify({'error': f'invalid status: {status}'}), 400
                 o['status'] = status
                 o['note'] = body.get('note', '')
+            if 'due_date' in body:
+                due_date = (body.get('due_date') or '').strip()
+                if due_date:
+                    try:
+                        date.fromisoformat(due_date)
+                    except ValueError:
+                        return jsonify({'error': f'invalid due_date: {due_date}'}), 400
+                    o['due_date'] = due_date
+                else:
+                    o['due_date'] = None
+            if 'memo' in body:
+                o['memo'] = body.get('memo', '')
+            if 'dept_name' in body:
+                dept_name = (body.get('dept_name') or '').strip()
+                if not dept_name:
+                    return jsonify({'error': 'dept_name is required'}), 400
+                o['dept_name'] = dept_name
             if 'assignee' in body:
                 assignee = (body.get('assignee') or '').strip()
                 if not assignee:
@@ -528,69 +666,125 @@ def api_obligation_update(obligation_id):
     return jsonify({'error': 'not found'}), 404
 
 
-def _valid_contracts(dept):
+def _valid_contracts(dept, research_project=None):
     return [c for c in load_contracts()
-            if c['status'] == '계약중' and (not dept or c['dept_name'] == dept)]
+            if c['status'] == '계약중' and (not dept or c['dept_name'] == dept)
+            and (not research_project or c.get('research_project') == research_project)]
 
 
-def _expiring_contracts(dept, days):
+def _expiring_contracts(dept, days, research_project=None):
     today = date.today().isoformat()
     horizon = (date.today() + timedelta(days=days)).isoformat()
-    return [c for c in _valid_contracts(dept) if today <= c['end_date'] <= horizon]
+    return [c for c in _valid_contracts(dept, research_project) if today <= c['end_date'] <= horizon]
 
 
-def _overdue_obligations(dept):
+def _obligation_matches_research_project(o, contracts_by_id, research_project):
+    if not research_project:
+        return True
+    c = contracts_by_id.get(o['contract_id'])
+    return bool(c) and c.get('research_project') == research_project
+
+
+def _overdue_obligations(dept, research_project=None):
     today = date.today().isoformat()
+    contracts_by_id = {c['id']: c for c in load_contracts()}
     return [o for o in load_obligations()
             if o['kind'] == 'quant' and o['due_date'] and o['due_date'] < today
-            and o['status'] != '완료' and (not dept or o['dept_name'] == dept)]
+            and o['status'] != '완료' and (not dept or o['dept_name'] == dept)
+            and _obligation_matches_research_project(o, contracts_by_id, research_project)]
 
 
-def _urgent_obligations(dept, days):
+def _urgent_obligations(dept, days, research_project=None):
     horizon = (date.today() + timedelta(days=days)).isoformat()
+    contracts_by_id = {c['id']: c for c in load_contracts()}
     return [o for o in load_obligations()
             if o['kind'] == 'quant' and o['due_date'] and o['due_date'] <= horizon
-            and o['status'] != '완료' and (not dept or o['dept_name'] == dept)]
+            and o['status'] != '완료' and (not dept or o['dept_name'] == dept)
+            and _obligation_matches_research_project(o, contracts_by_id, research_project)]
 
 
 @app.route('/api/dashboard/summary', methods=['GET'])
 def api_dashboard_summary():
     dept = request.args.get('dept', '').strip()
+    research_project = request.args.get('research_project', '').strip()
+    overdue = _overdue_obligations(dept, research_project)
+    overdue_by_duty = {'갑': 0, '을': 0, '양당사자': 0}
+    for o in overdue:
+        overdue_by_duty[o['duty_party']] = overdue_by_duty.get(o['duty_party'], 0) + 1
     return jsonify({
-        'valid_contracts': len(_valid_contracts(dept)),
-        'expiring_contracts': len(_expiring_contracts(dept, 30)),
-        'overdue_obligations': len(_overdue_obligations(dept)),
+        'valid_contracts': len(_valid_contracts(dept, research_project)),
+        'expiring_contracts': len(_expiring_contracts(dept, 30, research_project)),
+        'overdue_obligations': len(overdue),
+        'overdue_obligations_by_duty': overdue_by_duty,
     })
 
 
 @app.route('/api/dashboard/valid-contracts', methods=['GET'])
 def api_dashboard_valid_contracts():
     dept = request.args.get('dept', '').strip()
-    results = sorted((contract_summary(c) for c in _valid_contracts(dept)), key=lambda r: r['end_date'])
+    research_project = request.args.get('research_project', '').strip()
+    results = sorted((contract_summary(c) for c in _valid_contracts(dept, research_project)), key=lambda r: r['end_date'])
     return jsonify({'count': len(results), 'results': results})
 
 
 @app.route('/api/dashboard/expiring-contracts', methods=['GET'])
 def api_dashboard_expiring_contracts():
     dept = request.args.get('dept', '').strip()
+    research_project = request.args.get('research_project', '').strip()
     days = int(request.args.get('days', 30))
-    results = sorted((contract_summary(c) for c in _expiring_contracts(dept, days)), key=lambda r: r['end_date'])
+    results = sorted((contract_summary(c) for c in _expiring_contracts(dept, days, research_project)), key=lambda r: r['end_date'])
     return jsonify({'count': len(results), 'results': results})
 
 
 @app.route('/api/dashboard/overdue-obligations', methods=['GET'])
 def api_dashboard_overdue_obligations():
     dept = request.args.get('dept', '').strip()
-    results = sorted((obligation_summary(o) for o in _overdue_obligations(dept)), key=lambda r: r['due_date'])
+    research_project = request.args.get('research_project', '').strip()
+    contracts_by_id = {c['id']: c for c in load_contracts()}
+    results = sorted((obligation_summary(o, contracts_by_id) for o in _overdue_obligations(dept, research_project)), key=lambda r: r['due_date'])
     return jsonify({'count': len(results), 'results': results})
 
 
 @app.route('/api/dashboard/urgent-obligations', methods=['GET'])
 def api_dashboard_urgent_obligations():
     dept = request.args.get('dept', '').strip()
+    research_project = request.args.get('research_project', '').strip()
     days = int(request.args.get('days', 7))
-    results = sorted((obligation_summary(o) for o in _urgent_obligations(dept, days)), key=lambda r: r['due_date'])
+    contracts_by_id = {c['id']: c for c in load_contracts()}
+    results = sorted((obligation_summary(o, contracts_by_id) for o in _urgent_obligations(dept, days, research_project)), key=lambda r: r['due_date'])
     return jsonify({'count': len(results), 'results': results})
+
+
+@app.route('/api/dashboard/obligations-by-category', methods=['GET'])
+def api_dashboard_obligations_by_category():
+    dept = request.args.get('dept', '').strip()
+    research_project = request.args.get('research_project', '').strip()
+    contracts_by_id = {c['id']: c for c in load_contracts()}
+    obligations = [o for o in load_obligations()
+                   if (not dept or o['dept_name'] == dept)
+                   and _obligation_matches_research_project(o, contracts_by_id, research_project)]
+
+    counts = {}
+    for o in obligations:
+        cat = o['category']
+        key = cat.replace(' ', '')
+        if key not in counts:
+            counts[key] = {'label': cat, 'count': 0, 'duty': {'갑': 0, '을': 0, '양당사자': 0}}
+        counts[key]['count'] += 1
+        counts[key]['duty'][o['duty_party']] = counts[key]['duty'].get(o['duty_party'], 0) + 1
+
+    total = len(obligations)
+    categories = [
+        {
+            'category': v['label'],
+            'count': v['count'],
+            'pct': (v['count'] / total * 100) if total else 0,
+            'duty': v['duty'],
+        }
+        for v in counts.values()
+    ]
+    categories.sort(key=lambda x: -x['count'])
+    return jsonify({'total': total, 'categories': categories})
 
 
 if __name__ == '__main__':

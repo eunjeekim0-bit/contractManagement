@@ -13,10 +13,16 @@ body { background: #f0f2f5; font-family: 'Segoe UI', sans-serif; }
 .info-card { border-radius: 16px; border: none; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
 .stat-card { border-radius: 16px; border: none; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
 .stat-card .icon { width: 48px; height: 48px; border-radius: 12px; display:flex; align-items:center; justify-content:center; font-size:1.4rem; }
-.icon-total { background: #e8eaff; color: #4361ee; }
 .icon-important { background: #fff3cd; color: #9c7a00; }
 .icon-obligation { background: #d4eef8; color: #118ab2; }
 .icon-risk { background: #fde0e8; color: #ef476f; }
+.clause-stat-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; padding-top: 10px; border-top: 1px dashed #eee; }
+.clause-stat-chips:empty { display: none; }
+.cat-chip { display: inline-flex; align-items: center; gap: 4px; font-size: .74rem; font-weight: 600; padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
+.cat-chip b { font-size: .82rem; }
+.chip-important { background: #fff3cd; color: #7a5f00; }
+.chip-obligation { background: #d4eef8; color: #0d5c78; }
+.chip-risk { background: #fde0e8; color: #b02a4c; }
 .info-row { display:flex; padding: 8px 0; border-bottom: 1px solid #f0f0f0; }
 .info-row:last-child { border-bottom: none; }
 .info-label { width: 130px; color: #888; font-weight: 600; font-size: .88rem; flex-shrink:0; }
@@ -67,7 +73,7 @@ body { background: #f0f2f5; font-family: 'Segoe UI', sans-serif; }
           </div>
         </div>
         <hr>
-        <div class="info-row"><div class="info-label">기안부서</div><div class="info-value" id="d-dept"></div></div>
+        <div class="info-row"><div class="info-label">부서</div><div class="info-value" id="d-dept"></div></div>
         <div class="info-row"><div class="info-label">기안자</div><div class="info-value" id="d-drafter"></div></div>
         <div class="info-row"><div class="info-label">파트너사</div><div class="info-value" id="d-partner"></div></div>
         <div class="info-row"><div class="info-label">계약기간</div><div class="info-value" id="d-period"></div></div>
@@ -79,36 +85,31 @@ body { background: #f0f2f5; font-family: 'Segoe UI', sans-serif; }
     <!-- AI stats -->
     <div class="col-lg-6">
       <div class="row g-3 h-100">
-        <div class="col-6">
-          <div class="card stat-card p-3 h-100">
-            <div class="d-flex align-items-center gap-3">
-              <div class="icon icon-total"><i class="bi bi-list-ol"></i></div>
-              <div><div class="text-muted small">조항수</div><div class="fw-bold fs-4" id="s-total">-</div></div>
-            </div>
-          </div>
-        </div>
-        <div class="col-6">
-          <div class="card stat-card p-3 h-100">
+        <div class="col-12">
+          <div class="card stat-card p-3">
             <div class="d-flex align-items-center gap-3">
               <div class="icon icon-important"><i class="bi bi-star-fill"></i></div>
               <div><div class="text-muted small">중요조항수</div><div class="fw-bold fs-4" id="s-important">-</div></div>
             </div>
+            <div class="clause-stat-chips" id="chips-important"></div>
           </div>
         </div>
-        <div class="col-6">
-          <div class="card stat-card p-3 h-100">
+        <div class="col-12">
+          <div class="card stat-card p-3">
             <div class="d-flex align-items-center gap-3">
               <div class="icon icon-obligation"><i class="bi bi-clipboard-check"></i></div>
               <div><div class="text-muted small">의무조항수</div><div class="fw-bold fs-4" id="s-obligation">-</div></div>
             </div>
+            <div class="clause-stat-chips" id="chips-obligation"></div>
           </div>
         </div>
-        <div class="col-6">
-          <div class="card stat-card p-3 h-100">
+        <div class="col-12">
+          <div class="card stat-card p-3">
             <div class="d-flex align-items-center gap-3">
               <div class="icon icon-risk"><i class="bi bi-exclamation-triangle-fill"></i></div>
               <div><div class="text-muted small">리스크조항수</div><div class="fw-bold fs-4" id="s-risk">-</div></div>
             </div>
+            <div class="clause-stat-chips" id="chips-risk"></div>
           </div>
         </div>
         <div class="col-12">
@@ -216,7 +217,6 @@ function render() {
   document.getElementById('d-amount').textContent = formatAmount(c.amount, c.currency);
   document.getElementById('d-file').innerHTML = `<i class="bi bi-paperclip me-1"></i>${c.file_name}`;
 
-  document.getElementById('s-total').textContent = ai.clause_count;
   document.getElementById('s-important').textContent = ai.important_clause_count;
   document.getElementById('s-obligation').textContent = ai.obligation_clause_count;
   document.getElementById('s-risk').textContent = ai.risk_clause_count;
@@ -224,7 +224,23 @@ function render() {
   document.getElementById('s-overall-risk').className = 'badge badge-risk-' + ai.overall_risk;
   document.getElementById('s-summary').textContent = ai.summary;
 
+  document.getElementById('chips-important').innerHTML = categoryChips(ai.clauses, '중요', 'chip-important');
+  document.getElementById('chips-obligation').innerHTML = categoryChips(ai.clauses, '의무', 'chip-obligation');
+  document.getElementById('chips-risk').innerHTML = categoryChips(ai.clauses, '리스크', 'chip-risk');
+
   renderClauses();
+}
+
+function categoryChips(clauses, type, chipClass) {
+  const counts = {};
+  (clauses || []).filter(cl => cl.type === type).forEach(cl => {
+    const cat = cl.category || '기타';
+    counts[cat] = (counts[cat] || 0) + 1;
+  });
+  return Object.entries(counts)
+    .sort((a, b) => b[1] - a[1])
+    .map(([cat, n]) => `<span class="cat-chip ${chipClass}">${cat} <b>${n}</b></span>`)
+    .join('');
 }
 
 function renderClauses() {
