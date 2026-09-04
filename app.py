@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, Response
+from upstash_redis import Redis as _UpstashRedis
 import ipaddress
 import json, os
 from datetime import date, timedelta
@@ -7,6 +8,22 @@ app = Flask(__name__)
 app.json.sort_keys = False
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')
+
+_kv_client = None
+_kv_checked = False
+
+
+def _kv():
+    # Vercel Marketplace(Upstash) KV 연동 시 자동 주입되는 환경변수.
+    # 없으면(로컬 개발 등) None을 반환해 파일 기반 저장으로 폴백한다.
+    global _kv_client, _kv_checked
+    if not _kv_checked:
+        _kv_checked = True
+        url = os.environ.get('KV_REST_API_URL') or os.environ.get('UPSTASH_REDIS_REST_URL')
+        token = os.environ.get('KV_REST_API_TOKEN') or os.environ.get('UPSTASH_REDIS_REST_TOKEN')
+        if url and token:
+            _kv_client = _UpstashRedis(url=url, token=token)
+    return _kv_client
 
 # 사내 공인 IP 접근 제한 — 환경변수 ALLOWED_IPS로 콤마 구분 IP/CIDR 목록을 지정한다.
 # 지정하지 않으면 아래 기본값(사내 Zscaler 리전 대역)이 적용된다.
@@ -107,17 +124,38 @@ RESEARCH_PROJECTS = [
     "GBP511", "GBP540", "GBP560", "GBP570", "GBP610", "GBP620", "NBP626",
 ]
 
-OBLIGATIONS_PATH = os.path.join(os.path.dirname(__file__), 'data', 'obligations.json')
-
-
 @app.context_processor
 def inject_nav():
     return {'nav_pages': NAV_PAGES, 'document_system_url': DOCUMENT_SYSTEM_URL}
 
 
 def load_json(name):
+    key = name.rsplit('.', 1)[0]
+    client = _kv()
+    if client is not None:
+        raw = client.get(key)
+        if raw is not None:
+            return json.loads(raw)
+    # KV에 아직 없거나(최초 배포 직후) 로컬 개발 모드 — 번들된 파일에서 읽는다.
     with open(os.path.join(DATA_DIR, name), 'r', encoding='utf-8') as f:
-        return json.load(f)
+        data = json.load(f)
+    if client is not None:
+        client.set(key, json.dumps(data, ensure_ascii=False))
+    return data
+
+
+def save_json(name, data):
+    key = name.rsplit('.', 1)[0]
+    client = _kv()
+    if client is not None:
+        client.set(key, json.dumps(data, ensure_ascii=False))
+        return
+    path = os.path.join(DATA_DIR, name)
+    try:
+        with open(path, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+    except OSError:
+        raise ReadOnlyDemoError()
 
 
 def load_contracts():
@@ -133,39 +171,31 @@ def load_obligations():
 
 
 def load_permissions():
+    client = _kv()
+    if client is not None:
+        raw = client.get('permissions')
+        if raw is not None:
+            return json.loads(raw)
     path = os.path.join(DATA_DIR, 'permissions.json')
     if not os.path.exists(path):
         return {'roles': [], 'user_roles': []}
     with open(path, 'r', encoding='utf-8') as f:
-        return json.load(f)
+        data = json.load(f)
+    if client is not None:
+        client.set('permissions', json.dumps(data, ensure_ascii=False))
+    return data
 
 
 def save_permissions(perms):
-    path = os.path.join(DATA_DIR, 'permissions.json')
-    try:
-        with open(path, 'w', encoding='utf-8') as f:
-            json.dump(perms, f, ensure_ascii=False, indent=2)
-    except OSError:
-        raise ReadOnlyDemoError()
+    save_json('permissions.json', perms)
 
 
 def save_obligations(obligations):
-    try:
-        with open(OBLIGATIONS_PATH, 'w', encoding='utf-8') as f:
-            json.dump({'obligations': obligations}, f, ensure_ascii=False, indent=2)
-    except OSError:
-        raise ReadOnlyDemoError()
-
-
-CONTRACTS_PATH = os.path.join(os.path.dirname(__file__), 'data', 'contracts.json')
+    save_json('obligations.json', {'obligations': obligations})
 
 
 def save_contracts(contracts):
-    try:
-        with open(CONTRACTS_PATH, 'w', encoding='utf-8') as f:
-            json.dump({'contracts': contracts}, f, ensure_ascii=False, indent=2)
-    except OSError:
-        raise ReadOnlyDemoError()
+    save_json('contracts.json', {'contracts': contracts})
 
 
 def obligation_summary(o, contracts_by_id=None):
