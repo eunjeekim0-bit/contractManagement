@@ -26,9 +26,9 @@ table.ob-table thead th, table.ct-table thead th { vertical-align: middle; text-
 .category-badge { font-size: .72rem; background:#f0f0f0; color:#555; }
 .status-badge { font-size: .74rem; }
 .status-대기 { background:#f0f0f0; color:#666; }
-.status-진행중 { background:#d4eef8; color:#118ab2; }
 .status-완료 { background:#d8f8ee; color:#06a075; }
 .status-지연 { background:#fde0e8; color:#c0394a; }
+.status-dday { background:#ffe8cc; color:#b3620a; font-weight:700; }
 .due-overdue { color:#c0394a; font-weight:700; }
 .due-soon { color:#9c7a00; font-weight:700; }
 .amount-cell { text-align: right; font-variant-numeric: tabular-nums; }
@@ -329,8 +329,21 @@ function currentResearchProject() {
   return document.getElementById('researchProjectFilter').value;
 }
 
-function statusBadge(status) {
-  return `<span class="badge status-badge status-${status}">${status}</span>`;
+function statusBadge(label, cls) {
+  return `<span class="badge status-badge ${cls}">${label}</span>`;
+}
+
+// 완료된 건은 '완료', 미완료 상태에서 기한이 지났으면 '지연',
+// 기한 30일 이내로 임박했으면 'D-남은일수', 그 외(30일 초과 여유)는 '대기'로 보여준다.
+// (obligations.html과 동일한 규칙)
+function followUpStatus(o) {
+  if (o.status === '완료') return { label: '완료', cls: 'status-완료' };
+  if (o.due_date) {
+    const diff = daysUntil(o.due_date);
+    if (diff < 0) return { label: '지연', cls: 'status-지연' };
+    if (diff <= 30) return { label: `D-${diff}`, cls: 'status-dday' };
+  }
+  return { label: '대기', cls: 'status-대기' };
 }
 
 function categoryBadge(cat) {
@@ -431,10 +444,10 @@ function renderActionQueue(results) {
   document.getElementById('urgentEmpty').style.display = results.length ? 'none' : '';
 
   results.forEach(o => {
-    const overdue = o.due_date < TODAY;
-    const badge = overdue
-      ? `<span class="badge aq-badge aq-badge-overdue">만료</span>`
-      : `<span class="badge aq-badge aq-badge-soon">D-${daysUntil(o.due_date)}</span>`;
+    const fs = followUpStatus(o);
+    const badge = fs.label === '지연'
+      ? `<span class="badge aq-badge aq-badge-overdue">지연</span>`
+      : `<span class="badge aq-badge aq-badge-soon">${fs.label}</span>`;
     const item = document.createElement('div');
     item.className = 'aq-item';
     item.innerHTML = `
@@ -504,17 +517,18 @@ function renderObligationRows(results, bodyId, emptyId, source) {
   document.getElementById(emptyId).style.display = results.length ? 'none' : '';
 
   results.forEach(o => {
-    const overdue = o.due_date < TODAY;
+    const fs = followUpStatus(o);
+    const overdue = fs.label === '지연';
     const dueClass = overdue ? 'due-overdue' : 'due-soon';
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td class="center-cell">${o.partner}</td>
       <td>${o.contract_name}</td>
       <td class="center-cell">${categoryBadge(o.category)}</td>
-      <td class="center-cell ${dueClass}">${o.due_date}${overdue ? ' (만료)' : ''}</td>
+      <td class="center-cell ${dueClass}">${o.due_date}${overdue ? ' (지연)' : ''}</td>
       <td class="center-cell">${o.dept_name}</td>
       <td class="center-cell">${o.assignee}</td>
-      <td class="center-cell">${statusBadge(o.status)}</td>
+      <td class="center-cell">${statusBadge(fs.label, fs.cls)}</td>
       <td class="center-cell"><button class="btn btn-sm btn-outline-primary" onclick="openUpdateModal('${o.id}','${source}')"><i class="bi bi-pencil-square"></i></button></td>
     `;
     tbody.appendChild(tr);

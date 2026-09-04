@@ -21,9 +21,9 @@ table.ob-table thead th { vertical-align: middle; text-align: center; white-spac
 .duty-양당사자 { background:#f0f0f0; color:#666; }
 .status-badge { font-size: .74rem; }
 .status-대기 { background:#f0f0f0; color:#666; }
-.status-진행중 { background:#d4eef8; color:#118ab2; }
 .status-완료 { background:#d8f8ee; color:#06a075; }
 .status-지연 { background:#fde0e8; color:#c0394a; }
+.status-dday { background:#ffe8cc; color:#b3620a; font-weight:700; }
 .status-불필요 { background:#f5f5f5; color:#aaa; }
 .text-na { color:#aaa; }
 .due-overdue { color:#c0394a; font-weight:700; }
@@ -317,8 +317,26 @@ async function loadOrg() {
 
 const TODAY = new Date().toISOString().slice(0, 10);
 
-function statusBadge(status) {
-  return `<span class="badge status-badge status-${status}">${status}</span>`;
+function daysUntil(dateStr) {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  const [ty, tm, td] = TODAY.split('-').map(Number);
+  return Math.round((Date.UTC(y, m - 1, d) - Date.UTC(ty, tm - 1, td)) / 86400000);
+}
+
+// 완료된 건은 '완료', 미완료 상태에서 기한이 지났으면 '지연',
+// 기한 30일 이내로 임박했으면 'D-남은일수', 그 외(30일 초과 여유)는 '대기'로 보여준다.
+function followUpStatus(o) {
+  if (o.status === '완료') return { label: '완료', cls: 'status-완료' };
+  if (o.due_date) {
+    const diff = daysUntil(o.due_date);
+    if (diff < 0) return { label: '지연', cls: 'status-지연' };
+    if (diff <= 30) return { label: `D-${diff}`, cls: 'status-dday' };
+  }
+  return { label: '대기', cls: 'status-대기' };
+}
+
+function statusBadge(label, cls) {
+  return `<span class="badge status-badge ${cls}">${label}</span>`;
 }
 
 function categoryBadge(cat) {
@@ -398,12 +416,13 @@ function renderObResults() {
       dueCell = o.due_date
         ? `<td class="center-cell">${o.due_date}</td>`
         : `<td class="center-cell text-na">미지정</td>`;
-      statusCell = `<td class="center-cell"><span class="badge status-badge status-불필요">불필요</span></td>`;
+      statusCell = `<td class="center-cell">${statusBadge('불필요', 'status-불필요')}</td>`;
       actionsCell = `<td class="center-cell"><button class="btn btn-sm btn-outline-secondary" title="담당자/부서 변경" onclick="openAssigneeModal('${o.id}')"><i class="bi bi-person-gear"></i></button></td>`;
     } else {
       const overdue = o.due_date && o.due_date < TODAY && o.status !== '완료';
       dueCell = `<td class="center-cell ${overdue ? 'due-overdue' : ''}">${o.due_date || '-'}</td>`;
-      statusCell = `<td class="center-cell">${statusBadge(o.status)}</td>`;
+      const fs = followUpStatus(o);
+      statusCell = `<td class="center-cell">${statusBadge(fs.label, fs.cls)}</td>`;
       actionsCell = `
         <td class="center-cell">
           <button class="btn btn-sm btn-outline-primary" title="변경" onclick="openUpdateModal('${o.id}')"><i class="bi bi-pencil-square"></i></button>
