@@ -55,7 +55,7 @@ table.ob-table thead th, table.ct-table thead th { vertical-align: middle; text-
 .cat-legend-dot { width:9px; height:9px; border-radius:50%; display:inline-block; }
 .cat-bar-row { padding: 9px 16px; }
 .cat-bar-label { font-size: .84rem; font-weight: 600; color: #444; display:flex; justify-content:space-between; margin-bottom: 5px; }
-.cat-bar-label .cat-bar-meta { color: #999; font-weight: 600; font-size: .78rem; }
+.cat-bar-meta { color: #999; font-weight: 600; font-size: .78rem; }
 .cat-bar-track { background:#f0f1f5; border-radius: 999px; height: 9px; overflow: hidden; display:flex; }
 .cat-bar-seg { height:100%; }
 .seg-당사 { background:#3b4bd0; }
@@ -116,7 +116,7 @@ table.ob-table thead th, table.ct-table thead th { vertical-align: middle; text-
       <div class="d-flex align-items-center gap-3">
         <div class="icon icon-overdue"><i class="bi bi-exclamation-triangle"></i></div>
         <div>
-          <div class="stat-label">의무사항 조치 기한 만료 건수</div>
+          <div class="stat-label">의무사항 조치 지연 건수</div>
           <div class="stat-value" id="stat-overdue">-</div>
           <div class="stat-hint" id="stat-overdue-breakdown">당사 -건 · 상대방 -건 · 공통 -건</div>
         </div>
@@ -131,13 +131,13 @@ table.ob-table thead th, table.ct-table thead th { vertical-align: middle; text-
     <div class="card aq-card h-100">
       <div class="card-header bg-white fw-bold d-flex justify-content-between align-items-center">
         <span><i class="bi bi-alarm me-2 text-danger"></i>의무사항 Action Queue <span class="badge bg-secondary" id="urgentCount">0</span></span>
-        <span class="small text-muted">기한 만료 또는 7일 이내 도래 항목</span>
+        <span class="small text-muted">지연 또는 7일 이내 도래 항목</span>
       </div>
       <div class="card-body p-0">
         <div class="aq-list" id="aqList"></div>
         <div class="empty-state" id="urgentEmpty" style="display:none">
           <i class="bi bi-emoji-smile" style="font-size:2rem"></i>
-          <div class="mt-2">임박하거나 만료된 의무사항이 없습니다</div>
+          <div class="mt-2">임박하거나 지연된 의무사항이 없습니다</div>
         </div>
       </div>
     </div>
@@ -199,12 +199,12 @@ table.ob-table thead th, table.ct-table thead th { vertical-align: middle; text-
   </div>
 </div>
 
-<!-- 의무사항 기한만료 목록 모달 -->
+<!-- 의무사항 지연 목록 모달 -->
 <div class="modal fade" id="obligationModal" tabindex="-1">
   <div class="modal-dialog modal-xl modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header py-2">
-        <h6 class="modal-title fw-bold"><i class="bi bi-exclamation-triangle me-2 text-danger"></i>기한 만료 의무사항</h6>
+        <h6 class="modal-title fw-bold"><i class="bi bi-exclamation-triangle me-2 text-danger"></i>지연 의무사항</h6>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body p-0">
@@ -226,7 +226,7 @@ table.ob-table thead th, table.ct-table thead th { vertical-align: middle; text-
           </table>
         </div>
         <div class="empty-state" id="obligationModalEmpty" style="display:none">
-          <div class="mt-2">기한이 만료된 의무사항이 없습니다</div>
+          <div class="mt-2">지연된 의무사항이 없습니다</div>
         </div>
       </div>
     </div>
@@ -418,7 +418,7 @@ async function openContractModal(mode) {
   contractModal.show();
 }
 
-// ==================== 의무사항 기한만료 모달 ====================
+// ==================== 의무사항 지연 모달 ====================
 async function openObligationModal() {
   const dept = currentDept();
   const rp = currentResearchProject();
