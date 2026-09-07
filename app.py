@@ -220,6 +220,10 @@ def obligation_summary(o, contracts_by_id=None):
         'content': o['content'],
         'kind': o['kind'],
         'due_date': o['due_date'],
+        'due_date_mode': o.get('due_date_mode'),
+        'trigger_label': o.get('trigger_label'),
+        'trigger_date': o.get('trigger_date'),
+        'offset_days': o.get('offset_days'),
         'status': o['status'],
     }
 
@@ -668,7 +672,49 @@ def api_obligation_update(obligation_id):
                     return jsonify({'error': f'invalid status: {status}'}), 400
                 o['status'] = status
                 o['note'] = body.get('note', '')
-            if 'due_date' in body:
+            if 'due_date_mode' in body:
+                due_date_mode = body.get('due_date_mode') or 'fixed'
+                if due_date_mode not in ('fixed', 'computed'):
+                    return jsonify({'error': f'invalid due_date_mode: {due_date_mode}'}), 400
+                o['due_date_mode'] = due_date_mode
+                if due_date_mode == 'computed':
+                    trigger_label = (body.get('trigger_label') or '').strip()
+                    trigger_date_raw = (body.get('trigger_date') or '').strip()
+                    trigger_date = None
+                    if trigger_date_raw:
+                        try:
+                            trigger_date = date.fromisoformat(trigger_date_raw)
+                        except ValueError:
+                            return jsonify({'error': f'invalid trigger_date: {trigger_date_raw}'}), 400
+                    offset_raw = body.get('offset_days')
+                    offset_days = None
+                    if offset_raw not in (None, ''):
+                        try:
+                            offset_days = int(offset_raw)
+                        except (TypeError, ValueError):
+                            return jsonify({'error': f'invalid offset_days: {offset_raw}'}), 400
+                    o['trigger_label'] = trigger_label or None
+                    o['trigger_date'] = trigger_date.isoformat() if trigger_date else None
+                    o['offset_days'] = offset_days
+                    if trigger_date is not None and offset_days is not None:
+                        o['due_date'] = (trigger_date + timedelta(days=offset_days)).isoformat()
+                    else:
+                        o['due_date'] = None
+                else:
+                    o['trigger_label'] = None
+                    o['trigger_date'] = None
+                    o['offset_days'] = None
+                    if 'due_date' in body:
+                        due_date = (body.get('due_date') or '').strip()
+                        if due_date:
+                            try:
+                                date.fromisoformat(due_date)
+                            except ValueError:
+                                return jsonify({'error': f'invalid due_date: {due_date}'}), 400
+                            o['due_date'] = due_date
+                        else:
+                            o['due_date'] = None
+            elif 'due_date' in body:
                 due_date = (body.get('due_date') or '').strip()
                 if due_date:
                     try:

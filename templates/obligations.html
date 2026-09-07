@@ -198,19 +198,46 @@ table.ob-table thead th { vertical-align: middle; text-align: center; white-spac
           <div class="small border rounded p-2 bg-light" id="um-content" style="max-height:100px; overflow-y:auto"></div>
         </div>
         <hr>
-        <div class="row mb-3">
-          <div class="col-6">
-            <label class="form-label fw-semibold">기한일</label>
-            <input type="date" class="form-control" id="um-due">
+        <div class="mb-2">
+          <label class="form-label fw-semibold d-block">기한일 입력방식</label>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="um-due-mode" id="um-due-mode-fixed" value="fixed" onchange="applyDueModeUI()">
+            <label class="form-check-label" for="um-due-mode-fixed">직접 입력</label>
           </div>
-          <div class="col-6">
-            <label class="form-label fw-semibold">진행 상태</label>
-            <select class="form-select" id="um-status">
-              {% for st in status_options %}
-              <option value="{{ st }}">{{ st }}</option>
-              {% endfor %}
-            </select>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="um-due-mode" id="um-due-mode-computed" value="computed" onchange="applyDueModeUI()">
+            <label class="form-check-label" for="um-due-mode-computed">기준일 + 기간으로 계산</label>
           </div>
+        </div>
+
+        <div class="mb-2" id="um-due-fixed-block">
+          <label class="form-label fw-semibold">기한일</label>
+          <input type="date" class="form-control" id="um-due">
+        </div>
+
+        <div class="mb-2" id="um-due-computed-block" style="display:none">
+          <label class="form-label fw-semibold">기준 사건</label>
+          <input type="text" class="form-control mb-2" id="um-trigger-label" placeholder="예: 재무제표 작성일">
+          <div class="row">
+            <div class="col-6">
+              <label class="form-label fw-semibold">기준일</label>
+              <input type="date" class="form-control" id="um-trigger-date" oninput="updateComputedDuePreview()">
+            </div>
+            <div class="col-6">
+              <label class="form-label fw-semibold">기간(일)</label>
+              <input type="number" min="0" class="form-control" id="um-offset-days" placeholder="예: 30" oninput="updateComputedDuePreview()">
+            </div>
+          </div>
+          <div class="small mt-1" id="um-computed-due-preview">기준일과 기간을 입력하면 기한일이 자동 계산됩니다.</div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">진행 상태</label>
+          <select class="form-select" id="um-status">
+            {% for st in status_options %}
+            <option value="{{ st }}">{{ st }}</option>
+            {% endfor %}
+          </select>
         </div>
         <div class="mb-2">
           <label class="form-label fw-semibold">후속 조치 내용</label>
@@ -335,6 +362,12 @@ function followUpStatus(o) {
   return { label: '대기', cls: 'status-대기' };
 }
 
+function escapeHtml(str) {
+  return String(str).replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+}
+
 function statusBadge(label, cls) {
   return `<span class="badge status-badge ${cls}">${label}</span>`;
 }
@@ -420,7 +453,16 @@ function renderObResults() {
       actionsCell = `<td class="center-cell"><button class="btn btn-sm btn-outline-secondary" title="담당자/부서 변경" onclick="openAssigneeModal('${o.id}')"><i class="bi bi-person-gear"></i></button></td>`;
     } else {
       const overdue = o.due_date && o.due_date < TODAY && o.status !== '완료';
-      dueCell = `<td class="center-cell ${overdue ? 'due-overdue' : ''}">${o.due_date || '-'}</td>`;
+      if (o.due_date) {
+        const calcMark = o.due_date_mode === 'computed'
+          ? ` <i class="bi bi-calculator text-muted" title="${escapeHtml(o.trigger_label || '기준일')} + ${o.offset_days ?? ''}일"></i>`
+          : '';
+        dueCell = `<td class="center-cell ${overdue ? 'due-overdue' : ''}">${o.due_date}${calcMark}</td>`;
+      } else if (o.due_date_mode === 'computed') {
+        dueCell = `<td class="center-cell text-na" title="${escapeHtml(o.trigger_label || '기준일')} 입력 대기">기준일 대기</td>`;
+      } else {
+        dueCell = `<td class="center-cell text-na">-</td>`;
+      }
       const fs = followUpStatus(o);
       statusCell = `<td class="center-cell">${statusBadge(fs.label, fs.cls)}</td>`;
       actionsCell = `
@@ -463,6 +505,14 @@ function openUpdateModal(id) {
   document.getElementById('um-note').value = '';
   document.getElementById('um-memo').value = '';
 
+  const dueMode = o.due_date_mode === 'computed' ? 'computed' : 'fixed';
+  document.getElementById('um-due-mode-fixed').checked = dueMode === 'fixed';
+  document.getElementById('um-due-mode-computed').checked = dueMode === 'computed';
+  document.getElementById('um-trigger-label').value = o.trigger_label || '';
+  document.getElementById('um-trigger-date').value = o.trigger_date || '';
+  document.getElementById('um-offset-days').value = (o.offset_days ?? '') === null ? '' : (o.offset_days ?? '');
+  applyDueModeUI();
+
   fetch(`/api/obligations/${id}`).then(r => r.json()).then(full => {
     document.getElementById('um-note').value = full.note || '';
     document.getElementById('um-memo').value = full.memo || '';
@@ -471,21 +521,62 @@ function openUpdateModal(id) {
   updateModal.show();
 }
 
+function applyDueModeUI() {
+  const mode = document.querySelector('input[name="um-due-mode"]:checked').value;
+  document.getElementById('um-due-fixed-block').style.display = mode === 'fixed' ? '' : 'none';
+  document.getElementById('um-due-computed-block').style.display = mode === 'computed' ? '' : 'none';
+  updateComputedDuePreview();
+}
+
+function updateComputedDuePreview() {
+  const preview = document.getElementById('um-computed-due-preview');
+  const triggerDate = document.getElementById('um-trigger-date').value;
+  const offsetRaw = document.getElementById('um-offset-days').value;
+  const offsetDays = offsetRaw === '' ? NaN : parseInt(offsetRaw, 10);
+  if (triggerDate && !isNaN(offsetDays)) {
+    const [y, m, d] = triggerDate.split('-').map(Number);
+    const dt = new Date(Date.UTC(y, m - 1, d));
+    dt.setUTCDate(dt.getUTCDate() + offsetDays);
+    preview.textContent = `→ 기한일: ${dt.toISOString().slice(0, 10)}`;
+    preview.className = 'small mt-1 text-primary fw-semibold';
+  } else {
+    preview.textContent = '기준일과 기간을 입력하면 기한일이 자동 계산됩니다.';
+    preview.className = 'small mt-1 text-muted';
+  }
+}
+
 async function saveUpdate() {
   const status = document.getElementById('um-status').value;
   const note = document.getElementById('um-note').value.trim();
-  const due_date = document.getElementById('um-due').value;
   const memo = document.getElementById('um-memo').value.trim();
+  const due_date_mode = document.querySelector('input[name="um-due-mode"]:checked').value;
+
+  const payload = { status, note, memo, due_date_mode };
+  if (due_date_mode === 'computed') {
+    payload.trigger_label = document.getElementById('um-trigger-label').value.trim();
+    payload.trigger_date = document.getElementById('um-trigger-date').value;
+    payload.offset_days = document.getElementById('um-offset-days').value;
+  } else {
+    payload.due_date = document.getElementById('um-due').value;
+  }
+
   const res = await fetch(`/api/obligations/${currentUpdateId}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ status, note, due_date, memo }),
+    body: JSON.stringify(payload),
   });
   if (!res.ok) { alert('저장에 실패했습니다.'); return; }
   const updated = await res.json();
 
   const idx = obResults.findIndex(r => r.id === currentUpdateId);
-  if (idx >= 0) { obResults[idx].status = updated.status; obResults[idx].due_date = updated.due_date; }
+  if (idx >= 0) {
+    obResults[idx].status = updated.status;
+    obResults[idx].due_date = updated.due_date;
+    obResults[idx].due_date_mode = updated.due_date_mode;
+    obResults[idx].trigger_label = updated.trigger_label;
+    obResults[idx].trigger_date = updated.trigger_date;
+    obResults[idx].offset_days = updated.offset_days;
+  }
   renderObResults();
 
   updateModal.hide();
