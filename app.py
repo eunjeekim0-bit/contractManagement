@@ -28,7 +28,7 @@ def _kv():
 # 사내 공인 IP 접근 제한 — 환경변수 ALLOWED_IPS로 콤마 구분 IP/CIDR 목록을 지정한다.
 # 지정하지 않으면 아래 기본값(사내 Zscaler 리전 대역)이 적용된다.
 # 로컬 개발 편의를 위해 localhost는 항상 허용한다.
-DEFAULT_ALLOWED_IPS = '165.225.228.0/23,147.161.192.0/23,165.225.102.0/24'
+DEFAULT_ALLOWED_IPS = '165.225.228.0/23,147.161.192.0/23,165.225.102.0/24,49.50.46.225/32'
 _LOCALHOST_NETS = [ipaddress.ip_network('127.0.0.1/32'), ipaddress.ip_network('::1/128')]
 
 
